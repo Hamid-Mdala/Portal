@@ -1,591 +1,19 @@
-#include <map>
+
 #include <string>
 #include <cstdio>
-#include <sstream>
-#include <fstream>
 #include <iostream>
+#include "DatabaseManager.cpp"
+#include "HandlingValidationCheck.cpp"
 using namespace std;
 
-struct UserDetailsUsingMap {					//is used for the user's details file
-	// the key is string username;
-	string password;
-	string id;
-	string first_name;
-	string last_name;
-	string sex;
-	string date_of_birth;
-}; map<string, UserDetailsUsingMap> userDataMap;
-
-struct DetailsForOneCommaInLineUsingMap {		//is used for the students enroll course file, and the teachers course table file
-	// the key is string details_field1;
-	string details_field2;
-}; map<string, DetailsForOneCommaInLineUsingMap> twoFieldsMap;
-
-struct DetailsForTwoCommaInLineUsingMap {		//is used for the students entry form file, and the course table file
-	// the key is string details_field1;
-	string details_field2;
-	string details_field3;
-}; map<string, DetailsForTwoCommaInLineUsingMap> threeFieldsMap;
-	
-struct DetailsForThreeCommaInLineUsingMap {		//is used for the students grade file
-	// the key is string details_field1	
-	string details_field2;
-	string details_field3;
-	string details_field4;
-}; map<string, DetailsForThreeCommaInLineUsingMap> fourFieldsMap;
-
-class Utility {
+class AbstractClass {
 	public:
-		string single_line_from_temp;
-		char delimeter = ',';
-	private:
-		int count;
+		virtual ~AbstractClass() = default;
 	public:
-		void setCount(int count) {
-			this->count = count;
-		}
-		int getCount() {
-			return count;
-		}
-		bool coutCommasInLine(string filename, int num_of_fields_on_line) {
-			ifstream inFile(filename);
-			ofstream outFile("temporarly_table.txt");
-			//algorithm handling if the file can't/can open 
-			if(!inFile.is_open()) {
-				cerr<<"Error: Unable to open and cout the fields in the "<<filename<<endl;
-				return false;
-			} else {
-				int just_count_one_line=0;
-				string store_one_line;
-				while(getline(inFile, store_one_line)) {
-					just_count_one_line++;
-					if(just_count_one_line == 1) {
-						outFile<<store_one_line<<endl;
-					}
-				}
-				//algorithm opening and reading the extracted line, so that we could count the commas/fields in the extracted single line from the temporarly file
-				ifstream tempFile("temporarly_table.txt");
-				if(!tempFile.is_open()) {
-					cerr<<"Error: Unable to open the temporarly file."<<endl;
-				} else {
-					string stored_one_line;
-					int comma_counts_in_line=0;
-					while(getline(tempFile, stored_one_line)) {
-						for(int lidx = 0; lidx < stored_one_line.size(); lidx++) {
-							if(stored_one_line[lidx] == ',') {
-								comma_counts_in_line++;
-							}
-						}
-					}	
-					//end of the algorithm counting the comma in the extracted single line
-					this->count = comma_counts_in_line;
-					//assign the count attribute member in the class Utility
-				}
-			} return true;
-		}
-	public:	
-		bool handlingDuplication(string filename, int num_of_fields_in_line) {
-			//algorithm calling the count fields in file, so that we could load different files with different fields in the map data structure
-			bool exists;
-			exists = this->coutCommasInLine(filename, num_of_fields_in_line);
-			if(exists) {
-				if(this->count == num_of_fields_in_line) {
-					ifstream inFile(filename);
-					if(!inFile.is_open()) {
-						cerr<<"Error: unable to open the file."<<endl;
-					} else {
-						//below are if conditions used to handle the number of counted comma in the file if the above is condition is true
-						if(num_of_fields_in_line == 1) {
-							string details_field1;
-							string details_field2;
-							while(getline(inFile, details_field1, delimeter)) {
-								getline(inFile, details_field2, '\n');
-								twoFieldsMap[details_field1] = {details_field2};
-							} 
-						} else if(num_of_fields_in_line == 2) {
-							string details_field1;
-							string details_field2;
-							string details_field3;
-							while(getline(inFile, details_field1, delimeter)) {
-								getline(inFile, details_field2, delimeter);
-								getline(inFile, details_field3, '\n');
-								threeFieldsMap[details_field1] = {details_field2, details_field3};
-							} 
-						} else if(num_of_fields_in_line == 3) {
-							string details_field1;
-							string details_field2;
-							string details_field3;
-							string details_field4;
-							while(getline(inFile, details_field1, delimeter)) {
-								getline(inFile, details_field2, delimeter);
-								getline(inFile, details_field3, delimeter);
-								getline(inFile, details_field4, '\n');
-								fourFieldsMap[details_field1] = {details_field2, details_field3, details_field4};
-							} 
-						} else if(num_of_fields_in_line == 6) {
-							string details_field1;
-							string details_field2;
-							string details_field3;
-							string details_field4;
-							string details_field5;
-							string details_field6;
-							string details_field7;
-							while(getline(inFile, details_field1, delimeter)) {
-								getline(inFile, details_field2, delimeter);
-								getline(inFile, details_field3, delimeter);
-								getline(inFile, details_field4, delimeter);
-								getline(inFile, details_field5, delimeter);
-								getline(inFile, details_field6, delimeter);
-								getline(inFile, details_field7, '\n');
-								userDataMap[details_field1] = {details_field2, details_field3, details_field4, details_field5, details_field6, details_field7};
-							} 
-						} else {	
-							//issue might be if the user (admins) first registration of the user's or course, he/she added an extra comma inside while entering the detials
-							//issue might be if the first user student entered an extra comma while enrolling the in into a program
-							//issue might be if the first user teacher entered an comma while making the students grade details
-							cout<<"The management system is not expecting any file with such number of fields in it."<<endl;
-							cout<<"Hence it doesn't have a load mechanism in the map data structure, please contant the developers to fix the issue."<<endl;
-						}
-					} return true;
-				} else {
-					if(twoFieldsMap.empty() == 1 || threeFieldsMap.empty() == 1 || fourFieldsMap.empty() == 1) {
-					//	cout<<"The "<<filename<<" is a new file, so it doesn't have fields of data in it..."<<endl;
-					//	cout<<"A reason could be that the "<<filename<<" is an empty/blank file and doesn't have any fields/comma(s)."<<endl;
-					} else {
-						cout<<"The numbers of fields in file is not the equal to the fields counted in the file."<<endl;
-					} return false;	
-				}
-			} return true;
-		}
-		
-};
-
-class AbstractSearch {
-	public:
-	//abstracted function used in my code
+		//abstracted function used in my code
 		virtual void applySearchForStudent()=0;
 		virtual bool view()=0;
 		virtual bool editDetails()=0;
-};
-
-class ReadFileThatAreExtractingASingleUserDetails {
-	public:
-		static bool readFromAFile(string filename, int num_of_fields_in_line) {
-			/*algorithm reading from files details that the map con't handle reading because of duplication/overwritting in the map, so i used an
-			array algorithm method used to to view details in those files*/
-			Utility utilityConfig;
-			bool exists;
-			exists = utilityConfig.coutCommasInLine(filename, num_of_fields_in_line);
-			//IF empty then not equal to one
-			if(utilityConfig.getCount() == num_of_fields_in_line) {
-				ifstream inFile(filename);
-				if(!inFile.is_open()) {
-					cerr<<"Error: Unable to open the file"<<endl;
-				} else {
-					string line;
-					//these if conditions algorithm reads from files that have only one comma, but they have two fields in the file
-					if(num_of_fields_in_line == 1) {
-						char details_field1[100];
-						char details_field2[100];
-						int line_count=1;
-						while(getline(inFile, line)) {
-							int line_index = line_count++;
-							int i=0;
-							int j=0;
-							int count = 0;
-							for(int lidx = 0; lidx < line.size(); lidx++) {
-								if(line[lidx] != utilityConfig.delimeter && count == 0) {
-									details_field1[i] = line[lidx];
-									i++;
-								} else if(line[lidx] != utilityConfig.delimeter && count == 1) {
-									details_field2[j] = line[lidx];
-									j++;
-								} else {
-									count++;
-								}
-							}
-							details_field1[i] = '\0';
-							details_field2[j] = '\0';
-							//handling/implementing the a unique view for different extracted/containing files in my management system
-							if(filename == "temp_file_one.txt") {					//made an extrated file in the searchForFirstAndLastField in my code
-								cout<<"USER-ID: "<<line_index<<". "<<details_field1<<endl;	
-							} else if(filename == "temp_file_two.txt") {			//made an extracted file in the searchForFirstAndLastField in my code
-									cout<<"COURSE-ID: "<<line_index<<". "<<details_field2<<endl;	
-							} else if(filename == "students_enroll_course_table_file.txt" || filename == "teachers_table_file.txt") { 		//these is are not extracted file, they are files containing details when we register either the teacher or the student
-								if(filename == "students_enroll_course_table_file") {
-									cout<<"USER-ID: "<<details_field1<<endl;
-									cout<<"COURSE-ID: "<<details_field2<<endl;
-									cout<<endl;
-									cout<<endl;
-								} else if(filename == "teachers_table_file.txt" || "students_enroll_course_table_file.txt") {
-									cout<<"USER-ID: "<<details_field1<<endl;
-									cout<<"COURSE-ID: "<<details_field2<<endl;
-									cout<<endl;
-								}
-							}
-							 else {
-								cout<<"The filename is invalid and theirs no if condition handling the view for "<<filename<<" name is our management system."<<endl;
-							}
-						}
-						//next if conditions algorithm handles the view of the students grade file 
-					} else if(num_of_fields_in_line == 3) {
-						char details_field1[100];
-						char details_field2[100];
-						char details_field3[100];
-						char details_field4[100];
-						int line_count=1;
-						while(getline(inFile, line)) {
-							int line_index = line_count++;
-							int i=0; 
-							int j=0; 
-							int k=0;
-							int u=0;
-							int count = 0;
-							for(int lidx = 0; lidx < line.size(); lidx++) {
-								if(line[lidx] != utilityConfig.delimeter && count == 0) {
-									details_field1[i] = line[lidx];
-									i++;
-								} else if(line[lidx] != utilityConfig.delimeter && count == 1) {
-									details_field2[j] = line[lidx];
-									j++;
-								} else if(line[lidx] != utilityConfig.delimeter && count == 2) {
-									details_field3[k] = line[lidx];
-									k++;
-								} else if(line[lidx] != utilityConfig.delimeter && count == 3) {
-									details_field4[u] = line[lidx];
-									u++;
-								} else {
-									count++;
-								}
-							}
-							details_field1[i] = '\0';
-							details_field2[j] = '\0';
-							details_field3[k] = '\0';
-							details_field4[u] = '\0';
-							cout
-							<<"USER-ID: "<<details_field1<<endl
-							<<"STUDENT_CLASSIFICATION: "<<details_field2<<endl
-							<<"COURSE-ID: "<<details_field3<<endl
-							<<"GPA: "<<details_field4<<endl
-							<<endl;
-						} 
-					} else {
-						//issue might be if the user (admins) first registration of the user's or course, he/she added an extra comma inside while entering the detials
-						//issue might be if the first user student entered an extra comma while enrolling the in into a program
-						//issue might be if the first user teacher entered an comma while making the students grade details
-						cout<<"The management system is not expecting any file with such number of fields in it."<<endl;
-						cout<<"Hence it doesn't have viewing mechanism to display details on the console, please contant the developers to fix the issue."<<endl;	
-					}
-				}
-			} else {
-				if(twoFieldsMap.empty() == 1 || threeFieldsMap.empty() == 1 || fourFieldsMap.empty() == 1) {
-					//	cout<<"The "<<filename<<" is a new file, so it doesn't have fields of data in it..."<<endl;
-					//	cout<<"A reason could be that the "<<filename<<" is an empty/blank file and doesn't have any fields/comma(s)."<<endl;
-				} else {
-					cout<<"The numbers of fields in file is not the equal to the fields counted in the file."<<endl;
-				} return false;	
-			} return true;
-		}
-};
-
-class DatabaseManager {
-	public:
-	/*
-	I KNOW I DID'T USE THE CONFIG, BUT IT COULD BE USED WHEN CONFIGURING IF THE FILE IS ABLE TO OPEN OR NOT
-		static bool configFile(string filename) {
-			ifstream inFile(filename);
-			if(!inFile.is_open()) {
-				cerr<<"Error: Unable to open the file."<<endl;
-				return false;				//separate fuction handling if the file doesn't open
-			} return true;
-		}
-	*/
-	public:
-		static bool authenticateUserInFileManagementSystem(string username, string password, string filename, int num_of_fields_on_line) {
-			//algorithm used while checking or even authenticating two details in files
-			Utility utilityTools;
-			utilityTools.coutCommasInLine(filename, num_of_fields_on_line);
-			if(utilityTools.getCount() == num_of_fields_on_line) {
-				//below are if conditions used to handle the number of counted comma in the file if the above is condition is true
-				if(num_of_fields_on_line == 6) {
-					utilityTools.handlingDuplication(filename, num_of_fields_on_line);
-					for(auto pair : userDataMap) {
-						//will search through the map until the end of the map
-						if(userDataMap.find(username) != userDataMap.end() && userDataMap[username].password == password) {
-							UserDetailsUsingMap userDetail = userDataMap[username];
-							return true;
-						} else {
-							cout<<"Error: invalid password/username..."<<endl;
-							return false;
-						}
-					} 
-				} else if(num_of_fields_on_line == 1) {
-					ifstream inFile(filename);
-					if(!inFile.is_open()) {
-						cerr<<"Error: Unable to open the file."<<endl;
-					} else {
-						string id_field;
-						string course_field;
-						string result1;
-						string result2;
-						while(getline(inFile, id_field, utilityTools.delimeter)) {
-							getline(inFile, course_field, '\n');
-							if(username == id_field && password == course_field) {
-								result1 = username;
-								result2 = password;
-							} 	
-						}
-						if(result1 == username && result2 == password){
-							return true;
-						} else {
-							return false;
-						}
-					}
-				} else if(num_of_fields_on_line == 3) {
-					utilityTools.handlingDuplication(filename, num_of_fields_on_line);
-					for(auto pair : fourFieldsMap) {
-						//will search through the map until the end of the map
-						if(fourFieldsMap.find(username) != fourFieldsMap.end() && fourFieldsMap[username].details_field3 == password) {
-							return true;
-						} else {
-							return false;
-						}	
-					}
-				} else {
-					//issue might be if the user (admins) first registration of the user's or course, he/she added an extra comma inside while entering the detials
-					//issue might be if the first user student entered an extra comma while enrolling the in into a program
-					//issue might be if the first user teacher entered an comma while making the students grade details
-					cout<<"The management system is not expecting any file with such number of fields in it."<<endl;
-					cout<<"Hence it doesn't have viewing mechanism to display details on the console, please contant the developers to fix the issue."<<endl;	
-				}	
-			} else {
-				if(twoFieldsMap.empty() == 1 || threeFieldsMap.empty() == 1 || fourFieldsMap.empty() == 1) {
-					//	cout<<"The "<<filename<<" is a new file, so it doesn't have fields of data in it..."<<endl;
-					//	cout<<"A reason could be that the "<<filename<<" is an empty/blank file and doesn't have any fields/comma(s)."<<endl;
-				} else {
-					cout<<"The numbers of fields in file is not the equal to the fields counted in the file."<<endl;
-				} return false;	
-			} return true;
-		}
-	public:	
-		static void registerUser(string filename, string username, string password, string id, string first_name, 
-		string last_name, string sex, string date_of_birth) {
-			ofstream outFile(filename, ios_base::app);		//opening file in append mode every time use to write data
-			if(!outFile.is_open()) {
-				cerr<<"Error: Unable to open the user database inorder to register the user."<<endl;
-			} else {
-				outFile<<username<<","<<password<<","<<id<<","<<first_name<<","<<last_name<<","<<sex<<","<<date_of_birth<<endl;
-				cout<<"you have successfully saved details in user's file."<<endl;
-				//registration of any user in the user database system
-			}
-		}
-	public:
-		static bool deleteFileName() {
-			//Delete fuction used when they edit their details
-			const char* FileName = "users_File.txt";
-			if(remove(FileName) == 0) {
-				return true;
-			} else {
-				return false;
-			}
-			return true;
-		}
-	public:
-		static bool renameFileName() {
-			//Rename function used when they edit details 
-			const char* OldFile = "temporarly_edit_table.txt";
-			const char* NewFile = "users_File.txt";
-			if(rename(OldFile, NewFile) == 0) {
-				return true;
-			} else {
-				return false;
-			}
-			return true;
-		}
-	public:
-		bool searchForFirstAndSecondField(string filename, string username, string field_two_details, int num_of_fields_on_line) {
-			//algorithm used to verify the first field or the second field in the file
-			//will help the one to many relationship inside the teacher when a teacher is being registered to a new course
-			//one to many like: only one course tought by one teacher but a teacher could teach as many courses, so another teacher can't register to a course that is existng/tought by a teacher
-			ofstream isNotYetMade(filename, ios_base::app);				//when the filename is not yet made open it in append 
-			bool exists;
-			Utility utilityTools;
-			string assume;
-			string assume1;
-			exists = utilityTools.coutCommasInLine(filename, num_of_fields_on_line);
-			if(utilityTools.getCount() == num_of_fields_on_line) {
-				//below are if conditions used to handle the number of counted comma in the file if the above is condition is true
-				//these if condition will verify if fields one or field2 two is existing in their appropriate fields
-				if(num_of_fields_on_line == 1) {		
-					ifstream inFile(filename);
-					ofstream tempFileOne("temp_file_one.txt");
-					ofstream tempFileTwo("temp_file_two.txt");	
-					ofstream editFile("temporarly_edit_table.txt");  
-					string line;
-					string details_field1;
-					string details_field2;
-					while(getline(inFile, line)) {
-						stringstream ss(line);
-						while(getline(ss, details_field1, utilityTools.delimeter)) {
-							getline(ss, details_field2, '\n');	
-							if(username == details_field1 || field_two_details == details_field2) {
-								tempFileOne<<line<<endl;
-								tempFileTwo<<line<<endl;
-								assume = username;
-								assume1 = field_two_details;
-							} else {
-								editFile<<line<<endl;
-							}
-						}
-					} 
-					if(assume == username || assume1 == field_two_details) {
-						return true;	
-					} else {
-						return false;
-					}
-					//next if condition will only verifying one field from files that have files either 2 or 3 and 6 only
-				} else if(num_of_fields_on_line == 2 || num_of_fields_on_line == 3 || num_of_fields_on_line == 6) {
-					ifstream inFile(filename);
-					ofstream outFile("temporarly_table.txt");
-					ofstream otherOutFile("temporarly_table2.0.txt"); //PLEASE NOTE: we are using the temporaraly_table2.0 when the student wants to view their grades cause for some reason if we only use the temporarly_table the results of the students grade wont show up.....
-					ofstream editFile("temporarly_edit_table.txt");		//PLEASE NOTE: hence the temporarly_table and temporarly_table2.0 has to be bonded together, so that the view fuction for the grades works
-					string line;
-					string details_field1;	
-					while(getline(inFile, line)) {
-						size_t commaPos = line.find(",");
-						if(commaPos != string::npos) {
-							details_field1 = line.substr(0, commaPos);
-						}
-						if(username == details_field1) {
-							outFile<<line<<endl;
-							otherOutFile<<line<<endl;
-							assume = username;
-						} else {
-							editFile<<line<<endl;
-						} 
-					}
-					if(assume == username) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					//issue might be if the user (admins) first registration of the user's or course, he/she added an extra comma inside while entering the detials
-					//issue might be if the first user student entered an extra comma while enrolling the in into a program
-					//issue might be if the first user teacher entered an comma while making the students grade details
-					cout<<"The management system is not expecting any file with such number of fields in it."<<endl;
-					cout<<"Hence it doesn't have viewing mechanism to display details on the console, please contant the developers to fix the issue."<<endl;
-				}
-			} else {
-				if(twoFieldsMap.empty() == 1 || threeFieldsMap.empty() == 1 || fourFieldsMap.empty() == 1) {
-					//	cout<<"The "<<filename<<" is a new file, so it doesn't have fields of data in it..."<<endl;
-					//	cout<<"A reason could be that the "<<filename<<" is an empty/blank file and doesn't have any fields/comma(s)."<<endl;
-				} else {
-					cout<<"The numbers of fields in file is not the equal to the fields counted in the file."<<endl;
-				} return false;		 
-			} return true;
-		}
-};
-	
-class ValidationCheck {
-	//these class ValidationCheck handles the data consistancy when the user enters input im my management system
-	public:
-		static bool validateUsername(string username) {
-			if(username.length() > 9 && username.length() <= 15) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateId(string id) {
-			if(id.length() > 9 && id.length() <= 15) {
-				return true;	
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validatePassword(string password) {
-			if(password.length() > 9 && password.length() <= 15) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateFirstName(string first_name) {
-			if(first_name.length() > 2 && first_name.length() <= 15) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateLastName(string last_name) {
-			if(last_name.length() > 2 && last_name.length() <= 15) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateGender(string sex) {
-			if(sex.length() == 1) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateDOB(string date_of_birth) {
-			if(date_of_birth.length() == 10) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateCourseId(string course_id) {
-			if(course_id.length() > 9 && course_id.length() <= 15) {
-				return true;	
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateCourseName(string course_name) {
-			if(course_name.length() > 3 && course_name.length() <= 20) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateYear(string course_year) {
-			if(course_year.length() == 4) {
-				return true;
-			} else {
-				return false;
-			}	
-		}
-	public:
-		static bool validateStudentClassification(string student_classification) {
-			if(student_classification.length() > 5 && student_classification.length() <= 9) {
-				return true;			
-			} else {
-				return false;
-			}
-		}
-	public:
-		static bool validateGpa(string gpa) {
-			if(gpa.length() == 4) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
 };
 
 class User {
@@ -601,26 +29,27 @@ class User {
 		string last_name;
 		string sex;
 		string date_of_birth;
+		char del = '_';
 	public:
 	//Constructor
-		User(string username) {
+		explicit User(const string& username) {
 			Utility utilityTools;
 			utilityTools.handlingDuplication("users_File.txt", 6);
 			//will search through the map until the end of the map
-			if(userDataMap.find(username) != userDataMap.end()) {			//if the username exist the constructor will initialize values into an object
-				UserDetailsUsingMap userDetail = userDataMap[username];		//using the registered username and using the structure will take a particular username details
+			if(userDataMap.find(username) != userDataMap.end()) {			                                            //if the username exist the constructor will initialize values into an object
+				UserDetailsUsingMap userDetail = userDataMap[username];		                                            //using the registered username and using the structure will take a particular username details
 				this->username = username;
-				this->password=userDetail.password;
-				this->id=userDetail.id;
-				this->first_name=userDetail.first_name;
-				this->last_name=userDetail.last_name;
-				this->sex=userDetail.sex;
-				this->date_of_birth=userDetail.date_of_birth;
-				string sub_string;				//sub string variable will used to extract the user's allocation in the management system
-				string line = username;			//string line is equal to the username from the parameter, since it was true
-				size_t underscore = line.find("_");			//finding an underscore in the string line 
-				if(underscore != string::npos) {			//the underscore is surely found 
-					sub_string=line.substr(0, underscore);			//now defining/intializing the sub string variable to the extracted part from the string line
+				this->password=userDetail.details_field2;
+				this->id=userDetail.details_field3;
+				this->first_name=userDetail.details_field4;
+				this->last_name=userDetail.details_field5;
+				this->sex=userDetail.details_field6;
+				this->date_of_birth=userDetail.details_field7;
+				string sub_string;
+				//sub string variable will used to extract the user's allocation in the management system
+				//string line is equal to the username from the parameter, since it was true
+				if(size_t underscore = username.find(this->del); underscore != string::npos) {			                //the underscore is surely found
+					sub_string=username.substr(0, underscore);			                                        //now defining/intializing the sub string variable to the extracted part from the string line
 				}
 				this->user_classification=sub_string;          //used to easily use it in the code 
 			} else {
@@ -629,45 +58,46 @@ class User {
 		}		
 			
 	public:
-	//Destructor (used when we delete the object after we use an object in a function, It will be used in local fuction and when the program executes)
-		virtual ~ User() {}
+	/* Trivial Destructor (main purpose only destroying the object created nothing else */
+		virtual ~ User() = default;
 	public:               
 	//Handling setter and getters
-		void setUsername(string username) {
-			this->username = username;
+		void setUsername(string existing_username) {
+			this->username = move(existing_username);
 		}
 		string getUsername() {
 			return username;
-		}	
-		void setId(string id) {
-			this->id=id;
+		}
+		void setId(string existing_username_id) {
+			this->id= move(existing_username_id);
 		}	
 		string getId() {
 			return id;
 		}
-		void setPassword(string password) {
-			this->password = password;
+		void setPassword(string existing_username_password) {
+			this->password = move(existing_username_password);
 		}
 		string getPassword() {
 			return password;
 		}
-		void setUserClassification(string user_classification) {
-			this->user_classification = user_classification;
+		void setUserClassification(string existing_username_classification) {
+			this->user_classification = move(existing_username_classification);
 		}
 		string getUserClassification() {
 			return user_classification;
 		}
 	public:
 		virtual bool view() {
-			//view algorithm for user used to view all the users file in the management system, However its possible for the function to change complelety under other user's implementation
-			for(auto pair : userDataMap) {
+			//view algorithm for user used to view all the users file in the management system,
+			//However its possible for the function to change complelety under other user's implementation
+			for(auto&[fst, snd]: userDataMap) {
 				cout
-				<<"USERNAME: "<<pair.first<<endl
-				<<"ID: "<<pair.second.id<<endl
-				<<"FIRST_NAME: "<<pair.second.first_name<<endl
-				<<"LAST_NAME: "<<pair.second.last_name<<endl
-				<<"SEX: "<<pair.second.sex<<endl
-				<<"DATE_OF_BIRTH: "<<pair.second.date_of_birth<<endl;
+				<<"USERNAME: "<<fst<<endl
+				<<"ID: "<<snd.details_field3<<endl
+				<<"FIRST_NAME: "<<snd.details_field4<<endl
+				<<"LAST_NAME: "<<snd.details_field5<<endl
+				<<"SEX: "<<snd.details_field6<<endl
+				<<"DATE_OF_BIRTH: "<<snd.details_field7<<endl;
 				cout<<endl;
 			}
 			if(userDataMap.empty() == 0) {
@@ -680,31 +110,31 @@ class User {
 			} else {
 				cout<<"The user details file is currently empty know please, inform the issue to the developers."<<endl;	
 				return false;
-			} return true;
+			}
 		}
 		
 	public:
-		virtual bool editDetails(string username) {
+		virtual bool editDetails(string& username) {
 			//edit algorithm used for users to edit their password in the management system
 			string new_password;   //variable storing the new password
-			bool exists;
 			cout<<endl;
 			cout<<"To change your old password.";
 			cout<<endl;
 			cout<<"Please Enter New Password: ";
 			cin>>new_password;
 			cin.ignore();
-			exists = ValidationCheck::validatePassword(password);   //validate the password
-			if(exists) {
+			if(bool exists = ValidationCheck::validatePassword(password)) {
 				if(new_password == this->password) {
 					cout<<"You are using your recent password, its not exactly changing your password."<<endl;
 				} else {
-					DatabaseManager dbManager;
-					exists = dbManager.searchForFirstAndSecondField("users_File.txt", this->username, this->password, 6);
+					exists = DatabaseManager::searchForFirstAndSecondField("users_File.txt",
+					this->username, this->password, 6);
 					if(exists) {
-						DatabaseManager::registerUser("temporarly_edit_table.txt", this->username, new_password,this->id,this->first_name, this->last_name, this->sex, this->date_of_birth);	
+						DatabaseManager::registerUser("temporarily_edit_table.txt", this->username,
+						new_password,this->id,this->first_name, this->last_name,
+						this->sex, this->date_of_birth);
 						DatabaseManager::deleteFileName(); //delete the user database
-						DatabaseManager::renameFileName(); //rename the temporarly_edit_table to users_File
+						DatabaseManager::renameFileName(); //rename the temporarily_edit_table to users_File
 					} else {
 						cout<<"The username is not found in the user database."<<endl;
 					}
@@ -726,7 +156,7 @@ class Course {
 		string course_year;
 	public:
 	//Constructor
-		Course(string course_id) {
+		explicit Course(const string& course_id) {
 			Utility utilityTools;
 			utilityTools.handlingDuplication("course_table_file.txt", 2);
 			if(threeFieldsMap.find(course_id) != threeFieldsMap.end() ) {
@@ -738,42 +168,35 @@ class Course {
 				cout<<"The course-ID doesn't is not save in the data structure map."<<endl;
 			}	
 		}
-		~ Course() {}
+		~ Course () = default;
 	public:
 	//Handling setters and getters
-		void setCourseId(string course_id) {
-			this->course_id=course_id;
+		void setCourseId(string entered_course_id) {
+			this->course_id=move(entered_course_id);
 		}
 		string getCourseId() {
 			return course_id;
 		}			
 };
 
-class Student : public User {
+class Student final: public User {
 	public:
 	//Constructor
-		Student(string username) 
+		explicit Student(const string& username)
 		: User(username) {}
 	public:
-	//deconstructor 
-		~Student() {}
+	//destructor
+		~ Student () override = default;
 	public:		
 	//Overriding view in student
-		bool view() override {	
-			string student_classification;
-			string course_id;
-			string id;
-			string course_name;	
-			string details_field2;
-			bool exists;
-			DatabaseManager dbManager;
+		bool view() override {
 			Utility utilityTools;
 			cout<<endl;
 			cout<<"\t/1. Option to view all courses/"<<endl;
 			cout<<"\t/2. Option to view your profile/"<<endl;
 			cout<<"\t/3. Option to view your recent grade(s)/"<<endl;
 			cout<<"\t/4. Option to view the program(s) you are enrolled into/"<<endl;
-			cout<<"\t/5. Option to view other students that are learing from the same course/"<<endl;
+			cout<<"\t/5. Option to view other students that are learning from the same course/"<<endl;
 			cout<<endl;
 			cout<<"Enter the view Option: ";
 			int choice;
@@ -783,16 +206,16 @@ class Student : public User {
 			cout<<endl;
 			if(choice == 1) {
 				utilityTools.handlingDuplication("course_table_file.txt", 2);
-				for(auto pair : threeFieldsMap) {
+				for(auto& [fst, snd] : threeFieldsMap) {
 					cout
-					<<"COURSE-ID: "<<pair.first<<endl
-					<<"COURSE_NAME: "<<pair.second.details_field2<<endl
-					<<"COURSE_YEAR: "<<pair.second.details_field3<<endl
+					<<"COURSE-ID: "<<fst<<endl
+					<<"COURSE_NAME: "<<snd.details_field2<<endl
+					<<"COURSE_YEAR: "<<snd.details_field3<<endl
 					<<endl;
 				}
 				if(threeFieldsMap.empty() == 0) {
 					if(threeFieldsMap.size() == 1) {
-						cout<<"Thats the only course provided in our management system."<<endl;
+						cout<<"That's the only course provided in our management system."<<endl;
 					} else {
 						cout<<"Those are the courses provided in our management system."<<endl;
 						cout<<"The total is: "<<threeFieldsMap.size()<<endl;
@@ -806,27 +229,31 @@ class Student : public User {
 					UserDetailsUsingMap userDetails  = userDataMap[this->getUsername()];
 					cout
 					<<"USERNAME: "<<this->getUsername()<<endl
-					<<"ID: "<<userDetails.id<<endl
-					<<"FIRST_NAME: "<<userDetails.first_name<<endl
-					<<"LAST_NAME: "<<userDetails.last_name<<endl
-					<<"SEX: "<<userDetails.sex<<endl
-					<<"DATE_OF_BIRTH: "<<userDetails.date_of_birth<<endl
+					<<"ID: "<<userDetails.details_field3<<endl
+					<<"FIRST_NAME: "<<userDetails.details_field4<<endl
+					<<"LAST_NAME: "<<userDetails.details_field5<<endl
+					<<"SEX: "<<userDetails.details_field6<<endl
+					<<"DATE_OF_BIRTH: "<<userDetails.details_field7<<endl
 					<<endl;
 				} else {
 					cout<<"Cant find the username so that we could fetch the details in the line."<<endl;
 				}
 					//read my own profile
 			} else if(choice == 3) {
-				dbManager.searchForFirstAndSecondField("students_grade_details_table_file.txt", this->getId(), student_classification, 3);
-				utilityTools.handlingDuplication("temporarly_table2.0.txt", 3);	//PLEASE VISIT THE DECLARATION IN searchForFirstAndSecondField FOR THE EXPLANATION OF THE temporarly_table2.0. file
+				string student_classification;
+				DatabaseManager::searchForFirstAndSecondField("students_grade_details_table_file.txt",
+					this->getId(), student_classification, 3);
+				utilityTools.handlingDuplication("temporarily_table2.0.txt", 3);
+				//PLEASE VISIT THE DECLARATION IN searchForFirstAndSecondField FOR THE EXPLANATION OF THE temporarily_table2.0. file
 				if(fourFieldsMap.empty() == 1) {
 					cout<<"Your grades are not yet published by your teacher, just wait/call your teacher that your grade(s) are no yet published"<<endl;
 				} else {
-					ReadFileThatAreExtractingASingleUserDetails::readFromAFile("temporarly_table2.0.txt", 3);
+					ReadFileThatAreExtractingASingleUserDetails::readFromAFile("temporarily_table2.0.txt", 3);
 				}		
 			} else if(choice == 4) {
-				course_id = "EQUAL TO SOMETHING";
-				dbManager.searchForFirstAndSecondField("students_enroll_course_table_file.txt", this->getId(), course_id, 1);
+				const string course_id = "EQUAL TO SOMETHING";
+				DatabaseManager::searchForFirstAndSecondField("students_enroll_course_table_file.txt",
+					this->getId(), course_id, 1);
 				utilityTools.handlingDuplication("temp_file_two.txt", 1);
 				if(twoFieldsMap.empty() == 1) {
 					cout<<"You have not yet enrolled into any course the management system offers."<<endl;
@@ -834,19 +261,19 @@ class Student : public User {
 					ReadFileThatAreExtractingASingleUserDetails::readFromAFile("temp_file_two.txt", 1);
 				}	
 			} else if(choice == 5) {
+				string course_id;
 				cout<<"Enter course-ID : "<<endl;
 				cin>>course_id;
 				cin.ignore();
-				exists = ValidationCheck::validateCourseId(course_id);   //validate the course ID
-				if(exists) {
-					string details_field2;
-					exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);   //check if the ID exists in the course table 
+				if(bool exists = ValidationCheck::validateCourseId(course_id)) {
+					const string course_name;
+					exists = DatabaseManager::searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);   //check if the ID exists in the course table
 					if(exists) {
-				//handling the studnets with the same course, so that the student can view his or her classmates		
+						//handling the students with the same course, so that the student can view his or her classmates
 						exists = DatabaseManager::authenticateUserInFileManagementSystem(this->getId(), course_id, "students_enroll_course_table_file.txt", 1);
 						if(exists) {
-							id = "EQUAL TO SOMETHING";
-							dbManager.searchForFirstAndSecondField("students_enroll_course_table_file.txt", id, course_id, 1);
+							const string id = "EQUAL TO SOMETHING";
+							DatabaseManager::searchForFirstAndSecondField("students_enroll_course_table_file.txt", id, course_id, 1);
 							ReadFileThatAreExtractingASingleUserDetails::readFromAFile("temp_file_one.txt", 1);	
 						} else {
 							cout<<"You don't learn from the course, so you can't view other class members."<<endl;
@@ -864,26 +291,20 @@ class Student : public User {
 		}
 	public:
 	//Making the student's enroll database when the student's enrolls into a program
-		bool makeStudentsEnrollCourseTable(string course_id) {
-			bool exists;
+		bool makeStudentsEnrollCourseTable(const string& course_id) {
 			Utility utilityTools;
-			DatabaseManager dbManager;
-			exists = ValidationCheck::validateCourseId(course_id);   
-			//Validate the course ID
-			if(exists) {
+			if (bool exists = ValidationCheck::validateCourseId(course_id)) {
 				cout<<endl;
-				string course_name;
-				exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
+				const string course_name;
+				exists = DatabaseManager::searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
 				//Check if the course ID exists in the database when the student enters the course ID in function navigate login menu
 				if(exists) {
-					ofstream outFile("students_enroll_course_table_file.txt", ios_base::app);
 					utilityTools.handlingDuplication("students_enroll_course_table_file.txt", 1);
 					//Check the student ID and course ID if they are already enrollled into a the student's enroll course table
 					if(twoFieldsMap.find(this->getId()) != twoFieldsMap.end() && twoFieldsMap[this->getId()].details_field2 == course_id) {
 						cout<<"You are already enrolled to the program "<<course_id<<endl;
 					} else {
-						ofstream outFile("students_enroll_course_table_file.txt", ios_base::app);
-						if(!outFile.is_open()) {
+						if(ofstream outFile("students_enroll_course_table_file.txt", ios_base::app); !outFile.is_open()) {
 							cerr<<"Error: Unable to open the file."<<endl;
 						} else {
 							Course program(course_id);
@@ -901,7 +322,7 @@ class Student : public User {
 				} 
 			} else {
 				cout<<"Error: the course-ID is invalid."<<endl;
-			} return true;
+			} return false;
 		} 
 };
 
@@ -909,7 +330,7 @@ class Employee {
 	public:
 	//Search for a student in the management system and the string id is the making a search algorithm
 	//After the admin Enter a student ID we are able to view if that id exists
-		void searchForUser(string username) {
+		static void searchForUser(const string& username) {
 			Utility utilityTools;
 			utilityTools.handlingDuplication("users_File.txt", 6);
 			if(userDataMap.find(username) != userDataMap.end()) {
@@ -919,9 +340,9 @@ class Employee {
 			}
 		}
 	protected:
-	/*View fuction for all the employees working in the office 
+	/*View function for all the employees working in the office 
 	will view the student's details in our management system*/
-		bool employeeView() {;
+		static bool employeeView() {;
 			Utility utilityTools;
 			int choice;
 			cout<<endl;
@@ -931,18 +352,17 @@ class Employee {
 			cout<<endl;
 			cout<<"Enter the view Option: ";
 			cin>>choice;
-			bool exists;
 			cin.ignore();
 			system("CLS");
 			cout<<endl;
 			if(choice == 1) {
 				ofstream IfFileIsNotYetMade("students_entry_details_file.txt", ios_base::app);
 				utilityTools.handlingDuplication("students_entry_details_file.txt", 2);	
-				for(auto pair : threeFieldsMap) {
+				for(auto& [fst, snd] : threeFieldsMap) {
 					cout
-					<<"USER-ID: "<<pair.first<<endl
-					<<"STUDENT_CLASSIFICATION: "<<pair.second.details_field2<<endl
-					<<"YEAR_OF_REGISTRATION: "<<pair.second.details_field3<<endl
+					<<"USER-ID: "<<fst<<endl
+					<<"STUDENT_CLASSIFICATION: "<<snd.details_field2<<endl
+					<<"YEAR_OF_REGISTRATION: "<<snd.details_field3<<endl
 					<<endl;
 				}
 				if(threeFieldsMap.empty() == 0) {
@@ -953,7 +373,7 @@ class Employee {
 						cout<<"The total number is: "<<threeFieldsMap.size()<<endl;
 					}
 				} else {
-					cout<<"The students have not yet beign registered by the registrar/admin."<<endl;
+					cout<<"The students have not yet registered by the registrar/admin."<<endl;
 				}
 			} else if(choice == 2) {
 				ofstream IfFileIsNotYetMade("students_grade_details_table_file.txt", ios_base::app);
@@ -980,41 +400,25 @@ class Employee {
 	
 }; 
 
-class Teacher: public User, public Employee {
-	private:
-	//Attribute
-		float gpa;
+class Teacher final : public User, public Employee {
 	public:
-	//Constructor
-		Teacher(string username) 
+		//Constructor
+		explicit Teacher(const string& username)
 		: User(username), 
 		Employee(){}
 	public:
-	//Handling setters and getters
-		void setGpa(float gpa) {
-			this->gpa=gpa;
-		}
-		float getGpa() {
-			return gpa;
-		}
-	public:	
-		bool readStudentsEnrolledToACourse(string course_id) {
+		bool readStudentsEnrolledToACourse(const string& course_id) {
 			ofstream IfFileIsNotYetMade("students_enroll_course_table_file.txt", ios_base::app);
-			bool exists;
-			string id;
-			string course_name;
-			Utility utilityTools;
-			DatabaseManager dbManager;
-			exists = ValidationCheck::validateCourseId(course_id);
-			//Validate the course ID
-			if(exists) {
-				exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
+			if (bool exists = ValidationCheck::validateCourseId(course_id)) {
+				const string course_name;
+				exists = DatabaseManager::searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
 				//Check if the course table has the entered course ID
 				if(exists) {
 					exists = DatabaseManager::authenticateUserInFileManagementSystem(this->getId(), course_id, "teachers_table_file.txt", 1);
 					if(exists) {
-						id = "EQUAL TO SOMETHING";
-						dbManager.searchForFirstAndSecondField("students_enroll_course_table_file.txt", id, course_id, 1);
+						const string id = "EQUAL TO SOMETHING";
+						DatabaseManager::searchForFirstAndSecondField("students_enroll_course_table_file.txt", id, course_id, 1);
+						Utility utilityTools;
 						utilityTools.handlingDuplication("temp_file_one.txt", 1);
 						if(twoFieldsMap.empty() == 1) {
 							cout<<"No student learns from your course-ID."<<endl;
@@ -1036,8 +440,7 @@ class Teacher: public User, public Employee {
 		
 	public:
 	//Overriding view function in teacher
-		bool view() override {  
-			bool exists;
+		bool view() override {
 			Utility utilityTools;
 			int choice;
 			cout<<endl;
@@ -1052,18 +455,18 @@ class Teacher: public User, public Employee {
 			system("CLS");
 			if(choice == 1) {
 				utilityTools.handlingDuplication("course_table_file.txt", 2);
-				for(auto pair : threeFieldsMap) {
+				for(auto&[fst, snd] : threeFieldsMap) {
 					cout
-					<<"COURSE-ID: "<<pair.first<<endl
-					<<"COURSE_NAME: "<<pair.second.details_field2<<endl
-					<<"COURSE_YEAR: "<<pair.second.details_field3<<endl
+					<<"COURSE-ID: "<<fst<<endl
+					<<"COURSE_NAME: "<<snd.details_field2<<endl
+					<<"COURSE_YEAR: "<<snd.details_field3<<endl
 					<<endl;
 				}
 				if(threeFieldsMap.empty() == 0) {
 					if(threeFieldsMap.size() == 1) {
 						cout<<"that is the only course provided into the management system."<<endl;
 					} else {
-						cout<<"thats all the courses provided into the management system."<<endl;
+						cout<<"that's all the courses provided into the management system."<<endl;
 						cout<<"That total is: "<<threeFieldsMap.size()<<endl;
 					}
 				} else {
@@ -1075,11 +478,11 @@ class Teacher: public User, public Employee {
 					UserDetailsUsingMap userDetails = userDataMap[this->getUsername()];
 					cout
 					<<"USERNAME: "<<this->getUsername()<<endl
-					<<"ID: "<<userDetails.id<<endl
-					<<"FIRST_NAME: "<<userDetails.first_name<<endl
-					<<"LAST_NAME: "<<userDetails.last_name<<endl
-					<<"SEX: "<<userDetails.sex<<endl
-					<<"DATE_OF_BIRTH: "<<userDetails.date_of_birth<<endl
+					<<"ID: "<<userDetails.details_field3<<endl
+					<<"FIRST_NAME: "<<userDetails.details_field4<<endl
+					<<"LAST_NAME: "<<userDetails.details_field5<<endl
+					<<"SEX: "<<userDetails.details_field6<<endl
+					<<"DATE_OF_BIRTH: "<<userDetails.details_field7<<endl
 					<<endl;
 					cout<<"That is your profile in our management system."<<endl;
 				} else {
@@ -1092,7 +495,7 @@ class Teacher: public User, public Employee {
 				cin.ignore();
 				this->readStudentsEnrolledToACourse(course_id);
 			} else if(choice == 4) {
-				this->employeeView();
+				Employee::employeeView();
 			}  else { 
 				cout<<"Error: Invalid view Option."<<endl;;
 			} return true;
@@ -1101,44 +504,40 @@ class Teacher: public User, public Employee {
 	//make the student's grade table after the exams are done with marking
 		bool makeStudentsGradeTable() {
 			ofstream outFile("students_grade_details_table_file.txt", ios_base::app);
-			string username;
-			string password;
 			string course_id;
-			string course_name;
-			string student_classification;
-			string gpa;
-			bool exists;
-			Utility utilityTools;
-			DatabaseManager dbManager;
 			cout<<"Enter course-ID of the program(s) that you teach: ";
 			cin>>course_id;
 			cin.ignore();
 			string details_field2;
-			exists = this->readStudentsEnrolledToACourse(course_id);
-			if(exists) {
-				string entered_username;
+			if (bool exists = this->readStudentsEnrolledToACourse(course_id)) {
 				//these must be together for the student, so that we could use the getter for the ID
+				string username;
 				cout<<"Enter username: ";
 				cin>>username;
 				cin.ignore();
 				exists = ValidationCheck::validateId(username);
 				if(exists) {
-					string details_field2;
-					exists = dbManager.searchForFirstAndSecondField("users_File.txt", username, password, 6);
+					const string password;
+					exists = DatabaseManager::searchForFirstAndSecondField("users_File.txt", username, password, 6);
 					if(exists) {
 						Student student(username);
 						exists = DatabaseManager::authenticateUserInFileManagementSystem(student.getId(), course_id, "students_enroll_course_table_file.txt", 1);
 						if(exists) {
+							string student_classification;
 							cout<<"Enter classification/class: ";
 							getline(cin>>ws, student_classification);
 							exists = ValidationCheck::validateStudentClassification(student_classification);
 							if(exists) {
+								Utility utilityTools;
 								utilityTools.handlingDuplication("students_entry_details_file.txt", 2);
-								if(threeFieldsMap.find(student.getId()) != threeFieldsMap.end() && threeFieldsMap[student.getId()].details_field2 == student_classification) {	
-									exists = DatabaseManager::authenticateUserInFileManagementSystem(student.getId(), course_id, "students_grade_details_table_file.txt", 3);
-									if(exists) {
+								if(threeFieldsMap.find(student.getId()) != threeFieldsMap.end() &&
+									threeFieldsMap[student.getId()].details_field2 == student_classification) {
+									if (exists == DatabaseManager::authenticateUserInFileManagementSystem
+										(student.getId(), course_id,
+										"students_grade_details_table_file.txt", 3)) {
 										cout<<"The students grade details for the ID and the course the student learns have already beign published into the students grade details file.."<<endl;
 									} else {
+										string gpa;
 										cout<<"Enter grade: ";
 										cin>>gpa;
 										cin.ignore();
@@ -1175,33 +574,21 @@ class Teacher: public User, public Employee {
 		}
 };
 
-class Admin : public User, public Employee {
+class Admin final : public User, public Employee {
 	public:
-	//Attribute
+		//Attribute
 		string student_classification;
 	public :
-	//Constructor
-		Admin(string username)
+		//Constructor
+		explicit Admin(const string& username)
 		: User(username),
 		Employee() {}
 	public: 
 		bool registration() {
-			//Handling registration fuction in admin
-			string username;
-			string password;
-			string id;
-			string first_name;
-			string last_name;
-			string sex;
-			string date_of_birth;
-			string course_id;
-			string course_name;
-			string course_year;
+			//Handling registration function in admin
 			string gpa;
-			string year_of_entry;
-			int choice;	
 			bool exists;
-			DatabaseManager dbManager;
+			int choice;
 			cout<<endl;
 			cout<<"\t/1. Register course/"<<endl;
 			cout<<"\t/2. Register teacher/"<<endl;
@@ -1209,36 +596,31 @@ class Admin : public User, public Employee {
 			cout<<endl;  
 			cout<<"Enter the choice Option: ";
 			cin>>choice;
-			Utility utilityTools;
 			cin.ignore();
 			system("CLS");
 			cout<<endl;
 			if(choice == 1) {
+				string course_id;
+				string course_name;
 				cout<<"Enter course-ID: ";
 				cin>>course_id;
 				cin.ignore();
-				exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);   
-				//Check if the course ID Entered is already registered
-				if(exists) {
+				if(exists == DatabaseManager::searchForFirstAndSecondField
+					("course_table_file.txt", course_id,
+					course_name, 2)) { //Check if the course ID exists
 					cout<<"Error: The course-ID already exists in the file."<<endl;
 				} else {
-					exists = ValidationCheck::validateCourseId(course_id);   
-					//Validate the course ID Entered
-					if(exists) {
+					if(exists == ValidationCheck::validateCourseId(course_id)) { //Validate the course ID Entered
 						cout<<"Enter course name: ";
 						cin>>course_name;
 						cin.ignore();
-						exists = ValidationCheck::validateCourseName(course_name);   
-						//Validate the course name Entered
-						if(exists) {
+						if(exists == ValidationCheck::validateCourseName(course_name)) { //Validate the course name Entered
+							string course_year;
 							cout<<"Enter course year: ";
 							cin>>course_year;
 							cin.ignore();
-							exists = ValidationCheck::validateYear(course_year);   
-							//Validate the course year Entered
-							if(exists) {
-								ofstream outFile("course_table_file.txt", ios_base::app);
-								if(!outFile.is_open()) {
+							if(exists == ValidationCheck::validateYear(course_year)) { //Validate the course year Entered
+								if(ofstream outFile("course_table_file.txt", ios_base::app); !outFile.is_open()) {
 									cerr<<"Error: File is not found."<<endl;
 								} else {
 									outFile<<course_id<<","<<course_name<<","<<course_year<<endl;
@@ -1265,142 +647,164 @@ class Admin : public User, public Employee {
 				system("CLS");
 				cout<<endl;
 				if(choice == 1) {
+					string username;
+					string password;
 					cout<<"Enter username: ";
 					cin>>username;
 					cin.ignore();
-					exists = ValidationCheck::validateUsername(username);
-					if(exists) {
-						exists = dbManager.searchForFirstAndSecondField("users_File.txt", username, password, 6);
-						if(exists) {
+					if(exists == ValidationCheck::validateUsername(username)) {
+						if(exists == DatabaseManager::searchForFirstAndSecondField
+							("users_File.txt", username,
+							password, 6)) {
 							cout<<"The username already exists in the user's database, inorder to register to new course please go to 'register to new course'."<<endl;
 						} else {
 							cout<<"Enter Default Password: ";
 							cin>>password;
 							cin.ignore();
-							exists = ValidationCheck::validatePassword(password);
-							if(exists) {
+							if(exists == ValidationCheck::validatePassword(password)) {
+								string id;
 								cout<<"Enter ID: ";
 								cin>>id;
 								cin.ignore();
-								string details_field2;
-								exists = ValidationCheck::validateId(id);
-								if(exists) {
-									course_id = "EQUAL TO SOMETHING";
-									exists = dbManager.searchForFirstAndSecondField("teachers_table_file.txt", id, course_id, 1);
-									if(exists) {
+								if(exists == ValidationCheck::validateId(id)) {
+									string course_id = "EQUAL TO SOMETHING";
+									if(exists == DatabaseManager::searchForFirstAndSecondField
+										("teachers_table_file.txt", id,
+										course_id, 1)) {
 										cout<<"The teachers-ID belongs to another teacher in the teachers table file."<<endl;
 									} else {
+										string first_name;
 										cout<<"Enter First Name: ";
 										cin>>first_name;
 										cin.ignore();
-										exists = ValidationCheck::validateFirstName(first_name);
-										if(exists) {
+										if(exists == ValidationCheck::validateFirstName(first_name)) {
+											string last_name;
 											cout<<"Enter Last Name: ";
 											cin>>last_name;
 											cin.ignore();
-											exists = ValidationCheck::validateLastName(last_name);
-											if(exists) {	
+											if(exists = ValidationCheck::validateLastName(last_name)) {
+												string sex;
 												cout<<"Enter gender: ";
 												cin>>sex;
 												cin.ignore();
-												exists = ValidationCheck::validateGender(sex);
-												if(exists) {
+												if(exists == ValidationCheck::validateGender(sex)) {
+													string date_of_birth;
 													cout<<"Enter Date-Of-Birth: ";
 													cin>>date_of_birth;
 													cin.ignore();
-													exists = ValidationCheck::validateDOB(date_of_birth);
-													if(exists) {	
-													cout<<endl;
-													utilityTools.handlingDuplication("course_table_file.txt", 2);
-													for(auto pair : threeFieldsMap) {
-														cout
-														<<"COURSE-ID: "<<pair.first<<endl
-														<<"COURSE_NAME: "<<pair.second.details_field2<<endl
-														<<"COURSE_YEAR: "<<pair.second.details_field3<<endl
-														<<endl;
-													}
-													cout<<endl;
-													cout<<"Enter course-ID: ";
-													cin>>course_id;
-													cin.ignore();
-													exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
-													//if condition checking the entered course-ID is existing in the course table file 
-													if(exists) {
-														string temp_id = "EQUAL TO SOMETHING";
-														exists = dbManager.searchForFirstAndSecondField("teachers_table_file.txt", temp_id, course_id, 1);
-														if(exists) { //IF THE 
-															cout<<"You can't register these teacher to the same course as an existing teacher."<<endl;
-														} else {
-															ofstream outFile("teachers_table_file.txt", ios_base::app);
-															if(!outFile.is_open()) {
-																cerr<<"Error: Unable to open the users file, inorder save the new entry details into the users fileDatabaseManager"<<endl;
+													if(exists == ValidationCheck::validateDOB(date_of_birth)) {
+														cout<<endl;
+														Utility utilityTools;
+														utilityTools.handlingDuplication
+														("course_table_file.txt", 2);
+														for(auto&[fst, snd] :
+														threeFieldsMap) {
+															cout
+															<<"COURSE-ID: "<<fst<<endl
+															<<"COURSE_NAME: "<<snd.details_field2<<endl
+															<<"COURSE_YEAR: "<<snd.details_field3<<endl
+															<<endl;
+														}
+														cout<<endl;
+														cout<<"Enter course-ID: ";
+														cin>>course_id;
+														cin.ignore();
+														if(string course_name;
+															exists == DatabaseManager::searchForFirstAndSecondField
+															("course_table_file.txt",
+																course_id,
+															course_name, 2)) {
+															if(string temporarily_id = "EQUAL TO SOMETHING";
+																exists == DatabaseManager::searchForFirstAndSecondField
+																("teachers_table_file.txt",
+																	temporarily_id,
+																course_id, 1)) {
+																cout<<"You can't register these teacher "
+																<<"to the same course as an existing teacher."<<endl;
 															} else {
-																DatabaseManager::registerUser("users_File.txt", username, password, id, first_name, last_name, sex, date_of_birth);
-																outFile<<id<<","<<course_id<<endl;
-																cout<<"Registration of the new teacher in both user's database and teachers table file completed successfully."<<endl;
+																if(ofstream outFile("teachers_table_file.txt",
+																	ios_base::app); !outFile.is_open()) {
+																	cerr
+																	<<"Error: Unable to open the teachers table file."
+																	<<endl;
+																} else {
+																	DatabaseManager::registerUser
+																	("users_File.txt", username,
+																	password, id, first_name,
+																	last_name, sex, date_of_birth);
+																	outFile<<id<<","<<course_id<<endl;
+																	cout
+																	<<"Registration of the new teacher in both user's "
+																	<<"database and teachers table file completed "
+																	<<"successfully."
+																	<<endl;
+																}
 															}
+														} else {
+															cout
+															<<"The Course-ID doesn't exists in the course table."
+															<<endl;
 														}
 													} else {
-														cout<<"The Course-ID does't exists in the course file table."<<endl;
+														cout<<"Error: The date of birth is invalid."<<endl;
 													}
 												} else {
-													cout<<"Error: The date of birth is invalid."<<endl;
-												}	
+													cout<<"Error: The gender is invalid."<<endl;
+												}
 											} else {
-												cout<<"Error: The gender is invalid."<<endl;
+												cout<<"Error: The Last Name is invalid."<<endl;
 											}
 										} else {
-											cout<<"Error: The Last Name is invalid."<<endl;
-										}	
-									} else {
-										cout<<"Error: The First Name is invalid."<<endl;
+											cout<<"Error: The First Name is invalid."<<endl;
+										}
 									}
-								} 
-							} else {
-								cout<<"Error: The Identification Number is invalid."<<endl;
+								} else {
+									cout<<"Error: The Identification Number is invalid."<<endl;
+								}
+							}  else {
+								cout<<"Error: The Password is invalid."<<endl;
 							}
-						}  else {
-							cout<<"Error: The Password is invalid."<<endl;
 						}
+					} else {
+						cout<<"Error:The Username is invalid."<<endl;
 					}
-				} else {
-					cout<<"Error:The Username is invalid."<<endl;
-				}
 			} else if(choice == 2) {
 				cout<<endl;
+				Utility utilityTools;
 				utilityTools.handlingDuplication("course_table_file.txt", 2);
-				for(auto pair : threeFieldsMap) {
+				for(auto&[fst, snd] : threeFieldsMap) {
 					cout
-					<<"COURSE-ID: "<<pair.first<<endl
-					<<"COURSE_NAME: "<<pair.second.details_field2<<endl
-					<<"COURSE_YEAR: "<<pair.second.details_field3<<endl
+					<<"ID: "<<fst<<endl
+					<<"COURSE_NAME: "<<snd.details_field2<<endl
+					<<"COURSE_YEAR: "<<snd.details_field3<<endl
 					<<endl;
 				}
 				cout<<endl;
 				//displaying the course table file so that would have a chance of viewing details while registration
+				string username;
 				cout<<"Enter username: ";
 				cin>>username;
 				cin.ignore();
-				string details_field2;
-				exists = ValidationCheck::validateUsername(username);
-				if(exists) {
-					exists = dbManager.searchForFirstAndSecondField("users_File.txt", username, password, 6);
-					if(exists) {
+				if(exists == ValidationCheck::validateUsername(username)) {
+					string password;
+					if(exists == DatabaseManager::searchForFirstAndSecondField
+					("users_File.txt", username,
+					password, 6)) {
 						Teacher teacher(username);
+						string course_id;
 						cout<<"Enter course-ID: ";
 						cin>>course_id;
 						cin.ignore();
-						string details_field2;
-						exists = ValidationCheck::validateCourseId(course_id);
+						if(exists = ValidationCheck::validateCourseId(course_id);
 							if(exists) {
-								exists = dbManager.searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2); 
+								exists = DatabaseManager::searchForFirstAndSecondField("course_table_file.txt", course_id, course_name, 2);
 								if(exists) {
 									exists = DatabaseManager::authenticateUserInFileManagementSystem(teacher.getId(), course_id, "teachers_table_file.txt", 1);
 									if(exists) {
 										cout<<"the teacher is already registered to that course in our management system."<<endl;
 									} else {
 										id = "EQUAL TO SOMETHING";
-										exists = dbManager.searchForFirstAndSecondField("teachers_table_file.txt", id, course_id, 1);
+										exists = DatabaseManager::searchForFirstAndSecondField("teachers_table_file.txt", id, course_id, 1);
 										if(exists) {
 											cout<<"You can't register these teacher to the same course as an existing teacher."<<endl;
 										} else {
@@ -1408,7 +812,6 @@ class Admin : public User, public Employee {
 											if(!outFile.is_open()) {
 												cerr<<"Error: Unable to open the teachers file, inorder to save the new entry details into the teachers details table."<<endl;
 											} else {
-												Teacher teacher(username);
 												outFile<<teacher.getId()<<","<<course_id<<endl;
 												cout<<"Registration of existing teacher to the new course in the teachers table file is completed successfully."<<endl;
 											}	
@@ -1433,23 +836,20 @@ class Admin : public User, public Employee {
 				cout<<"Enter username: ";
 				cin>>username;
 				cin.ignore();
-				exists = ValidationCheck::validateUsername(username);
-				if(exists) {
-					exists = dbManager.searchForFirstAndSecondField("users_File.txt", username, password, 6);
-					if(exists) {
+				if (exists == ValidationCheck::validateUsername(username)) {
+					if (exists == DatabaseManager::searchForFirstAndSecondField
+						("users_File.txt", username, password, 6)) {
 						cout<<"The username in the user's file already is registered into the school management system."<<endl;
 					} else {
 						cout<<"Enter Default Password: ";
 						cin>>password;
 						cin.ignore();
-						exists = ValidationCheck::validatePassword(password);
-						if(exists) {
+						if (exists == ValidationCheck::validatePassword(password)) {
 							cout<<"Enter ID: ";
 							cin>>id;
 							cin.ignore();
-							exists = ValidationCheck::validateId(id);
-							if(exists) {
-								exists = dbManager.searchForFirstAndSecondField("students_entry_details_file.txt", id, student_classification, 2);
+							if (exists == ValidationCheck::validateId(id)) {
+								exists = DatabaseManager::searchForFirstAndSecondField("students_entry_details_file.txt", id, student_classification, 2);
 								if(exists) {
 									cout<<"The students-ID belongs to another student in the student entry details file."<<endl;
 								} else {
@@ -1473,6 +873,7 @@ class Admin : public User, public Employee {
 													cin.ignore();
 													exists = ValidationCheck::validateDOB(date_of_birth);
 													if(exists) {
+														string year_of_entry;
 														cout<<"Enter the year of entry: ";
 														cin>>year_of_entry;
 														cin.ignore();
@@ -1628,7 +1029,7 @@ class Admin : public User, public Employee {
 		}
 	public:
 
-		bool editDetails(string username) override {
+		bool editDetails(string& username) override {
 			//Overriding edit fuction in the admin 
 			string password;
 			string new_first_name;
@@ -1717,7 +1118,7 @@ class Admin : public User, public Employee {
 };
 
 //Function handling the users allocation the aim is after logged in by the system during runtime they will have their own menu.
-bool allocateUserLoginClassification(string username) {
+bool allocateUserLoginClassification(const string& username) {
 	string course_id;
 	bool exists;
 	int choice;
@@ -1758,6 +1159,7 @@ bool allocateUserLoginClassification(string username) {
 				Student *ptr = &student;
 				ptr->view();
 			} else if(choice == 3) {
+				string ptr* = student.getUsername();
 				student.editDetails(student.getUsername());
 			} else {
 				cout<<"Error: Invalid choice Option."<<endl;
@@ -1816,13 +1218,13 @@ bool allocateUserLoginClassification(string username) {
 
 //Fuction handling the login in our management system
 int handlingLogin() {
+	int num = 1;
 	const char* FileName = "temp_file_two.txt";
 	if(remove(FileName) == 0) {
 	//	cout<<"the temp_file_two has successfully beign deleted."<<endl;
 	} else {
 	//	perror("Error: the temp_file_two failed to delete from our files.");
 	}
-	
 	const char* otherFileName = "temp_file_one.txt";
 	if(remove(otherFileName) == 0) {
 	//	cout<<"the temp_file_one has successfully biegn deleted."<<endl;
@@ -1832,37 +1234,39 @@ int handlingLogin() {
 	string username;
 	string password;
 	bool exists;
-	cout<<"\t\t\t\t\t\t\t\t\tHIE WELCOME TO THE LOGIN PAGE"<<endl;
-	cout<<"To login"<<endl;
-	cout<<"Please Enter your username: ";
-	cin>>username;
-	cin.ignore();
-	exists = ValidationCheck::validateUsername(username);
-	if(exists) {
-		cout<<"Please Enter your password: ";	
-		cin>>password;
+	do {
+		cout<<"\t\t\t\t\t\t\t\t\tHIE WELCOME TO THE LOGIN PAGE"<<endl;
+		cout<<"To login"<<endl;
+		cout<<"Please Enter your username: ";
+		cin>>username;
 		cin.ignore();
-		system("CLS");
-		DatabaseManager dbManager;
-		exists = ValidationCheck::validatePassword(password);
+		exists = ValidationCheck::validateUsername(username);
 		if(exists) {
-			bool check;
-			check = dbManager.authenticateUserInFileManagementSystem(username, password, "users_File.txt", 6);
-			if(check) {
-				//if logged in these fuction will handle their menu on regards to what their logged in as
-				User user(username);
-				cout<<"HIE USER "<<user.getId()<<" BY THE NAMES OF: "<<user.first_name<<" "<<user.last_name<<" TO THE FREE LEARNINGS MANAGEMENT SYSTEM"<<endl; 
-				allocateUserLoginClassification(username);
+			cout<<"Please Enter your password: ";
+			cin>>password;
+			cin.ignore();
+			system("CLS");
+			DatabaseManager dbManager;
+			exists = ValidationCheck::validatePassword(password);
+			if(exists) {
+				bool check;
+				check = dbManager.authenticateUserInFileManagementSystem(username, password, "users_File.txt", 6);
+				if(check) {
+					//if logged in these fuction will handle their menu on regards to what their logged in as
+					User user(username);
+					cout<<"HIE USER "<<user.getId()<<" BY THE NAMES OF: "<<user.first_name<<" "<<user.last_name<<" TO THE FREE LEARNINGS MANAGEMENT SYSTEM"<<endl;
+					allocateUserLoginClassification(username);
+				} else {
+					//User failed to authenticate the account
+					cout<<"Our records don't have these credentials stored in the file."<<endl;
+				}
 			} else {
-				//User failed to authenticate the account			
-				cout<<"Our records don't have these credentials stored in the file."<<endl;
+				cout<<"Error: the password is invalid."<<endl;
 			}
 		} else {
-			cout<<"Error: the password is invalid."<<endl;
-		}
-	} else {
-		cout<<"Error: the username is invalid."<<endl;
-	} return 0;
+			cout<<"Error: the username is invalid."<<endl;
+		} return 0;
+	} while (num > 0);
 }
 
 //int main() function will handle a case when the files are not yet made on a server: else take them to the logging page 
