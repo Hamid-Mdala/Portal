@@ -5,12 +5,13 @@ class ValidationCheck {
 	//these class ValidationCheck handles the data consistency when the user enters input im my management system
 	public:
 		static bool validateUsername(const string& username) {
-			if(username.length() > 9 && username.length() <= 15) {
+			if (username.length() > 9 && username.length() <= 15) {
 				return true;
 			} else {
 				return false;
 			}
 		}
+
 	public:
 		static bool validateId(const string& id) {
 			if(id.length() > 9 && id.length() <= 15) {
