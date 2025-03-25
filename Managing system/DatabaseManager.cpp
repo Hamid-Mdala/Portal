@@ -1,53 +1,27 @@
-#include<string>
-#include<map>
-#include<fstream>
+
 #include<sstream>
+#include<fstream>
 #include<iostream>
+#include "DatabaseManager.h"
+
+map<const string, UserDetailsUsingMap> userDataMap;
+map<const string, DetailsForOneCommaInLineUsingMap> twoFieldsMap;
+map<const string, DetailsForTwoCommaInLineUsingMap> threeFieldsMap;
+map<const string, DetailsForThreeCommaInLineUsingMap> fourFieldsMap;
 using namespace std;
 
-struct UserDetailsUsingMap {					//is used for the user's details file
-	// the key is string username;
-	string details_field2;
-	string details_field3;
-	string details_field4;
-	string details_field5;
-	string details_field6;
-	string details_field7;
-}; map<const string, UserDetailsUsingMap> userDataMap;
 
-struct DetailsForOneCommaInLineUsingMap { //is used for the students enroll course file, and the teachers table file
-	// the key is string details_field1;
-	string details_field2;
-}; map<const string, DetailsForOneCommaInLineUsingMap> twoFieldsMap;
-
-struct DetailsForTwoCommaInLineUsingMap { //is used for the students entry form file, and the course table file
-	// the key is string details_field1;
-	string details_field2;
-	string details_field3;
-}; map<const string, DetailsForTwoCommaInLineUsingMap> threeFieldsMap;
-
-struct DetailsForThreeCommaInLineUsingMap { //is used for the students grade file
-	// the key is string details_field1
-	string details_field2;
-	string details_field3;
-	string details_field4;
-}; map<const string, DetailsForThreeCommaInLineUsingMap> fourFieldsMap;
-
-class Utility final {
-	public:
 		string single_line_from_temp;
 		char del = ',';
-	private:
 		int counting_fields = 0;
-	public:
-		void setCount(const int count) {
+		void Utility::setCount(const int count) {
 			counting_fields = count;
 		}
-		 int getCountedFields() const {
+		int Utility::getCountedFields() {
+			//[[nodiscard]] is used to tell the compiler to warn the user if the return value is not used
 			return counting_fields;
 		}
-	public:
-		bool countCommasInLine(const string& filename, int num_of_fields_on_line) {
+		bool Utility::countCommasInLine(const string& filename) {
 			ifstream inFile(filename);
 			ofstream outFile("temporarily_table.txt");
 			//algorithm handling if the file can't/can open
@@ -65,7 +39,8 @@ class Utility final {
 				}
 				//algorithm opening and reading the extracted line, so that we could count the commas/
 				//fields in the extracted single line from the temporarily file
-				if(ifstream tempFile("temporarily_table.txt"); !tempFile.is_open()) {
+				ifstream tempFile("temporarily_table.txt");
+				if(!tempFile.is_open()) {
 					cerr<<"Error: Unable to open the temporarily file."<<endl;
 				} else {
 					string stored_one_line;
@@ -82,15 +57,16 @@ class Utility final {
 					//end of the algorithm counting the comma in the extracted single line
 				} return true;
 			}
-	public:
-		bool handlingDuplication(const string& filename, int num_of_fields_in_line) {
+		bool Utility2::handlingDuplication(const string& filename, int num_of_fields_in_line) {
 			//algorithm calling the count fields in file, so that we could load different files with different
 			//fields in the map data structure
+			Utility utilityTools;
 			bool exists;
-			exists = this->countCommasInLine(filename, num_of_fields_in_line);
+			exists = utilityTools.countCommasInLine(filename);
 			if(exists) {
-				if(this->getCountedFields() == num_of_fields_in_line) {
-					if(ifstream inFile(filename); !inFile.is_open()) {
+				if(utilityTools.getCountedFields() == num_of_fields_in_line) {
+					ifstream inFile(filename);
+					if(!inFile.is_open()) {
 						cerr<<"Error: unable to open the file."<<endl;
 					} else {
 						//below are if conditions used to handle the number of counted comma in the file if
@@ -167,10 +143,7 @@ class Utility final {
 			} return true;
 		}
 
-};
 
-class DatabaseManager {
-	public:
 	/*
 	I KNOW I DIDN'T USE THE CONFIG, BUT IT COULD BE USED WHEN CONFIGURING IF THE FILE IS ABLE TO OPEN OR NOT
 		static bool configFile(string filename) {
@@ -181,17 +154,16 @@ class DatabaseManager {
 			} return true;
 		}
 	*/
-	public:
-	static bool authenticateUserInFileManagementSystem
-	(const string& details_field1, const string& details_of_other_fields,
-	const string& filename, int num_of_fields_on_line) {
+	bool DatabaseManager::authenticateUserInFileManagementSystem
+	(const string& details_field1,const string& details_of_other_fields,
+	const string& filename,int num_of_fields_on_line) {
 		//algorithm used while checking or even authenticating two details in files
 		Utility utilityTools;
-		utilityTools.countCommasInLine(filename, num_of_fields_on_line);
+		utilityTools.countCommasInLine(filename);
 		if(utilityTools.getCountedFields() == num_of_fields_on_line){
 			//below are if conditions used to handle the number of counted comma in file
 			if(num_of_fields_on_line == 6) {
-				utilityTools.handlingDuplication(filename, num_of_fields_on_line);
+				Utility2::handlingDuplication(filename, num_of_fields_on_line);
 				for(auto pair : userDataMap) {
 					//will search through the map until the end of the map
 					if(userDataMap.find(details_field1) != userDataMap.end() &&
@@ -225,7 +197,7 @@ class DatabaseManager {
 					}
 				}
 			} else if(num_of_fields_on_line == 3) {
-				utilityTools.handlingDuplication(filename, num_of_fields_on_line);
+				Utility2::handlingDuplication(filename, num_of_fields_on_line);
 				for(auto pair : fourFieldsMap) {
 					//will search through the map until the end of the map
 					if(fourFieldsMap.find(details_field1) != fourFieldsMap.end() &&
@@ -256,11 +228,12 @@ class DatabaseManager {
 			} return false;
 		} return false;
 	}
-	public:
-		static void registerUser(const string& filename, const string& username, const string& password,
-		const string& id, const string& first_name, const string& last_name, const string& sex,
-		const string& date_of_birth) {
-			if(ofstream outFile(filename, ios_base::app); !outFile.is_open()) {
+		void DatabaseManager::registerUser
+		(const string& filename,const string& username,
+		const string& password,const string& id,const string& first_name,
+		const string& last_name, const string& sex,const string& date_of_birth) {
+			ofstream outFile(filename, ios_base::app);
+			if(!outFile.is_open()) {
 				cerr<<"Error: Unable to open the user database inorder to register the user."<<endl;
 			} else {
 				outFile
@@ -270,35 +243,35 @@ class DatabaseManager {
 				//registration of any user in the user database system
 			}
 		}
-	public:
-		static bool deleteFileName() {
+		bool DatabaseManager::deleteFileName() {
 			//Delete function used when they edit their details
-			if(const auto FileName = "users_File.txt"; remove(FileName) == 0) {
+			const char* FileName = "users_File.txt";
+			if( remove(FileName) == 0) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-	public:
-		static bool renameFileName() {
+		bool DatabaseManager::renameFileName() {
 			//Rename function used when they edit details
-			const auto OldFile = "temporarily_edit_table.txt";
-			if(const auto NewFile = "users_File.txt"; rename(OldFile, NewFile) == 0) {
+			const char* NewFile = "users_File.txt";
+			const char* OldFile = "temporarily_edit_table.txt";
+			if(rename(OldFile, NewFile) == 0) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-	public:
-		static bool searchForFirstAndSecondField(const string& filename, const string& details_field1,
-		const string& details_of_other_fields, int num_of_fields_on_line) {
+		bool DatabaseManager::searchForFirstAndSecondField
+		(const string& filename,const string& details_field1,
+		const string& details_of_other_fields,int num_of_fields_on_line) {
 			//algorithm used to verify the first field or the second field in the file
 			//will help the one-to-many relationship inside the teacher when a teacher is being registered to course
 			//one to many like: only one course taught by one teacher but a teacher could teach as many courses,
 			//so another teacher can't register to a course that is existing/taught by a teacher
 			ofstream isNotYetMade(filename, ios_base::app); //when the filename is not yet made open it in append
 			Utility utilityTools;
-			utilityTools.countCommasInLine(filename, num_of_fields_on_line);
+			utilityTools.countCommasInLine(filename);
 			if(utilityTools.getCountedFields() == num_of_fields_on_line) {
 				//if conditions used to handle the number of counted comma in the file if the above is condition is true
 				//these if condition will verify if fields one or field2 two is existing in their appropriate fields.
@@ -306,7 +279,8 @@ class DatabaseManager {
 					ofstream tempFileOne("temp_file_one.txt");
 					ofstream tempFileTwo("temp_file_two.txt");
 					ofstream editFile("temporarily_edit_table.txt");
-					if(ifstream inFile(filename); !inFile.is_open()) {
+					ifstream inFile(filename);
+					if(!inFile.is_open()) {
 						cerr<<"Error: Unable to open the file."<<endl;
 					} else {
 						string assume1;
@@ -344,14 +318,16 @@ class DatabaseManager {
 					ofstream editFile("temporarily_edit_table.txt");
 					//PLEASE NOTE: hence the temporarily_table and temporarily_table2.0 has to be bonded together,
 					//so that the view function for the grades works.
-					if(ifstream inFile(filename); !inFile.is_open()) {
+					ifstream inFile(filename);
+					if( !inFile.is_open()) {
 						cerr<<"Error: Unable to open file"<<endl;
 					} else {
 						string assume;
 						string line;
 						string first_field;
 						while(getline(inFile, line)) {
-							if(size_t commaPos = line.find(utilityTools.del); commaPos != string::npos) {
+							size_t commaPos = line.find(utilityTools.del);
+							if(commaPos != string::npos) {
 								first_field = line.substr(0, commaPos);
 							}
 							if(first_field == details_field1) {
@@ -390,20 +366,18 @@ class DatabaseManager {
 				} return false;
 			} return true;
 		}
-};
 
 
-class ReadFileThatAreExtractingASingleUserDetails {
-	public:
-		static bool readFromAFile(const string& filename, const int num_of_fields_in_line) {
+		bool ReadFileThatAreExtractingASingleUserDetails::readFromAFile(const string& filename, const int num_of_fields_in_line) {
 			/*algorithm reading from files details that the map can't handle reading because of
 			duplication/overwritting in the map, so I used an
 			array algorithm method used to view details in those files*/
 			Utility utilityConfig;
-			utilityConfig.countCommasInLine(filename, num_of_fields_in_line);
+			utilityConfig.countCommasInLine(filename);
 			//IF empty then not equal to one
 			if(utilityConfig.getCountedFields() == num_of_fields_in_line) {
-				if(ifstream inFile(filename); !inFile.is_open()) {
+				ifstream inFile(filename);
+				if(!inFile.is_open()) {
 					cerr<<"Error: Unable to open the file."<<endl;
 				} else {
 					string line;
@@ -515,4 +489,3 @@ class ReadFileThatAreExtractingASingleUserDetails {
 				} return false;
 			} return true;
 		}
-};
