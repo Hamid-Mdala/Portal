@@ -1,2 +1,2 @@
-# Portol
-The project i made at computer clinic, while i was learning object orientied programming.
+# Portal
+Uses c++ skills, tools & concepts the desktop app handles details for students and teachers in a school criteria.
