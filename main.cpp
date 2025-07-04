@@ -14,29 +14,32 @@ bool checkLogin() {
 		std::cout << "Credentials are not found in our records." << "\n";
 		return false;
 	}
-	return true;
+	return true;}
 }
 int main() {
+	DataTypes data;
+	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+	if(!dbManager.connect()) {
+		return 1; // Exit if connection fails
+	}
 	bool exists;
-	struct DataTypes data;
-	std::string queryFile = "Query.txt";
+	// struct DataTypes data;
 	std::cout << "Welcome to Computer Clinic Management Portal" << "\n";
-	if (std::filesystem::exists("Query.txt")) {
+	do {
 		do {
-			std::cout << "To log in" << "\n";
-			do {
-				std::cout << "Enter your username: ";
-				std::cin >> data.username;
-				exists = ValidationCheck::validateUsername(data.username);
-			} while (!exists);
-			do {
+			std::cout << "Enter your username: ";
+			std::cin >> data.username;
+			exists = ValidationCheck::validateUsername(data.username);
+
+		} while (!exists);
+		do {
 				std::cout << "Enter your password: ";
 				std::cin >> data.password;
 				exists = ValidationCheck::validatePassword(data.password);
 			} while (!exists);
 		}
-		while(!checkLogin());
-	} else {
+		while(!dbManager.authenticateUser(data.username, data.password));
+
 		do {
 			std::cout << "Enter your username: " << "\n";
 			std::cin >> data.username;
@@ -83,6 +86,6 @@ int main() {
 		//           }
 		// 	system("CLS");
 		// }
-	}
+
 	return 0;
 }
