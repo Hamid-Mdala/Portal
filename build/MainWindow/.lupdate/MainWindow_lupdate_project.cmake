@@ -1,0 +1,11 @@
+set(lupdate_project_file "/home/hamidmdala/Desktop/CLionProjects/Portal/MainWindow/CMakeLists.txt")
+set(lupdate_translations "/home/hamidmdala/Desktop/CLionProjects/Portal/MainWindow/MainWindow_en_US.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "/home/hamidmdala/Desktop/CLionProjects/Portal/MainWindow")
+set(lupdate_subproject1_include_paths "/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen/include;/usr/include/qt6/QtCore;/usr/include/qt6;/usr/lib64/qt6/mkspecs/linux-g++;/usr/include/qt6;/usr/include/qt6/QtWidgets;/usr/include/qt6;/usr/include/qt6/QtGui;/usr/include/qt6;/usr/include;/usr/include;/usr/include;/usr/include")
+set(lupdate_subproject1_sources "/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen/mocs_compilation.cpp;main.cpp;MainWindow.cpp;MainWindow.h;MainWindow.ui;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/.qt/rcc/MainWindow_translations.qrc;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_en_US.qm;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/.qt/rcc/qrc_MainWindow_translations.cpp;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen/include/ui_MainWindow.h;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen/timestamp;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_en_US.qm.rule;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/.qt/rcc/qrc_MainWindow_translations.cpp.rule;/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "/home/hamidmdala/Desktop/CLionProjects/Portal/build/MainWindow/MainWindow_autogen")

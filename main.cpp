@@ -6,16 +6,16 @@ struct DataTypes {
 	std::string password;
 	std::string first_name;
 	std::string last_name;
-	std::string gender;
+	std::string category;
 	int day, month, year;
 };
-bool checkLogin() {
-	if (!login::handlingLogin()) {
-		std::cout << "Credentials are not found in our records." << "\n";
-		return false;
-	}
-	return true;}
-}
+// bool checkLogin() {
+// 	if (!login::handlingLogin()) {
+// 		std::cout << "Credentials are not found in our records." << "\n";
+// 		return false;
+// 	}
+// 	return true;
+// }
 int main() {
 	DataTypes data;
 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
@@ -24,22 +24,28 @@ int main() {
 	}
 	bool exists;
 	// struct DataTypes data;
+	char option;
 	std::cout << "Welcome to Computer Clinic Management Portal" << "\n";
-	do {
+	std::cout << "Do you already have an account?yes for '(Y or y)' OR no for '(N or n)': " << "\n";
+	std::cin >> option;
+	if (option == 'Y' || option == 'y') {
 		do {
-			std::cout << "Enter your username: ";
-			std::cin >> data.username;
-			exists = ValidationCheck::validateUsername(data.username);
+			do {
+				std::cout << "Enter your username: ";
+				std::cin >> data.username;
+				exists = ValidationCheck::validateUsername(data.username);
 
-		} while (!exists);
-		do {
+			} while (!exists);
+			exists = dbManager.searchUser(data.username);
+			do {
 				std::cout << "Enter your password: ";
 				std::cin >> data.password;
 				exists = ValidationCheck::validatePassword(data.password);
 			} while (!exists);
-		}
-		while(!dbManager.authenticateUser(data.username, data.password));
 
+		} while(!dbManager.authenticateUser(data.username, data.password));
+
+	} else {
 		do {
 			std::cout << "Enter your username: " << "\n";
 			std::cin >> data.username;
@@ -61,20 +67,20 @@ int main() {
 			exists = ValidationCheck::validateLastName(data.last_name);
 		} while (!exists);
 		do {
-			std::cout << "=======================";
-			std::cout << "# Male" << "\n";
-			std::cout << "# Female" << "\n";
-			std::cout << "======================";
-
-			std::cout << "Enter your gender (Female or Male): " << "\n";
-			std::cin >> data.gender;
-			exists = ValidationCheck::validateGender(data.gender);
+			std::cout << "Who are you signing up as \n Are you either 'student, teacher or admin'"
+			std::cout << "Enter your category: " << "\n";
+			std::cin >> data.category;
+			exists = ValidationCheck::validateCategory(data.category);
 		} while (!exists);
 		do {
 			std::cout << "Enter your Date Of Birth (DD MM YYYY): " << "\n";
 			std::cin >> data.day >> data.month >> data.year;
 			exists = ValidationCheck::validateDOB(data.day, data.month, data.year);
 		} while (!exists);
+	}
+
+
+
 
 		// while (true) {
 		// 	ofstream outFile("temp_file_one.txt");

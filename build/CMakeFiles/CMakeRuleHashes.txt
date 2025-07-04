@@ -1,0 +1,9 @@
+# Hashes of file build rules.
+ddbb6aed7f82b59b234cb08302ccdeb1 CMakeFiles/portal_autogen
+4155c65de010a4adb15fa7675bc949f0 MainWindow/.qt/rcc/qrc_MainWindow_translations.cpp
+bba82dea193c2790676dfc87eb5abf4e MainWindow/CMakeFiles/MainWindow_autogen
+bba82dea193c2790676dfc87eb5abf4e MainWindow/CMakeFiles/MainWindow_lrelease
+6a4e73ca747eeeb83a53c7f6ddd97a73 MainWindow/CMakeFiles/MainWindow_lupdate
+6d27b7e3ff082ca53fee1487cc408eb6 MainWindow/MainWindow_autogen/timestamp
+615c77076637f20838bdb6b0f0ff7d61 MainWindow/MainWindow_en_US.qm
+1b79ca1392817f6ab66821397f2c46fa portal_autogen/timestamp

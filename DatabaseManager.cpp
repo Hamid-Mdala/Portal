@@ -1,5 +1,4 @@
 #include "DatabaseManager.h"
-#include <mariadb/conncpp.hpp>
 #include <iostream>
 // map<const string, UserDetailsUsingMap> userDataMap;
 // map<const string, DetailsForOneCommaInLineUsingMap> twoFieldsMap;
@@ -375,7 +374,7 @@ bool DatabaseManager::connect() {
 		sql::Properties properties({{"user",user_ }, {"password", password_}});
 		//store connection as a member if needed
 		conn_ = std::unique_ptr<sql::Connection>(driver->connect(url, properties));
-		std::cout << "connected to the MariaDB" << "\n";
+		//std::cout << "connected to the MariaDB" << "\n";
 		return true;
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error: " << e.what() << "\n";
@@ -388,7 +387,7 @@ bool DatabaseManager::createUser(const std::string &username, const std::string 
 	const std::string &first_name, const std::string &last_name,
 	const std::string &category, const std::string &dob)
 {
-
+	
 }
 
 bool DatabaseManager::authenticateUser(const std::string& username, const std::string& password) {
@@ -402,9 +401,26 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 		std::cout << "Login successful" << "\n";
 		return true;
 	}
+	int count = 0;
 	std::cout << "Invalid credentials, please try again." << "\n";
+	++count; if (count == 3) return true;   //this will break the traversal in the while loop
+
 	return false;
 }
+bool DatabaseManager::searchUser(const std::string &username) {
+	if (!conn_) return false;
+	//make a statement
+	std::unique_ptr<sql::PreparedStatement> stmt(
+	conn_->prepareStatement("SELECT COUNT(*) FROM Users WHERE username =?"));
+	stmt->setString(1, username);
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next()) {
+		return true;
+	}
+
+	return false;
+}
+
 //
 //
 // 		bool ReadFileThatAreExtractingASingleUserDetails::readFromAFile(const string& filename, const int num_of_fields_in_line) {

@@ -15,8 +15,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # Manual MariaDB configuration (since find_package failed)
-set(MARIADB_INCLUDE_DIR "/usr/include/mariadb")
-set(MARIADB_LIBRARY "/usr/lib64/mariadb/libmariadb.so")
+include_directories(/usr/include/mariadb)          # Headers
+link_directories(/usr/lib64)                        # Library path
 
 add_executable(portal
         main.cpp
@@ -30,18 +30,13 @@ add_executable(portal
         HandlingValidationCheck.cpp
 )
 
-# Include directories
-target_include_directories(portal PRIVATE
-        ${MARIADB_INCLUDE_DIR}
-)
-
 # Link libraries
 target_link_libraries(portal PRIVATE
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
-        ${MARIADB_LIBRARY}
-)
+        mariadbcpp
+)   # Link libmariadbcpp.so
 
 # Additional linker flags for MariaDB
 target_link_options(portal PRIVATE
