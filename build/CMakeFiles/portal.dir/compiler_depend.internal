@@ -1098,6 +1098,7 @@ portal
  /usr/lib64/crtn.o
  /usr/lib64/libc.so
  /usr/lib64/libm.so
+ /usr/lib64/libmariadbcpp.so
  /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o
  /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o
  /usr/lib/gcc/x86_64-redhat-linux/15/libgcc.a
@@ -1133,7 +1134,7 @@ portal
  /usr/lib64/libicui18n.so.76
  /usr/lib64/libicuuc.so.76
  /usr/lib64/liblzma.so.5
- /usr/lib64/libmariadb.so
+ /usr/lib64/libmariadb.so.3
  /usr/lib64/libpcre2-16.so.0
  /usr/lib64/libpcre2-8.so.0
  /usr/lib64/libpng16.so.16

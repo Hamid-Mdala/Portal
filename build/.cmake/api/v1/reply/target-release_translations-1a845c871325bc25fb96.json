@@ -1,0 +1,70 @@
+{
+	"backtrace" : 4,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"qt6_add_lrelease",
+			"qt6_add_translations",
+			"add_dependencies"
+		],
+		"files" : 
+		[
+			"/usr/lib64/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake",
+			"/usr/lib64/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:817:EVAL",
+			"MainWindow/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 2
+			},
+			{
+				"file" : 2,
+				"line" : -1,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 1,
+				"parent" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 848,
+				"parent" : 2
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 618,
+				"parent" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 620,
+				"parent" : 3
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 5,
+			"id" : "MainWindow_lrelease::@20dbac40096151bb2607"
+		}
+	],
+	"id" : "release_translations::@20dbac40096151bb2607",
+	"name" : "release_translations",
+	"paths" : 
+	{
+		"build" : "MainWindow",
+		"source" : "MainWindow"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

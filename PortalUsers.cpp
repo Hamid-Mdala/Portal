@@ -1,159 +1,204 @@
-// #include "PortalUsers.h"
-// using namespace std;
+#include "PortalUsers.h"
+#include "DatabaseManager.h"
+#include "HandlingValidationCheck.h"
+#include <mariadb/conncpp.hpp>
+#include <memory>
+
+static std::string user_name;
+
+User::User(const string& username) {
+	//so if we search for the unique username let us get the fields
+	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+	sql::Connection& conn_ = dbManager.getConnectionRef();
+
+	std::unique_ptr<sql::PreparedStatement> stmt(
+		conn_.prepareStatement("SELECT COLUMN username, password, first_name, last_name, category, birth_date FROM Users WHERE username = ?"));
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next() && res->getInt(1)) {
+		password_ = res->getString("username");
+		first_name = res->getString("first_name");
+		last_name = res->getString("last_name");
+		category = res->getString("category");
+		birth_date = res->getString("birth_date");
+		user_name = username; // Store the username for later use
+	} else {
+		std::cout << "Error: User not found." << "\n";
+	}
+}
+
+void User::setUsername(const string& username) {username_ = username;}
+string User::getUsername() {return username_;}
+
+void User::setPassword(const string& password) {password_ = password;}
+string User::getPassword() {return password_;}
+
+bool User::view() {
+	//view algorithm for user used to view all the users file in the management system,
+	//However it is possible for the function to change completely under other user's implementation
+	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+	dbManager.displayUser(username_, category);
+	return true;
+}
+
+bool User::editPassword() {
+	bool exists;
+	std::string old_pass;
+	do {
+		std::cout << "Please Enter Old Password: ";
+		std::cin >> old_pass;
+
+		while (old_pass != password_) {
+			std::cout << "Incorrect password!" << "\n";
+			std::cout << "Please Enter Old Password: ";
+			std::cin >> old_pass;
+		}
+		exists = ValidationCheck::validatePassword(old_pass);
+	} while (!exists);
+
+	if (password_ == old_pass) {
+		std::string new_pass;
+		do {
+			std::cout << "Please Enter New Password: ";
+			std::cin >> new_pass;
+
+			while (new_pass == old_pass) {
+				std::cout << "The new password cannot be the same as the old password. Please enter a different password." << "\n";
+				std::cout << "Please Enter New Password: ";
+				std::cin >> new_pass;
+			}
+			exists = ValidationCheck::validatePassword(new_pass);
+		} while (!exists);
+
+		std::string confirm_pass;
+		do {
+			std::cout << "Confirm Password: ";
+			std::cin >> confirm_pass;
+
+			while (confirm_pass != new_pass) {
+				std::cout << "The confirmation password does not match the new password. Please try again." << "\n";
+				std::cout << "Confirm Password: ";
+				std::cin >> confirm_pass;
+			}
+			exists = ValidationCheck::validatePassword(confirm_pass);
+		} while (!exists);
+
+		if (new_pass == confirm_pass) {
+			DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+			dbManager.updateUser(username_, new_pass, first_name, last_name, category, birth_date);
+			std::cout << "Password updated successfully." << "\n";
+		}
+	}
+	return true;
+}
+
+bool User::editFirstName() {
+	bool exists;
+	std::string f_name;
+	do {
+		std::cout << "Please Enter New First Name: ";
+		std::cin >> f_name;
+		while (f_name == first_name) {
+			std::cout << "You entered your old first name." << "\n";
+			std::cout << "Please Enter New first Name: ";
+			std::cin >> f_name;
+		}
+		exists = ValidationCheck::validateFirstName(f_name);
+	} while (!exists);
+
+	{
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.updateUser(username_, password_, f_name, last_name, category, birth_date);
+		std::cout << "First name updated successfully." << "\n";
+	}
+	return true;
+}
+
+bool User::editLastName() {
+	bool exists;
+	std::string l_name;
+	do {
+		std::cout << "Please Enter New Last Name: ";
+		std::cin >> l_name;
+		while (l_name == last_name) {
+			std::cout << "You entered your old Last Name." << "\n";
+			std::cout << "Please Enter New Last Name: ";
+			std::cin >> l_name;
+		}
+		exists = ValidationCheck::validateFirstName(l_name);
+
+	} while (!exists);
+
+	{
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.updateUser(username_, password_, l_name, last_name, category, birth_date);
+		std::cout << "Last name updated successfully." << "\n";
+	}
+	return true;
+}
+
+bool User::editDOB() {
+	bool exists;
+	int day, month, year;
+	do {
+		std::cout << "Enter your new date of birth (DD MM YYYY)";
+		std::cout << "Day(DD): ";
+		std::cin >> day;
+		std::cout << "Month(MM): ";
+		std::cin >> month;
+		std::cout << "Year(YYYY): ";
+		std::cin >> year;
+		exists = ValidationCheck::validateDOB(day, month, year);
+
+	} while (!exists);
+
+	std::string birth_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
+	{
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.updateUser(username_, password_, first_name, last_name, category, birth_date);
+		std::cout << "Date Of Birth updated successfully." << "\n";
+	}
+	return true;
+}
+
+Course::Course(const string& code) {
+	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+	sql::Connection& conn_ = dbManager.getConnectionRef();
+
+	std::unique_ptr<sql::PreparedStatement> stmt(
+		conn_.prepareStatement("SELECT COLUMNS course_code, name, department FROM Course WHERE code = ?"));
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next() && res->getInt(	1)) {
+		name = res->getString("name");
+		department = res->getString("department");
+	} else {
+		std::cout << "Error: Course not found." << "\n";
+	}
+}
+
+void Course::setCourseId(const string& code_) {code=code_;}
+string Course::getCourseId() {return code;}
+
+// Student::Student(const int& student_id) : User(user_name) {
+// 	//Constructor for Student class, it initializes the User class with the username
+// 	//and can be used to fetch student-specific details if needed.
+// 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+// 	sql::Connection& conn_ = dbManager.getConnectionRef();
 //
-// 		User::User(const string& username) {
-// 			Utility2::handlingDuplication("users_File.txt", 6);
-// 			//will search through the map until the end of the map
-// 			if(userDataMap.find(username) != userDataMap.end()) {
-// 				//if the username exist the constructor will initialize values into an object
-// 				UserDetailsUsingMap userDetails = userDataMap[username];
-// 				//using the registered username and using the structure will take a particular username details
-// 				this->username = username;
-// 				this->password=userDetails.details_field2;
-// 				this->id=userDetails.details_field3;
-// 				this->first_name=userDetails.details_field4;
-// 				this->last_name=userDetails.details_field5;
-// 				this->sex=userDetails.details_field6;
-// 				this->date_of_birth=userDetails.details_field7;
-// 				string sub_string;
-// 				//sub string variable will be used to extract the user's allocation in the management system
-// 				//string line is equal to the username from the parameter, since it was true
-// 				size_t underscore = username.find(this->del);
-// 				if( underscore != string::npos) {
-// 					//the underscore is surely found
-// 					sub_string=username.substr(0, underscore);
-// 					//now defining/intializing the sub string variable to the extracted part from the string line
-// 				}
-// 				this->user_classification=sub_string;          //used to easily use it in the code
-// 			} else {
-// 				cout<<"Username doesn't exists in the database, thus we can't extract details."<<endl;
-// 			}
-// 		}
+// 	std::unique_ptr<sql::PreparedStatement> stmt(
+// 		conn_.prepareStatement("SELECT COLUMN class, user_id, gpa, enrollment_date FROM Course WHERE student_id = ?"));
+// 	stmt->setInt(1, student_id);
 //
-// 	/* Trivial Destructor (main purpose only destroying the object created nothing else */
-// 	//Handling setter and getters
-// 		void User::setUsername(const string& existing_username) {
-// 			this->username = existing_username;
-// 		}
-// 		string User::getUsername() {
-// 			return username;
-// 		}
-// 		void User::setId(const string& existing_username_id) {
-// 			this->id= existing_username_id;
-// 		}
-// 		string User::getId() {
-// 			return id;
-// 		}
-// 		void User::setPassword(const string& existing_username_password) {
-// 			this->password = existing_username_password;
-// 		}
-// 		string User::getPassword() {
-// 			return password;
-// 		}
-// 		void User::setUserClassification(const string& existing_username_classification) {
-// 			this->user_classification = existing_username_classification;
-// 		}
-// 		string User::getUserClassification() {
-// 			return user_classification;
-// 		}
-// 		bool User::view() {
-// 			//view algorithm for user used to view all the users file in the management system,
-// 			//However it is possible for the function to change completely under other user's implementation
-// 			for(auto& pair : userDataMap) {
-// 				cout
-// 				<<"USERNAME: "<<pair.first<<endl
-// 				<<"ID: "<<pair.second.details_field3<<endl
-// 				<<"FIRST_NAME: "<<pair.second.details_field4<<endl
-// 				<<"LAST_NAME: "<<pair.second.details_field5<<endl
-// 				<<"SEX: "<<pair.second.details_field6<<endl
-// 				<<"DATE_OF_BIRTH: "<<pair.second.details_field7<<endl;
-// 				cout<<endl;
-// 			}
-// 			if(userDataMap.empty() == 0) {
-// 				if(userDataMap.size() == 1) {
-// 					cout<<"You are the only registered user in these management system."<<endl;
-// 				} else {
-// 					cout<<"Those are all the user profile details in our management system."<<endl;
-// 					cout<<"The total number is: "<<userDataMap.size()<<endl;
-// 				} return true;
-// 			} else {
-// 				cout<<"The user details file is currently empty know please, inform the issue to the developers."<<endl;
-// 				return false;
-// 			}
-// 		}
-//
-// bool User::editDetails() {
-// 			//edit algorithm used for users to edit their password in the management system
-// 			while(true) {
-// 				string new_password;   //variable storing the new password
-// 				cout<<endl;
-// 				cout<<"To change your old password.";
-// 				cout<<endl;
-// 				cout<<"Please Enter New Password: ";
-// 				cin>>new_password;
-// 				cin.ignore();
-// 				system("CLS");
-// 				if(bool exists = ValidationCheck::validatePassword(password)) {
-// 					if(new_password == this->password) {
-// 						cout<<"You are using your recent password, its not exactly changing your password."<<endl;
-// 						continue;
-// 					} else {
-// 						exists = DatabaseManager::searchForFirstAndSecondField("users_File.txt",
-// 						this->username, this->password, 6);
-// 						if(exists) {
-// 							DatabaseManager::registerUser("temporarily_edit_table.txt", this->username,
-// 							new_password,this->id,this->first_name, this->last_name, this->sex, this->date_of_birth);
-// 							DatabaseManager::deleteFileName(); //delete the users_File
-// 							DatabaseManager::renameFileName(); //rename the temporarily_edit_table to users_File
-// 						} else {
-// 							cout<<"The username is not found in the user database."<<endl;
-// 						}
-// 					}
-// 				} else {
-// 					cout<<"Error: the password is invalid."<<endl;
-// 				}
-// 				cout<<endl;
-// 				int choice;
-// 				cout<<"1. Exit the change password page"<<endl;
-// 				cout<<"2. cancel"<<endl;
-// 				cout<<"Enter your choice option: ";
-// 				cin>>choice;
-// 				cin.ignore();
-// 				if(choice == 1) {
-// 					AllocateUser::allocateUserLoginClassification(this->username);
-// 				} else if(choice == 2) {
-// 					return false;
-// 				} else {
-// 					cout<<"Error: Invalid choice option."<<endl;
-// 					return false;
-// 				}
-// 			}
-// 		}
-//
-//
-//
-//
-// 		Course::Course(const string& course_id) {
-// 			Utility2::handlingDuplication("course_table_file.txt", 2);
-// 			if(threeFieldsMap.find(course_id) != threeFieldsMap.end() ) {
-// 				DetailsForTwoCommaInLineUsingMap threeFields = threeFieldsMap[course_id];
-// 				this->course_id=course_id;
-// 				this->course_name=threeFields.details_field2;
-// 				this->course_year=threeFields.details_field3;
-// 			} else {
-// 				cout<<"The course-ID doesn't is not save in the data structure map."<<endl;
-// 			}
-// 		}
-// 	//Handling setters and getters
-// 		void Course::setCourseId(const string& entered_course_id) {
-// 			this->course_id=entered_course_id;
-// 		}
-// 		string Course::getCourseId() {
-// 			return course_id;
-// 		}
-// 	//Overriding view in student
-// 	bool Student::view() {
-// 			Utility utilityTools;
+// 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+// 	if (res->next() && res->getInt(1)) {
+// 		// Assuming student_classification is a field in the Users table
+// 		this->student_classification = res->getString("student_classification");
+// 	} else {
+// 		std::cout << "Error: student is not found." << "\n";
+// 	}
+// }
+
+// bool Student::view() {
+// 	Utility utilityTools;
 // 			while(true) {
 // 				system("CLS");
 // 				cout<<endl;
@@ -345,7 +390,7 @@
 // 			}
 // 		}
 // 	//Making the student's enroll database when the student's enrolls into a program
-// 		bool Student::makeStudentsEnrollCourseTable(const string& course_id) {
+// 		bool Student::enrollCourse(const string& course_id) {
 // 			ofstream outFile("students_enroll_course_table_file.txt", ios_base::app);
 // 			if (bool exists = ValidationCheck::validateCourseId(course_id)) {
 // 				cout<<endl;
@@ -1248,7 +1293,7 @@
 // 			}
 // 			return true;
 // 		}
-// 		bool Admin::editDetails() {
+// 		bool Admin::editPassword() {
 // 			//Overriding edit function in the admin
 // 			string username;
 // 			cout<<"Enter username: ";

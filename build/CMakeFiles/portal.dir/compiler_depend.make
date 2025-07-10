@@ -1090,6 +1090,7 @@ portal: /lib64/ld-linux-x86-64.so.2 \
   /usr/lib64/crtn.o \
   /usr/lib64/libc.so \
   /usr/lib64/libm.so \
+  /usr/lib64/libmariadbcpp.so \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtend.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/libgcc.a \
@@ -1125,7 +1126,7 @@ portal: /lib64/ld-linux-x86-64.so.2 \
   /usr/lib64/libicui18n.so.76 \
   /usr/lib64/libicuuc.so.76 \
   /usr/lib64/liblzma.so.5 \
-  /usr/lib64/libmariadb.so \
+  /usr/lib64/libmariadb.so.3 \
   /usr/lib64/libpcre2-16.so.0 \
   /usr/lib64/libpcre2-8.so.0 \
   /usr/lib64/libpng16.so.16 \
@@ -1151,6 +1152,8 @@ CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o:
 /usr/lib64/libxml2.so.2:
 
 /usr/lib64/libpng16.so.16:
+
+/usr/lib64/libmariadb.so.3:
 
 /usr/lib64/liblzma.so.5:
 
@@ -1798,6 +1801,8 @@ CMakeFiles/3.31.6/CMakeCXXCompiler.cmake:
 
 /usr/lib64/cmake/Qt6DBusTools/Qt6DBusToolsDependencies.cmake:
 
+/usr/lib64/libmariadbcpp.so:
+
 /usr/share/cmake/Modules/FindPackageMessage.cmake:
 
 /usr/include/c++/15/bits/stl_bvector.h:
@@ -2075,8 +2080,6 @@ CMakeFiles/portal.dir/main.cpp.o:
 /usr/include/bits/types/__fpos_t.h:
 
 /usr/include/bits/types/__locale_t.h:
-
-/usr/lib64/libmariadb.so:
 
 /usr/lib64/cmake/Qt6WidgetsTools/Qt6WidgetsToolsVersionlessTargets.cmake:
 

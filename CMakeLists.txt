@@ -28,6 +28,8 @@ add_executable(portal
         DatabaseManager.cpp
         HandlingValidationCheck.h
         HandlingValidationCheck.cpp
+        UtililtyHandler.cpp
+        UtililtyHandler.h
 )
 
 # Link libraries

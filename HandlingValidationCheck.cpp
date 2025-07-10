@@ -17,8 +17,8 @@ bool ValidationCheck::validatePassword(const string& password) {
 	printf("Error: Invalid password length\n");
 	return false;
 }
-bool ValidationCheck::validateId(const string& id) {
-	if(id.length() > 9 && id.length() <= 15) {
+bool ValidationCheck::validateId(const int& id) {
+	if(id > 0 || id != NULL) {
 		return true;
 	}
 	printf("Error: Invalid ID length\n");
@@ -38,11 +38,11 @@ bool ValidationCheck::validateLastName(const string& last_name) {
 	printf("Error: Invalid last name length\n");
 	return false;
 }
-bool ValidationCheck::validateGender(const string& sex) {
-	if(sex == "Male" || sex == "Female") {
+bool ValidationCheck::validateCategory(const string& category) {
+	if(category == "student" || category == "teacher" || category == "admin") {
 		return true;
 	}
-	printf("Error: Invalid gender\n");
+	printf("please make sure the category is either 'student, teacher, admin'");
 	return false;
 }
 bool ValidationCheck::validateDOB(const int& day, const int& month, const int& year) {
@@ -60,7 +60,7 @@ bool ValidationCheck::validateDOB(const int& day, const int& month, const int& y
 	//normal number of days in each month
 	int day_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	//if the year was a leap year
-	//this means the year is divisible by 4 but not divisible by 100 or just divisible by 400 when not divisible by 4
+	//this means the year is divisible by 4 but not divisible by 100 or just divisible by 400
 	if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
 		day_in_month[1] = 29;
 	}
@@ -85,12 +85,13 @@ bool ValidationCheck::validateCourseName(const string& course_name) {
 			return false;
 		}
 }
-bool ValidationCheck::validateYear(const string& course_year) {
-	if(course_year.length() == 4) {
+bool ValidationCheck::validateYear(const string& year) {
+	if (year == "fresh-man" || year == "sophomore" || year == "junior" || year == "senior") {
+		//Fresh-man, Sophomore, Junior or Senior
 		return true;
-	} else {
-		return false;
 	}
+	printf("please make sure the year is either 'fresh-man, sophomore, junior, senior'");
+	return false;
 }
 bool ValidationCheck::validateStudentClassification(const string& student_classification) {
 	if(student_classification.length() > 5 && student_classification.length() <= 9) {
