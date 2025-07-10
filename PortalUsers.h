@@ -29,7 +29,7 @@ class User {
         string username_;
         string password_;
     public:
-        explicit User(const string& username);
+        User(const string& username);
         virtual ~User()  = default;
 
     public:
@@ -49,18 +49,12 @@ class Student : public User {
 
 };
 
-class Teacher final: public User, public Employee {
+class Teacher : public User{
     public:
-        explicit Teacher(const string& username): User(username), Employee(){}
-        bool readStudentsEnrolledToACourse(const string& course_id);
-        bool view() override;
-        bool makeStudentsGradeTable();
+
 };
-class Admin final : public User, public Employee {
-     public:
-        explicit Admin(const string& username): User(username), Employee(){};
-        bool registration();
-        bool view() override;
+class Admin : public User{
+
 };
 
 #endif //PORTALUSERS_H

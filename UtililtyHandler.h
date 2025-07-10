@@ -43,6 +43,9 @@ class CategoryAdmin : CategoryEmployee {
         std::string course_code; //the role of admin to make the course_code
     private:
         std::string admin_id; //Used as a key in the table
+    public:
+        //fill in the course tables fields
+
 
 };
 

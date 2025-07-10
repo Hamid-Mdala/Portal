@@ -1,5 +1,7 @@
 #include "PortalUsers.h"
 #include "UtililtyHandler.h"
+#include "DatabaseManager.h"
+
 //int main() function will handle a case when the files are not yet made on a server: else take them to the logging page
 struct DataTypes {
 	std::string username;
@@ -9,6 +11,8 @@ struct DataTypes {
 	std::string category;
 	int day{}, month{}, year{};
 };
+
+inline std::string category;
 
 int main() {
 	DataTypes data;
@@ -36,8 +40,8 @@ int main() {
 					std::cin >> data.password;
 					exists = ValidationCheck::validatePassword(data.password);
 				} while (!exists);
-
 			} while(!dbManager.authenticateUser(data.username, data.password));
+
 		} else if (option == 'n' || option == 'N') {
 			do {
 				std::cout << "Enter your username: " << "\n";
@@ -99,7 +103,7 @@ int main() {
 			return false;
 		}
 
-		if (data.category == "student") {
+		if (data.category == "student" || category == "student") {
 			CategoryStudent studentUser(data.username);
 			int choice;
 			do {

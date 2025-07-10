@@ -11,7 +11,6 @@ CategoryStudent::CategoryStudent(const std::string &username) {this->username_ =
 bool CategoryStudent::enrollCourse() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     std::cout << "Enroll Course" << "\n";
-    //std::cout << "";  //if its the new student enrolling we have to insist of the student_id
     dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
 
@@ -21,9 +20,11 @@ bool CategoryStudent::enrollCourse() {
 
     std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
     if (res->next() &&  res->getInt(1)) {
+        //the username exist
         user_id = res->getInt("id");
         std::cout << "Found the users username" << "\n";
     } else {
+        //the username does not exist
         std::cout << "Couldn't find the users username" << "\n";
     }
     stmt.reset( conn_.prepareStatement("SELECT * FROM Students WHERE user_id = ?"));
@@ -31,29 +32,68 @@ bool CategoryStudent::enrollCourse() {
 
     res.reset( stmt->executeQuery());
     if (res->next() && res->getInt(1)) {
-        student_id = res->getInt("student_id");
-        gpa = res->getFloat("gpa");
-        return true;
-    } else {
-        std::cout << "Couldn't find the users Identification Number" << "\n";
-        bool exists;
+        //user already exists in the students table
         do {
-            std::cout << "Enter your student ID: " << "\n";
-            std::cin >> student_id;  //2420016
-            exists = ValidationCheck::validateId(student_id);
-        } while (exists);
-        do {
-            std::cout << "what is your class year\n" << "Are you either 'fresh-man, sophomore, junior or senior'?"
-            std::cout << "Enter your year: " << "\n";
-            std::cin >> year;
-            exists = ValidationCheck::validateYear(year);
-        } while (!exists);
-        do {
-            //have to show the course table details so that we could enroll into the course
-        }
-        dbManager.createStudent(student_id, year, user_id, gpa, course_code);
-        return false;
+            student_id = res->getInt("student_id");
+            year = res->getString("class");
+
+            std::cout << "Enter the course: " << "\n";
+            std::cin >> course_code;
+
+            stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
+            stmt->setString(1, course_code);
+
+            res.reset(stmt->executeQuery());
+            if (res->next() && res->getInt(1)) {
+                //the course code exist
+                std::cout << "Course_code: " << res->getString("course_code");
+                std::cout << ", Name: " << res->getString("name");
+                std::cout << ", Department: " << res->getString("department") << "\n";
+                dbManager.createStudent(student_id, year, user_id, gpa, course_code);
+                std::cout << "Successfully enrolled into the course" << "\n";
+            } else {
+                //the course code does not exist
+                std::cout << "Couldn't find course course_code" << "\n";
+                return false;
+            }
+        } while (!false);
     }
+        {
+            //user does not exist in the students table
+            bool exists;
+            do {
+                std::cout << "Enter your student ID: " << "\n";
+                std::cin >> student_id;  //2420016
+                exists = ValidationCheck::validateId(student_id);
+            } while (exists);
+            do {
+                std::cout << "what is your class year\n" << "Are you either 'fresh-man, sophomore, junior or senior'?" << "\n";
+                std::cout << "Enter your year: " << "\n";
+                std::cin >> year;   //what the year of their class
+                exists = ValidationCheck::validateYear(year);
+            } while (!exists);
+            do  {
+                std::cout << "Enter the course code: " << "\n";
+                std::cin >> course_code;
+
+                stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
+                stmt->setString(1, course_code);
+
+                res.reset(stmt->executeQuery());
+                if (res->next() && res->getInt(1)) {
+                    //if the course code exist
+                    std::cout << "Course_code: " << res->getString("course_code");
+                    std::cout << ", Name: " << res->getString("name");
+                    std::cout << ", Department: " << res->getString("department") << "\n";
+                    dbManager.createStudent(student_id, year, user_id, gpa, course_code);
+                    std::cout << "Successfully enrolled into the course" << "\n";
+                } else {
+                    //the course code does not exist
+                    std::cout << "Couldn't find any course code in the database" << "\n";
+                    return false;
+                }
+            } while (!false);
+        }
 }
 
 bool CategoryStudent::getResults() {
@@ -101,11 +141,15 @@ bool CategoryStudent::updateProfile() {
             case 4:
                 user.editDOB();
                 break;
+            case 5:
+                std::cout << "Exiting menu.." << "\n";
+                break;
             default:
                 std::cout << "Invalid choice please enter between (1 - 5)";
                 break;
         }
     } while (choice != 5);  //while the choice is not equal to 5 we will stay in the loop
+    return true;
 }
 
 void CategoryStudent::setId(const int& id) { user_id = id;}

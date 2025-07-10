@@ -3,6 +3,8 @@
 #include<string>
 #include <mariadb/conncpp.hpp>
 
+extern std::string category;
+
 class DatabaseManager {
     private:
         std::string user_;
@@ -34,6 +36,8 @@ class DatabaseManager {
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const float& gpa, const std::string& course_code);
+
+        //
     //setter and getters
         void setUser(const std::string& user);
         std::string getUser();

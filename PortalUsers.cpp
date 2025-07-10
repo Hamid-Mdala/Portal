@@ -4,23 +4,27 @@
 #include <mariadb/conncpp.hpp>
 #include <memory>
 
-static std::string user_name;
+//static std::string user_name;
 
 User::User(const string& username) {
 	//so if we search for the unique username let us get the fields
 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+	dbManager.connect();
 	sql::Connection& conn_ = dbManager.getConnectionRef();
 
 	std::unique_ptr<sql::PreparedStatement> stmt(
-		conn_.prepareStatement("SELECT COLUMN username, password, first_name, last_name, category, birth_date FROM Users WHERE username = ?"));
+		conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
+	stmt->setString(1, username);
+
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next() && res->getInt(1)) {
-		password_ = res->getString("username");
+		username_ = username;
+		password_ = res->getString("password");
 		first_name = res->getString("first_name");
 		last_name = res->getString("last_name");
 		category = res->getString("category");
 		birth_date = res->getString("birth_date");
-		user_name = username; // Store the username for later use
+		//user_name = username; // Store the username for later use
 	} else {
 		std::cout << "Error: User not found." << "\n";
 	}
@@ -32,17 +36,18 @@ string User::getUsername() {return username_;}
 void User::setPassword(const string& password) {password_ = password;}
 string User::getPassword() {return password_;}
 
-bool User::view() {
-	//view algorithm for user used to view all the users file in the management system,
-	//However it is possible for the function to change completely under other user's implementation
-	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-	dbManager.displayUser(username_, category);
-	return true;
-}
+// bool User::view() {
+// 	//view algorithm for user used to view all the users file in the management system,
+// 	//However it is possible for the function to change completely under other user's implementation
+// 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+// 	dbManager.displayUser(username_, category);
+// 	return true;
+// }
 
 bool User::editPassword() {
 	bool exists;
 	std::string old_pass;
+	std::string new_pass;
 	do {
 		std::cout << "Please Enter Old Password: ";
 		std::cin >> old_pass;
@@ -56,7 +61,6 @@ bool User::editPassword() {
 	} while (!exists);
 
 	if (password_ == old_pass) {
-		std::string new_pass;
 		do {
 			std::cout << "Please Enter New Password: ";
 			std::cin >> new_pass;
@@ -81,15 +85,19 @@ bool User::editPassword() {
 			}
 			exists = ValidationCheck::validatePassword(confirm_pass);
 		} while (!exists);
+	}
 
-		if (new_pass == confirm_pass) {
-			DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-			dbManager.updateUser(username_, new_pass, first_name, last_name, category, birth_date);
-			std::cout << "Password updated successfully." << "\n";
-		}
+	{
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.connect();  //when i make the contractor I must always make a new connection
+
+		dbManager.updateUser(username_, new_pass, first_name, last_name, category, birth_date);
+
 	}
 	return true;
 }
+
+
 
 bool User::editFirstName() {
 	bool exists;
@@ -160,23 +168,23 @@ bool User::editDOB() {
 	return true;
 }
 
-Course::Course(const string& code) {
-	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-	sql::Connection& conn_ = dbManager.getConnectionRef();
-
-	std::unique_ptr<sql::PreparedStatement> stmt(
-		conn_.prepareStatement("SELECT COLUMNS course_code, name, department FROM Course WHERE code = ?"));
-	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-	if (res->next() && res->getInt(	1)) {
-		name = res->getString("name");
-		department = res->getString("department");
-	} else {
-		std::cout << "Error: Course not found." << "\n";
-	}
-}
-
-void Course::setCourseId(const string& code_) {code=code_;}
-string Course::getCourseId() {return code;}
+// Course::Course(const string& code) {
+// 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+// 	sql::Connection& conn_ = dbManager.getConnectionRef();
+//
+// 	std::unique_ptr<sql::PreparedStatement> stmt(
+// 		conn_.prepareStatement("SELECT COLUMNS course_code, name, department FROM Course WHERE code = ?"));
+// 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+// 	if (res->next() && res->getInt(	1)) {
+// 		name = res->getString("name");
+// 		department = res->getString("department");
+// 	} else {
+// 		std::cout << "Error: Course not found." << "\n";
+// 	}
+// }
+//
+// void Course::setCourseId(const string& code_) {code=code_;}
+// string Course::getCourseId() {return code;}
 
 // Student::Student(const int& student_id) : User(user_name) {
 // 	//Constructor for Student class, it initializes the User class with the username
