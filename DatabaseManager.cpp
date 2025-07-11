@@ -61,7 +61,7 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 		stmt->setString(1, username);
 
 		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
-			std::cout << "Successfully removed the user: " << username << " from the database" << "\n";
+			std::cout << "removed the user: " << username << " from the database" << "\n";
 		} else {
 			std::cout << "Can not delete user because the user is not found: " << username << "\n";
 			return false;
@@ -136,7 +136,7 @@ bool DatabaseManager::searchUser(const std::string &username) {
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next() && res->getInt(1)) {
-		std::cout << "Successfully found the user: " << username << " from the database" << "\n";
+		std::cout << "found the user: " << username << " from the database" << "\n";
 		return true;
 	} else {
 		std::cout << "No user found with username: " << username << "\n";

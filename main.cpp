@@ -1,6 +1,7 @@
-#include "PortalUsers.h"
-#include "UtililtyHandler.h"
-#include "DatabaseManager.h"
+#include "ModifyPortalUsers.h"  //modifies users profile
+#include "UtililtyHandler.h"    //handles functionalities of students
+#include "DatabaseManager.h"    //Database operations
+#include "HandleMenus.h"
 
 //int main() function will handle a case when the files are not yet made on a server: else take them to the logging page
 struct DataTypes {
@@ -108,36 +109,14 @@ int main() {
 			return false;
 		}
 
-		if (data.category == "student" || category == "student") {
-			CategoryStudent studentUser(data.username);
-			int choice;
-			do {
-				std::cout << "1. Enroll into course" << "\n";
-				std::cout << "2. Get results score" << "\n";
-				std::cout << "3. Update profile" << "\n";
-				std::cout << "4. Delete profile" << "\n";
-				std::cout << "Note: enter 0 to end program" << "\n";
-				std::cout << "Enter your choice: " << "\n";
-				std::cin >> choice;
-				system("clear");
+			{
+				Menu menu(data.username, data.category);
+				menu.studentMenu();
+				menu.teacherMenu();
+				menu.adminMenu();
+			}
 
-				if (choice == 1) {
-					studentUser.enrollCourse();
-				} else if (choice == 2) {
-					studentUser.getResults();
-				} else if (choice == 3) {
-					studentUser.updateProfile();
-				} else if (choice == 4) {
-					studentUser.deleteProfile();
-				} else if (choice == 0) {
-					std::cout << "Ended program.." << "\n";
-					return 0;
-				}
-				else {
-					std::cout << "Please enter a valid choice between (1-4)" << "\n";
-					return false;
-				}
-			} while (choice != 0 || !false);
-		}
-	} while (!false);
+	} while (option != '\0');  //so that the user inputs either yes or no
+
+	return 0;
 }

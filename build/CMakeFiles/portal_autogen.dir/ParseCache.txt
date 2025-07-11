@@ -3,10 +3,10 @@
 /home/hamidmdala/Desktop/CLionProjects/Portal/main.cpp
 /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
 /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
-/home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
+/home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
 /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
 /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.cpp
 /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
 /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
-/home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
-/home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+/home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+/home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp

@@ -20,10 +20,10 @@ link_directories(/usr/lib64)                        # Library path
 
 add_executable(portal
         main.cpp
-        PortalUsers.h
-        PortalUsers.cpp
-        NavigationMenus.h
-        NavigationMenus.cpp
+        ModifyPortalUsers.h
+        ModifyPortalUsers.cpp
+        HandleMenus.h
+        HandleMenus.cpp
         DatabaseManager.h
         DatabaseManager.cpp
         HandlingValidationCheck.h

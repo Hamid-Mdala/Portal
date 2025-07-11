@@ -107,33 +107,33 @@ CMakeFiles/portal.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/portal.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hamidmdala/Desktop/CLionProjects/Portal/main.cpp -o CMakeFiles/portal.dir/main.cpp.s
 
-CMakeFiles/portal.dir/PortalUsers.cpp.o: CMakeFiles/portal.dir/flags.make
-CMakeFiles/portal.dir/PortalUsers.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
-CMakeFiles/portal.dir/PortalUsers.cpp.o: CMakeFiles/portal.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/portal.dir/PortalUsers.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/portal.dir/PortalUsers.cpp.o -MF CMakeFiles/portal.dir/PortalUsers.cpp.o.d -o CMakeFiles/portal.dir/PortalUsers.cpp.o -c /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o: CMakeFiles/portal.dir/flags.make
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o: CMakeFiles/portal.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o -MF CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o.d -o CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o -c /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
 
-CMakeFiles/portal.dir/PortalUsers.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/portal.dir/PortalUsers.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp > CMakeFiles/portal.dir/PortalUsers.cpp.i
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/portal.dir/ModifyPortalUsers.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp > CMakeFiles/portal.dir/ModifyPortalUsers.cpp.i
 
-CMakeFiles/portal.dir/PortalUsers.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/portal.dir/PortalUsers.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp -o CMakeFiles/portal.dir/PortalUsers.cpp.s
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/portal.dir/ModifyPortalUsers.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp -o CMakeFiles/portal.dir/ModifyPortalUsers.cpp.s
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.o: CMakeFiles/portal.dir/flags.make
-CMakeFiles/portal.dir/NavigationMenus.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
-CMakeFiles/portal.dir/NavigationMenus.cpp.o: CMakeFiles/portal.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/portal.dir/NavigationMenus.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/portal.dir/NavigationMenus.cpp.o -MF CMakeFiles/portal.dir/NavigationMenus.cpp.o.d -o CMakeFiles/portal.dir/NavigationMenus.cpp.o -c /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
+CMakeFiles/portal.dir/HandleMenus.cpp.o: CMakeFiles/portal.dir/flags.make
+CMakeFiles/portal.dir/HandleMenus.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+CMakeFiles/portal.dir/HandleMenus.cpp.o: CMakeFiles/portal.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/portal.dir/HandleMenus.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/portal.dir/HandleMenus.cpp.o -MF CMakeFiles/portal.dir/HandleMenus.cpp.o.d -o CMakeFiles/portal.dir/HandleMenus.cpp.o -c /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/portal.dir/NavigationMenus.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp > CMakeFiles/portal.dir/NavigationMenus.cpp.i
+CMakeFiles/portal.dir/HandleMenus.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/portal.dir/HandleMenus.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp > CMakeFiles/portal.dir/HandleMenus.cpp.i
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/portal.dir/NavigationMenus.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp -o CMakeFiles/portal.dir/NavigationMenus.cpp.s
+CMakeFiles/portal.dir/HandleMenus.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/portal.dir/HandleMenus.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp -o CMakeFiles/portal.dir/HandleMenus.cpp.s
 
 CMakeFiles/portal.dir/DatabaseManager.cpp.o: CMakeFiles/portal.dir/flags.make
 CMakeFiles/portal.dir/DatabaseManager.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.cpp
@@ -181,8 +181,8 @@ CMakeFiles/portal.dir/UtililtyHandler.cpp.s: cmake_force
 portal_OBJECTS = \
 "CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/portal.dir/main.cpp.o" \
-"CMakeFiles/portal.dir/PortalUsers.cpp.o" \
-"CMakeFiles/portal.dir/NavigationMenus.cpp.o" \
+"CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o" \
+"CMakeFiles/portal.dir/HandleMenus.cpp.o" \
 "CMakeFiles/portal.dir/DatabaseManager.cpp.o" \
 "CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o" \
 "CMakeFiles/portal.dir/UtililtyHandler.cpp.o"
@@ -192,8 +192,8 @@ portal_EXTERNAL_OBJECTS =
 
 portal: CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o
 portal: CMakeFiles/portal.dir/main.cpp.o
-portal: CMakeFiles/portal.dir/PortalUsers.cpp.o
-portal: CMakeFiles/portal.dir/NavigationMenus.cpp.o
+portal: CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o
+portal: CMakeFiles/portal.dir/HandleMenus.cpp.o
 portal: CMakeFiles/portal.dir/DatabaseManager.cpp.o
 portal: CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o
 portal: CMakeFiles/portal.dir/UtililtyHandler.cpp.o

@@ -1,3 +1,66 @@
+#include "HandleMenus.h"
+#include "UtililtyHandler.h"
+#include <utility>
+
+Menu::Menu(const std::string& username, const std::string& category) {
+	username_ = username;
+	category_ = category;
+}
+
+
+bool Menu::studentMenu() {
+	while(category_ == "student") {
+		CategoryStudent studentUser(username_);
+		int choice;
+		do {
+			std::cout << "1. Enroll into course" << "\n";
+			std::cout << "2. Get results score" << "\n";
+			std::cout << "3. Update profile" << "\n";
+			std::cout << "4. Delete profile" << "\n";
+			std::cout << "Note: enter 0 to end program" << "\n";
+			std::cout << "Enter your choice: " << "\n";
+			std::cin >> choice;
+			system("clear");
+
+			if (choice == 1) {
+				studentUser.enrollCourse();
+			} else if (choice == 2) {
+				studentUser.getResults();
+			} else if (choice == 3) {
+				studentUser.updateProfile();
+			} else if (choice == 4) {
+				studentUser.deleteProfile();
+			} else if (choice == 0) {
+				std::cout << "Ended program.." << "\n";
+				std::exit(EXIT_SUCCESS);  //end the program
+			} else {
+				std::cout << "Please enter a valid choice between (1-4)" << "\n";
+				return false;
+			}
+		} while (choice != 0 || !false);
+	}
+	return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // #include "PortalUsers.h"
 // using namespace std;
 //     //Function handling the users allocation the aim is after logged in by the system during runtime they will have their own menu.

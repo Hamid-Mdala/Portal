@@ -7,9 +7,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -282,9 +282,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -557,9 +557,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -832,9 +832,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -1107,9 +1107,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -1382,9 +1382,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -1657,9 +1657,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -1932,9 +1932,9 @@
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
@@ -2692,15 +2692,15 @@ CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.o
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp
+CMakeFiles/portal.dir/HandleMenus.cpp.o
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp
  /usr/include/stdc-predef.h
 
-CMakeFiles/portal.dir/PortalUsers.cpp.o
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h
@@ -2990,7 +2990,7 @@ CMakeFiles/portal.dir/UtililtyHandler.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
  /usr/include/alloca.h
@@ -3281,7 +3281,7 @@ CMakeFiles/portal.dir/main.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/main.cpp
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
  /usr/include/alloca.h
@@ -3632,8 +3632,8 @@ portal
  /usr/lib64/libzstd.so.1
  /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/DatabaseManager.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o
- /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/NavigationMenus.cpp.o
- /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/PortalUsers.cpp.o
+ /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/HandleMenus.cpp.o
+ /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/UtililtyHandler.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/main.cpp.o
  /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o

@@ -4,8 +4,8 @@ portal: \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
   CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o \
   CMakeFiles/portal.dir/main.cpp.o \
-  CMakeFiles/portal.dir/PortalUsers.cpp.o \
-  CMakeFiles/portal.dir/NavigationMenus.cpp.o \
+  CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o \
+  CMakeFiles/portal.dir/HandleMenus.cpp.o \
   CMakeFiles/portal.dir/DatabaseManager.cpp.o \
   CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o \
   CMakeFiles/portal.dir/UtililtyHandler.cpp.o \
@@ -88,9 +88,9 @@ CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o:
 
 CMakeFiles/portal.dir/main.cpp.o:
 
-CMakeFiles/portal.dir/PortalUsers.cpp.o:
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o:
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.o:
+CMakeFiles/portal.dir/HandleMenus.cpp.o:
 
 CMakeFiles/portal.dir/DatabaseManager.cpp.o:
 

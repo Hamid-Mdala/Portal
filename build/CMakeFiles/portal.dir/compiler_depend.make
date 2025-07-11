@@ -6,9 +6,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -281,9 +281,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -556,9 +556,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -831,9 +831,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -1106,9 +1106,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -1381,9 +1381,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -1656,9 +1656,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -1931,9 +1931,9 @@ portal_autogen/timestamp: /home/hamidmdala/Desktop/CLionProjects/Portal/CMakeLis
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
@@ -2689,13 +2689,13 @@ CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o: /home/hamidmdala/Desktop/CL
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stdarg.h \
   /usr/lib/gcc/x86_64-redhat-linux/15/include/stddef.h
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
+CMakeFiles/portal.dir/HandleMenus.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
   /usr/include/stdc-predef.h
 
-CMakeFiles/portal.dir/PortalUsers.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -2984,7 +2984,7 @@ CMakeFiles/portal.dir/PortalUsers.cpp.o: /home/hamidmdala/Desktop/CLionProjects/
 CMakeFiles/portal.dir/UtililtyHandler.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
   /usr/include/alloca.h \
@@ -3274,7 +3274,7 @@ CMakeFiles/portal.dir/UtililtyHandler.cpp.o: /home/hamidmdala/Desktop/CLionProje
 CMakeFiles/portal.dir/main.cpp.o: /home/hamidmdala/Desktop/CLionProjects/Portal/main.cpp \
   /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
-  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
+  /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
   /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
   /usr/include/alloca.h \
@@ -3623,8 +3623,8 @@ portal: /lib64/ld-linux-x86-64.so.2 \
   /usr/lib64/libzstd.so.1 \
   CMakeFiles/portal.dir/DatabaseManager.cpp.o \
   CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o \
-  CMakeFiles/portal.dir/NavigationMenus.cpp.o \
-  CMakeFiles/portal.dir/PortalUsers.cpp.o \
+  CMakeFiles/portal.dir/HandleMenus.cpp.o \
+  CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o \
   CMakeFiles/portal.dir/UtililtyHandler.cpp.o \
   CMakeFiles/portal.dir/main.cpp.o \
   CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o
@@ -3632,7 +3632,7 @@ portal: /lib64/ld-linux-x86-64.so.2 \
 
 CMakeFiles/portal.dir/UtililtyHandler.cpp.o:
 
-CMakeFiles/portal.dir/NavigationMenus.cpp.o:
+CMakeFiles/portal.dir/HandleMenus.cpp.o:
 
 CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o:
 
@@ -4012,7 +4012,7 @@ CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o:
 
 /usr/share/cmake/Modules/Compiler/GNU-CXX.cmake:
 
-/home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h:
+/home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h:
 
 /usr/lib64/cmake/Qt6/QtPublicFinalizerHelpers.cmake:
 
@@ -4064,7 +4064,7 @@ CMakeFiles/3.31.6/CMakeSystem.cmake:
 
 /usr/lib64/cmake/Qt6Gui/Qt6QEvdevTouchScreenPluginConfig.cmake:
 
-/home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp:
+/home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp:
 
 /usr/include/c++/15/ext/type_traits.h:
 
@@ -4214,7 +4214,7 @@ CMakeFiles/portal.dir/DatabaseManager.cpp.o:
 
 /usr/lib64/cmake/Qt6DBus/Qt6DBusConfig.cmake:
 
-/home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp:
+/home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp:
 
 /usr/include/c++/15/x86_64-redhat-linux/bits/error_constants.h:
 
@@ -4816,7 +4816,7 @@ CMakeFiles/3.31.6/CMakeCCompiler.cmake:
 
 /usr/include/c++/15/unordered_map:
 
-CMakeFiles/portal.dir/PortalUsers.cpp.o:
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o:
 
 /usr/lib64/cmake/Qt6Gui/Qt6QXcbGlxIntegrationPluginAdditionalTargetInfo.cmake:
 

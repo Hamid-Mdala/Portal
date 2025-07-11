@@ -1,6 +1,6 @@
 #include "UtililtyHandler.h"
 #include <iostream>
-#include "PortalUsers.h"
+#include "ModifyPortalUsers.h"
 #include "DatabaseManager.h"
 #include <conncpp/Connection.hpp>
 
@@ -162,21 +162,18 @@ bool CategoryStudent::deleteProfile() {
     int choice;
     User user(username_);
 
-    do {
-        std::cout << "Delete profile menu" << "\n";
+    std::cout << "Delete profile menu" << "\n";
 
-        DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-        dbManager.connect();
-        if (bool exists = dbManager.searchUser(username_)) {
-            dbManager.deleteUser(username_);
-            //exit the program
-            std::exit(EXIT_SUCCESS);  // or EXIT_FAILURE
-        } else {
-            std::cout << "The User does no longer exist in the database" << "\n";
-            std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
-            return false;
-        }
-    } while (!false);
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    if (bool exists = dbManager.searchUser(username_)) {
+        dbManager.deleteUser(username_);
+        std::exit(EXIT_SUCCESS);  // exit the program
+    } else {
+        std::cout << "The User does no longer exist in the database" << "\n";
+        std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
+        std::exit(EXIT_FAILURE);  //exit the program
+    }
 }
 
 

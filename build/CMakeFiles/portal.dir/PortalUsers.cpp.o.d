@@ -1,5 +1,5 @@
-CMakeFiles/portal.dir/PortalUsers.cpp.o: \
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp \
+CMakeFiles/portal.dir/ModifyPortalUsers.cpp.o: \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/ModifyPortalUsers.cpp \
  /usr/include/stdc-predef.h \
  /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
  /usr/include/c++/15/string /usr/include/c++/15/bits/requires_hosted.h \
@@ -217,4 +217,4 @@ CMakeFiles/portal.dir/PortalUsers.cpp.o: \
  /usr/include/mariadb/MariaDbDataSource.hpp \
  /usr/include/mariadb/conncpp.hpp \
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h

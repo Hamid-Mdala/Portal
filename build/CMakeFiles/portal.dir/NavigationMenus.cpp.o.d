@@ -1,3 +1,3 @@
-CMakeFiles/portal.dir/NavigationMenus.cpp.o: \
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.cpp \
+CMakeFiles/portal.dir/HandleMenus.cpp.o: \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.cpp \
  /usr/include/stdc-predef.h

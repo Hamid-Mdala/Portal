@@ -217,5 +217,5 @@ CMakeFiles/portal.dir/main.cpp.o: \
  /usr/include/mariadb/MariaDbDataSource.hpp \
  /usr/include/mariadb/conncpp.hpp \
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
- /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/HandleMenus.h \
  /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
