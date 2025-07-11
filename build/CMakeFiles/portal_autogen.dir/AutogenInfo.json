@@ -394,6 +394,12 @@
 			"MU",
 			"EWIEGA46WW/moc_PortalUsers.cpp",
 			null
+		],
+		[
+			"/home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h",
+			"MU",
+			"EWIEGA46WW/moc_UtililtyHandler.cpp",
+			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -472,6 +478,11 @@
 		],
 		[
 			"/home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp",
 			"MU",
 			null
 		],

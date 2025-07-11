@@ -39,6 +39,7 @@ bool CategoryStudent::enrollCourse() {
 
             std::cout << "Enter the course: " << "\n";
             std::cin >> course_code;
+            system("clear");
 
             stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
             stmt->setString(1, course_code);
@@ -65,16 +66,19 @@ bool CategoryStudent::enrollCourse() {
                 std::cout << "Enter your student ID: " << "\n";
                 std::cin >> student_id;  //2420016
                 exists = ValidationCheck::validateId(student_id);
+                system("clear");
             } while (exists);
             do {
                 std::cout << "what is your class year\n" << "Are you either 'fresh-man, sophomore, junior or senior'?" << "\n";
                 std::cout << "Enter your year: " << "\n";
                 std::cin >> year;   //what the year of their class
                 exists = ValidationCheck::validateYear(year);
+                system("clear");
             } while (!exists);
             do  {
                 std::cout << "Enter the course code: " << "\n";
                 std::cin >> course_code;
+                system("clear");
 
                 stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
                 stmt->setString(1, course_code);
@@ -125,9 +129,11 @@ bool CategoryStudent::updateProfile() {
         std::cout << "2. Update first name" << "\n";
         std::cout << "3. Update last name" << "\n";
         std::cout << "4. Update date of birth" << "\n";
-        std::cout << "5. choice to exit the update profile menu" << "\n";
+        std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
+        system("clear");
+
         switch (choice) {
             case 1:
                 user.editPassword();
@@ -141,16 +147,38 @@ bool CategoryStudent::updateProfile() {
             case 4:
                 user.editDOB();
                 break;
-            case 5:
-                std::cout << "Exiting menu.." << "\n";
+            case 0:
+                std::cout << "Exited previous menu.." << "\n";
                 break;
             default:
                 std::cout << "Invalid choice please enter between (1 - 5)";
                 break;
         }
-    } while (choice != 5);  //while the choice is not equal to 5 we will stay in the loop
+    } while (choice != 0);  //while the choice is not equal to 5 we will stay in the loop
     return true;
 }
+
+bool CategoryStudent::deleteProfile() {
+    int choice;
+    User user(username_);
+
+    do {
+        std::cout << "Delete profile menu" << "\n";
+
+        DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+        dbManager.connect();
+        if (bool exists = dbManager.searchUser(username_)) {
+            dbManager.deleteUser(username_);
+            //exit the program
+            std::exit(EXIT_SUCCESS);  // or EXIT_FAILURE
+        } else {
+            std::cout << "The User does no longer exist in the database" << "\n";
+            std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
+            return false;
+        }
+    } while (!false);
+}
+
 
 void CategoryStudent::setId(const int& id) { user_id = id;}
 int CategoryStudent::getId() {return user_id;}

@@ -344,6 +344,7 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow.cpp.o: /home/hamidmdala/Desktop/
   /usr/include/qt6/QtCore/qglobalstatic.h \
   /usr/include/qt6/QtCore/qhash.h \
   /usr/include/qt6/QtCore/qhashfunctions.h \
+  /usr/include/qt6/QtCore/qiodevice.h \
   /usr/include/qt6/QtCore/qiodevicebase.h \
   /usr/include/qt6/QtCore/qiterable.h \
   /usr/include/qt6/QtCore/qiterator.h \
@@ -418,6 +419,7 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow.cpp.o: /home/hamidmdala/Desktop/
   /usr/include/qt6/QtCore/qtversionchecks.h \
   /usr/include/qt6/QtCore/qtypeinfo.h \
   /usr/include/qt6/QtCore/qtypes.h \
+  /usr/include/qt6/QtCore/qurl.h \
   /usr/include/qt6/QtCore/qutf8stringview.h \
   /usr/include/qt6/QtCore/qvariant.h \
   /usr/include/qt6/QtCore/qvarlengtharray.h \
@@ -441,26 +443,40 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow.cpp.o: /home/hamidmdala/Desktop/
   /usr/include/qt6/QtGui/qkeysequence.h \
   /usr/include/qt6/QtGui/qpaintdevice.h \
   /usr/include/qt6/QtGui/qpalette.h \
+  /usr/include/qt6/QtGui/qpen.h \
+  /usr/include/qt6/QtGui/qpicture.h \
   /usr/include/qt6/QtGui/qpixelformat.h \
   /usr/include/qt6/QtGui/qpixmap.h \
   /usr/include/qt6/QtGui/qpolygon.h \
   /usr/include/qt6/QtGui/qregion.h \
   /usr/include/qt6/QtGui/qrgb.h \
   /usr/include/qt6/QtGui/qrgba64.h \
+  /usr/include/qt6/QtGui/qtextcursor.h \
+  /usr/include/qt6/QtGui/qtextdocument.h \
+  /usr/include/qt6/QtGui/qtextformat.h \
+  /usr/include/qt6/QtGui/qtextoption.h \
   /usr/include/qt6/QtGui/qtgui-config.h \
   /usr/include/qt6/QtGui/qtguiexports.h \
   /usr/include/qt6/QtGui/qtguiglobal.h \
   /usr/include/qt6/QtGui/qtransform.h \
   /usr/include/qt6/QtGui/qwindowdefs.h \
   /usr/include/qt6/QtWidgets/QApplication \
+  /usr/include/qt6/QtWidgets/QLabel \
+  /usr/include/qt6/QtWidgets/QLineEdit \
   /usr/include/qt6/QtWidgets/QMainWindow \
   /usr/include/qt6/QtWidgets/QMenuBar \
+  /usr/include/qt6/QtWidgets/QPushButton \
   /usr/include/qt6/QtWidgets/QStatusBar \
   /usr/include/qt6/QtWidgets/QWidget \
+  /usr/include/qt6/QtWidgets/qabstractbutton.h \
   /usr/include/qt6/QtWidgets/qapplication.h \
+  /usr/include/qt6/QtWidgets/qframe.h \
+  /usr/include/qt6/QtWidgets/qlabel.h \
+  /usr/include/qt6/QtWidgets/qlineedit.h \
   /usr/include/qt6/QtWidgets/qmainwindow.h \
   /usr/include/qt6/QtWidgets/qmenu.h \
   /usr/include/qt6/QtWidgets/qmenubar.h \
+  /usr/include/qt6/QtWidgets/qpushbutton.h \
   /usr/include/qt6/QtWidgets/qsizepolicy.h \
   /usr/include/qt6/QtWidgets/qstatusbar.h \
   /usr/include/qt6/QtWidgets/qtabwidget.h \
@@ -1505,9 +1521,31 @@ MainWindow/CMakeFiles/MainWindow.dir/.qt/rcc/qrc_MainWindow_translations.cpp.o:
 
 /usr/lib64/libxkbcommon.so.0:
 
+/usr/lib64/libpcre2-8.so.0:
+
+/usr/lib64/liblzma.so.5:
+
+/usr/lib64/libicuuc.so.76:
+
+/usr/lib64/libicui18n.so.76:
+
+/usr/lib64/libicudata.so.76:
+
+/usr/lib64/libgraphite2.so.3:
+
+/usr/lib64/libglib-2.0.so.0:
+
+/usr/lib64/libdbus-1.so.3:
+
+/usr/lib64/libcrypto.so.3:
+
+/usr/lib64/libcap.so.2:
+
 /usr/include/c++/15/chrono:
 
 /usr/include/c++/15/tr1/special_function_util.h:
+
+/usr/include/qt6/QtGui/qtextcursor.h:
 
 /usr/include/c++/15/tr1/riemann_zeta.tcc:
 
@@ -1526,6 +1564,10 @@ MainWindow/CMakeFiles/MainWindow.dir/.qt/rcc/qrc_MainWindow_translations.cpp.o:
 /usr/include/c++/15/string_view:
 
 /usr/include/qt6/QtCore/qstring.h:
+
+/usr/lib64/libpcre2-16.so.0:
+
+/usr/include/c++/15/ctime:
 
 /usr/include/c++/15/stdexcept:
 
@@ -1586,6 +1628,8 @@ MainWindow/CMakeFiles/MainWindow.dir/.qt/rcc/qrc_MainWindow_translations.cpp.o:
 /usr/include/bits/floatn-common.h:
 
 /usr/include/qt6/QtWidgets/qtabwidget.h:
+
+/usr/include/qt6/QtGui/qpen.h:
 
 /usr/include/c++/15/bits/unordered_set.h:
 
@@ -1663,7 +1707,11 @@ MainWindow/CMakeFiles/MainWindow.dir/.qt/rcc/qrc_MainWindow_translations.cpp.o:
 
 /usr/include/c++/15/concepts:
 
-/usr/include/c++/15/bits/std_function.h:
+/usr/lib64/libgomp.so.1:
+
+/usr/include/qt6/QtCore/qnamespace.h:
+
+/usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h:
 
 /usr/include/c++/15/typeinfo:
 
@@ -1697,19 +1745,19 @@ MainWindow/CMakeFiles/MainWindow.dir/.qt/rcc/qrc_MainWindow_translations.cpp.o:
 
 /usr/include/qt6/QtWidgets/QMainWindow:
 
+/usr/lib64/libfontconfig.so.1:
+
+/usr/include/linux/sched/types.h:
+
 /usr/include/bits/thread-shared-types.h:
 
 /usr/include/c++/15/cwchar:
-
-/usr/lib64/libicudata.so.76:
 
 /usr/include/qt6/QtGui/qaction.h:
 
 MainWindow/CMakeFiles/MainWindow.dir/MainWindow_autogen/mocs_compilation.cpp.o:
 
 /usr/include/bits/mathcalls-helper-functions.h:
-
-/usr/include/bits/types/__FILE.h:
 
 /usr/include/c++/15/list:
 
@@ -1725,6 +1773,8 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow_autogen/mocs_compilation.cpp.o:
 
 /usr/include/qt6/QtGui/qfontinfo.h:
 
+/usr/include/qt6/QtGui/qtextdocument.h:
+
 /usr/lib64/libOpenGL.so:
 
 /usr/include/c++/15/climits:
@@ -1732,8 +1782,6 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow_autogen/mocs_compilation.cpp.o:
 /usr/include/c++/15/bits/vector.tcc:
 
 /usr/include/qt6/QtCore/qcompare.h:
-
-/usr/include/c++/15/debug/assertions.h:
 
 /usr/include/sys/cdefs.h:
 
@@ -1803,6 +1851,10 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow_autogen/mocs_compilation.cpp.o:
 
 /usr/include/asm-generic/bitsperlong.h:
 
+/usr/include/c++/15/bits/std_function.h:
+
+/usr/include/qt6/QtWidgets/QLineEdit:
+
 /usr/include/asm-generic/errno-base.h:
 
 /usr/include/bits/posix2_lim.h:
@@ -1818,6 +1870,10 @@ MainWindow/CMakeFiles/MainWindow.dir/MainWindow_autogen/mocs_compilation.cpp.o:
 /usr/include/bits/stdint-least.h:
 
 /usr/lib64/libX11.so.6:
+
+/usr/lib64/libfreetype.so.6:
+
+/usr/include/bits/pthreadtypes-arch.h:
 
 /usr/include/alloca.h:
 
@@ -1923,6 +1979,10 @@ MainWindow/MainWindow_autogen/include/ui_MainWindow.h:
 
 /usr/include/c++/15/cstdio:
 
+/usr/include/bits/types/__FILE.h:
+
+/usr/include/qt6/QtWidgets/QLabel:
+
 /usr/include/bits/stdio_lim.h:
 
 /usr/include/bits/time.h:
@@ -1959,11 +2019,11 @@ MainWindow/MainWindow_autogen/include/ui_MainWindow.h:
 
 /usr/include/c++/15/bits/streambuf_iterator.h:
 
-/usr/lib64/liblzma.so.5:
-
 /home/hamidmdala/Desktop/CLionProjects/Portal/MainWindow/MainWindow.cpp:
 
 /usr/include/bits/types.h:
+
+/usr/include/qt6/QtCore/qiodevice.h:
 
 /usr/include/qt6/QtCore/qtaggedpointer.h:
 
@@ -1998,10 +2058,6 @@ MainWindow/MainWindow_autogen/include/ui_MainWindow.h:
 /usr/include/bits/types/clock_t.h:
 
 /usr/include/c++/15/bits/charconv.h:
-
-/usr/include/linux/sched/types.h:
-
-/usr/lib64/libfontconfig.so.1:
 
 /usr/include/c++/15/bits/specfun.h:
 
@@ -2047,8 +2103,6 @@ MainWindow/MainWindow_autogen/include/ui_MainWindow.h:
 
 /usr/include/qt6/QtCore/qiterable.h:
 
-/usr/include/bits/types/wint_t.h:
-
 /usr/include/qt6/QtGui/qguiapplication.h:
 
 /usr/include/c++/15/string:
@@ -2074,8 +2128,6 @@ MainWindow/MainWindow_autogen/include/ui_MainWindow.h:
 /usr/include/bits/xopen_lim.h:
 
 /usr/include/c++/15/bits/range_access.h:
-
-/usr/lib64/libpcre2-8.so.0:
 
 /usr/include/c++/15/algorithm:
 
@@ -2237,8 +2289,6 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt6/QtCore/qbindingstorage.h:
 
-/usr/include/qt6/QtCore/qbytearrayalgorithms.h:
-
 /usr/lib64/libQt6Widgets.so.6.9.1:
 
 /usr/include/c++/15/bits/version.h:
@@ -2263,8 +2313,6 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt6/QtCore/qconfig-64.h:
 
-/usr/lib64/libicuuc.so.76:
-
 /usr/include/qt6/QtCore/qconstructormacros.h:
 
 /usr/include/qt6/QtCore/qutf8stringview.h:
@@ -2278,6 +2326,8 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 /usr/include/qt6/QtCore/qdebug.h:
 
 /usr/include/qt6/QtCore/qelapsedtimer.h:
+
+/usr/include/qt6/QtCore/qurl.h:
 
 /usr/include/qt6/QtCore/qendian.h:
 
@@ -2301,6 +2351,10 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 
 /usr/include/qt6/QtCore/qhash.h:
 
+/usr/lib64/libharfbuzz.so.0:
+
+/usr/include/qt6/QtCore/qiodevicebase.h:
+
 /usr/include/bits/stdint-uintn.h:
 
 /usr/include/qt6/QtCore/qlogging.h:
@@ -2308,8 +2362,6 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 /usr/include/qt6/QtCore/qmap.h:
 
 /usr/include/qt6/QtCore/qmargins.h:
-
-/usr/include/qt6/QtCore/qmath.h:
 
 /usr/include/qt6/QtWidgets/qsizepolicy.h:
 
@@ -2346,6 +2398,10 @@ MainWindow/MainWindow_autogen/EWIEGA46WW/moc_MainWindow.cpp:
 /usr/include/qt6/QtCore/qscopedpointer.h:
 
 /usr/include/qt6/QtCore/qscopeguard.h:
+
+/usr/lib64/libdouble-conversion.so.3:
+
+/usr/include/qt6/QtWidgets/QApplication:
 
 /usr/include/c++/15/bits/enable_special_members.h:
 
@@ -2403,8 +2459,6 @@ MainWindow/CMakeFiles/MainWindow.dir/main.cpp.o:
 
 /usr/include/qt6/QtCore/qtconfigmacros.h:
 
-/usr/lib64/libcap.so.2:
-
 /usr/include/qt6/QtCore/qtcore-config.h:
 
 /usr/include/c++/15/cstddef:
@@ -2438,8 +2492,6 @@ MainWindow/CMakeFiles/MainWindow.dir/main.cpp.o:
 /usr/include/c++/15/bits/stl_multimap.h:
 
 /usr/include/qt6/QtCore/qversiontagging.h:
-
-/usr/lib64/libgraphite2.so.3:
 
 /usr/include/qt6/QtCore/qttypetraits.h:
 
@@ -2483,19 +2535,41 @@ MainWindow/CMakeFiles/MainWindow.dir/main.cpp.o:
 
 /usr/include/qt6/QtGui/qpixmap.h:
 
+/usr/include/qt6/QtGui/qpicture.h:
+
 /usr/include/qt6/QtGui/qrgb.h:
 
 /usr/lib64/libm.so:
+
+/usr/include/qt6/QtCore/qmath.h:
+
+/usr/include/qt6/QtGui/qtextformat.h:
+
+/usr/include/qt6/QtGui/qtextoption.h:
+
+/usr/include/qt6/QtWidgets/qlineedit.h:
 
 /usr/include/qt6/QtGui/qfont.h:
 
 /usr/include/qt6/QtGui/qtguiglobal.h:
 
-/usr/include/bits/pthreadtypes-arch.h:
+/usr/include/c++/15/debug/assertions.h:
 
-/usr/lib64/libfreetype.so.6:
+/usr/include/qt6/QtWidgets/QPushButton:
+
+/usr/include/bits/types/wint_t.h:
+
+/usr/include/qt6/QtWidgets/qabstractbutton.h:
+
+/usr/include/qt6/QtCore/qbytearrayalgorithms.h:
+
+/usr/include/qt6/QtWidgets/qframe.h:
+
+/usr/include/qt6/QtWidgets/qlabel.h:
 
 /usr/include/qt6/QtWidgets/qmainwindow.h:
+
+/usr/include/qt6/QtWidgets/qpushbutton.h:
 
 /usr/include/qt6/QtWidgets/qstatusbar.h:
 
@@ -2570,29 +2644,3 @@ MainWindow/MainWindow_autogen/mocs_compilation.cpp:
 /usr/lib64/libXext.so.6:
 
 /usr/lib64/libbz2.so.1:
-
-/usr/include/c++/15/ctime:
-
-/usr/lib64/libpcre2-16.so.0:
-
-/usr/lib64/libcrypto.so.3:
-
-/usr/lib64/libdbus-1.so.3:
-
-/usr/include/qt6/QtWidgets/QApplication:
-
-/usr/lib64/libdouble-conversion.so.3:
-
-/usr/lib64/libglib-2.0.so.0:
-
-/usr/include/qt6/QtCore/qnamespace.h:
-
-/usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h:
-
-/usr/lib64/libgomp.so.1:
-
-/usr/include/qt6/QtCore/qiodevicebase.h:
-
-/usr/lib64/libharfbuzz.so.0:
-
-/usr/lib64/libicui18n.so.76:

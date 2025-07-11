@@ -27,6 +27,7 @@ class CategoryStudent : category {
         bool enrollCourse();   //use the student_id to enroll into the course
         bool getResults();     //use the student_id to get the results in gpa column
         bool updateProfile();
+        bool deleteProfile();
     public:
         void setId(const int& id);
         int getId();

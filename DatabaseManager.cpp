@@ -60,10 +60,8 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 				conn_->prepareStatement("DELETE FROM Users WHERE username = ?"));
 		stmt->setString(1, username);
 
-		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next() && res->getInt(1)) {
+		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
 			std::cout << "Successfully removed the user: " << username << " from the database" << "\n";
-			return true;
 		} else {
 			std::cout << "Can not delete user because the user is not found: " << username << "\n";
 			return false;
@@ -72,6 +70,7 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 		std::cerr << "Error deleting user: " << e.what() << "\n";
 		return false;
 	}
+	return true;
 }
 
 bool DatabaseManager::updateUser(const std::string &username, const std::string &new_password, const std::string &new_first_name, const std::string &new_last_name, const std::string &new_category, const std::string &new_dob) {
@@ -149,7 +148,7 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 	if (!conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt(
-		conn_->prepareStatement("SELECT * FROM Users WHERE username =? AND password=?"));
+		conn_->prepareStatement("SELECT * FROM Users WHERE username =? AND password =?"));
 	stmt->setString(1, username);   //this is the username from the user while logging in
 	stmt->setString(2, password);   //this is the password from the user while logging in
 

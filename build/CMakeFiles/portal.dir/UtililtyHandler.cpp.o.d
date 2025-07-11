@@ -1,7 +1,7 @@
-CMakeFiles/portal.dir/main.cpp.o: \
- /home/hamidmdala/Desktop/CLionProjects/Portal/main.cpp \
+CMakeFiles/portal.dir/UtililtyHandler.cpp.o: \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.cpp \
  /usr/include/stdc-predef.h \
- /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h \
  /usr/include/c++/15/string /usr/include/c++/15/bits/requires_hosted.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
@@ -96,9 +96,9 @@ CMakeFiles/portal.dir/main.cpp.o: \
  /usr/include/c++/15/bits/memory_resource.h /usr/include/c++/15/cstddef \
  /usr/include/c++/15/bits/uses_allocator.h \
  /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
- /usr/include/c++/15/fstream /usr/include/c++/15/istream \
- /usr/include/c++/15/ios /usr/include/c++/15/exception \
- /usr/include/c++/15/bits/exception_ptr.h \
+ /usr/include/c++/15/iostream /usr/include/c++/15/ostream \
+ /usr/include/c++/15/bits/ostream.h /usr/include/c++/15/ios \
+ /usr/include/c++/15/exception /usr/include/c++/15/bits/exception_ptr.h \
  /usr/include/c++/15/bits/cxxabi_init_exception.h \
  /usr/include/c++/15/typeinfo /usr/include/c++/15/bits/nested_exception.h \
  /usr/include/c++/15/bits/ios_base.h /usr/include/c++/15/ext/atomicity.h \
@@ -132,12 +132,14 @@ CMakeFiles/portal.dir/main.cpp.o: \
  /usr/include/c++/15/bits/streambuf_iterator.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/ctype_inline.h \
  /usr/include/c++/15/bits/locale_facets.tcc \
- /usr/include/c++/15/bits/basic_ios.tcc /usr/include/c++/15/ostream \
- /usr/include/c++/15/bits/ostream.h /usr/include/c++/15/bits/ostream.tcc \
- /usr/include/c++/15/bits/istream.tcc /usr/include/c++/15/bits/codecvt.h \
+ /usr/include/c++/15/bits/basic_ios.tcc \
+ /usr/include/c++/15/bits/ostream.tcc /usr/include/c++/15/istream \
+ /usr/include/c++/15/bits/istream.tcc \
+ /home/hamidmdala/Desktop/CLionProjects/Portal/PortalUsers.h \
+ /usr/include/c++/15/fstream /usr/include/c++/15/bits/codecvt.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/basic_file.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++io.h \
- /usr/include/c++/15/bits/fstream.tcc /usr/include/c++/15/iostream \
+ /usr/include/c++/15/bits/fstream.tcc \
  /home/hamidmdala/Desktop/CLionProjects/Portal/DatabaseManager.h \
  /usr/include/c++/15/memory /usr/include/c++/15/bits/stl_tempbuf.h \
  /usr/include/c++/15/bits/stl_uninitialized.h \
@@ -218,4 +220,4 @@ CMakeFiles/portal.dir/main.cpp.o: \
  /usr/include/mariadb/conncpp.hpp \
  /home/hamidmdala/Desktop/CLionProjects/Portal/HandlingValidationCheck.h \
  /home/hamidmdala/Desktop/CLionProjects/Portal/NavigationMenus.h \
- /home/hamidmdala/Desktop/CLionProjects/Portal/UtililtyHandler.h
+ /usr/include/mariadb/conncpp/Connection.hpp

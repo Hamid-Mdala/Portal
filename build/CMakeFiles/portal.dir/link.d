@@ -8,6 +8,7 @@ portal: \
   CMakeFiles/portal.dir/NavigationMenus.cpp.o \
   CMakeFiles/portal.dir/DatabaseManager.cpp.o \
   CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o \
+  CMakeFiles/portal.dir/UtililtyHandler.cpp.o \
   /usr/lib64/libQt6Widgets.so.6.9.1 \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/libmariadbcpp.so \
   /usr/lib64/libQt6Gui.so.6.9.1 \
@@ -94,6 +95,8 @@ CMakeFiles/portal.dir/NavigationMenus.cpp.o:
 CMakeFiles/portal.dir/DatabaseManager.cpp.o:
 
 CMakeFiles/portal.dir/HandlingValidationCheck.cpp.o:
+
+CMakeFiles/portal.dir/UtililtyHandler.cpp.o:
 
 /usr/lib64/libQt6Widgets.so.6.9.1:
 

@@ -18,7 +18,7 @@ bool ValidationCheck::validatePassword(const string& password) {
 	return false;
 }
 bool ValidationCheck::validateId(const int& id) {
-	if(id > 0 || id != NULL) {
+	if(id > 0 || id != '\0') {
 		return true;
 	}
 	printf("Error: Invalid ID length\n");

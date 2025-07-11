@@ -46,13 +46,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 42,
+				"line" : 44,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 34,
+				"line" : 36,
 				"parent" : 0
 			},
 			{
@@ -218,7 +218,8 @@
 				3,
 				5,
 				7,
-				9
+				9,
+				10
 			]
 		}
 	],
@@ -293,7 +294,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				10
+				12
 			]
 		},
 		{
@@ -304,7 +305,8 @@
 				3,
 				5,
 				7,
-				9
+				9,
+				10
 			]
 		},
 		{
@@ -314,14 +316,15 @@
 				2,
 				4,
 				6,
-				8
+				8,
+				11
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				11
+				13
 			]
 		}
 	],
@@ -383,6 +386,17 @@
 			"compileGroupIndex" : 0,
 			"path" : "HandlingValidationCheck.cpp",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "UtililtyHandler.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "UtililtyHandler.h",
+			"sourceGroupIndex" : 2
 		},
 		{
 			"backtrace" : 0,

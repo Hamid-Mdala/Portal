@@ -33,13 +33,12 @@ int main() {
 					std::cout << "Enter your username: ";
 					std::cin >> data.username;
 					exists = ValidationCheck::validateUsername(data.username);
-
-				} while (!exists);
+				} while (!exists); system("clear");
 				do {
 					std::cout << "Enter your password: ";
 					std::cin >> data.password;
 					exists = ValidationCheck::validatePassword(data.password);
-				} while (!exists);
+				} while (!exists); system("clear");
 			} while(!dbManager.authenticateUser(data.username, data.password));
 
 		} else if (option == 'n' || option == 'N') {
@@ -49,13 +48,14 @@ int main() {
 				exists = ValidationCheck::validateUsername(data.username);
 			} while (!exists);
 			exists = dbManager.searchUser(data.username);
-			//std::system("clear");  //this will remove the details from the search
+			std::system("clear");  //this will remove the details from the search
 			while (exists) {
 				do {
 					std::cout << "Username already exists, please try another another username." << "\n";
 					std::cout << "Enter your username: " << "\n";
 					std::cin >> data.username;
 					exists = ValidationCheck::validateUsername(data.username);
+					system("clear");
 				} while (!exists);
 				exists = dbManager.searchUser(data.username);
 				if (exists == false) {
@@ -66,22 +66,26 @@ int main() {
 				std::cout << "Enter your password: " << "\n";
 				std::cin >> data.password;
 				exists = ValidationCheck::validatePassword(data.password);
+				system("clear");
 			} while (!exists);
 			do {
 				std::cout << "Enter your first name: " << "\n";
 				std::cin >> data.first_name;
 				exists = ValidationCheck::validateFirstName(data.first_name);
+				system("clear");
 			} while (!exists);
 			do {
 				std::cout << "Enter last name: " << "\n";
 				std::cin >> data.last_name;
 				exists = ValidationCheck::validateLastName(data.last_name);
+				system("clear");
 			} while (!exists);
 			do {
 				std::cout << "Who are you signing up as \n Are you either 'student, teacher or admin'?" << "\n";
 				std::cout << "Enter your category: " << "\n";
 				std::cin >> data.category;
 				exists = ValidationCheck::validateCategory(data.category);
+				system("clear");
 			} while (!exists);
 			do {
 				std::cout << "Enter your Date Of Birth (DD MM YYYY)" << "\n";
@@ -92,6 +96,7 @@ int main() {
 				std::cout << "Year(YYYY): ";
 				std::cin >> data.year;
 				exists = ValidationCheck::validateDOB(data.day, data.month, data.year);
+				system("clear");
 			} while (!exists);
 			//now create the user in the database
 			dbManager.createUser(data.username, data.password,
@@ -111,8 +116,11 @@ int main() {
 				std::cout << "2. Get results score" << "\n";
 				std::cout << "3. Update profile" << "\n";
 				std::cout << "4. Delete profile" << "\n";
+				std::cout << "Note: enter 0 to end program" << "\n";
 				std::cout << "Enter your choice: " << "\n";
 				std::cin >> choice;
+				system("clear");
+
 				if (choice == 1) {
 					studentUser.enrollCourse();
 				} else if (choice == 2) {
@@ -120,12 +128,16 @@ int main() {
 				} else if (choice == 3) {
 					studentUser.updateProfile();
 				} else if (choice == 4) {
-					//studentUser.deleteProfile();
-				} else {
+					studentUser.deleteProfile();
+				} else if (choice == 0) {
+					std::cout << "Ended program.." << "\n";
+					return 0;
+				}
+				else {
 					std::cout << "Please enter a valid choice between (1-4)" << "\n";
 					return false;
 				}
-			} while (!false);
+			} while (choice != 0 || !false);
 		}
 	} while (!false);
 }

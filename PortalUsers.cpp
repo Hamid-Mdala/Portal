@@ -116,7 +116,7 @@ bool User::editFirstName() {
 	{
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.updateUser(username_, password_, f_name, last_name, category, birth_date);
-		std::cout << "First name updated successfully." << "\n";
+
 	}
 	return true;
 }

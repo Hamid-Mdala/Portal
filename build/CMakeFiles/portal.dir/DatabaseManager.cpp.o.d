@@ -211,4 +211,5 @@ CMakeFiles/portal.dir/DatabaseManager.cpp.o: \
  /usr/include/mariadb/conncpp/Exception.hpp \
  /usr/include/mariadb/conncpp/jdbccompat.hpp \
  /usr/include/mariadb/MariaDbDataSource.hpp \
- /usr/include/mariadb/conncpp.hpp /usr/include/c++/15/iostream
+ /usr/include/mariadb/conncpp.hpp /usr/include/c++/15/iostream \
+ /usr/include/c++/15/utility /usr/include/c++/15/bits/stl_relops.h

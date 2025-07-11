@@ -387,6 +387,30 @@ PortalUsers.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/PortalUsers.cpp.s
 .PHONY : PortalUsers.cpp.s
 
+UtililtyHandler.o: UtililtyHandler.cpp.o
+.PHONY : UtililtyHandler.o
+
+# target to build an object file
+UtililtyHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/UtililtyHandler.cpp.o
+.PHONY : UtililtyHandler.cpp.o
+
+UtililtyHandler.i: UtililtyHandler.cpp.i
+.PHONY : UtililtyHandler.i
+
+# target to preprocess a source file
+UtililtyHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/UtililtyHandler.cpp.i
+.PHONY : UtililtyHandler.cpp.i
+
+UtililtyHandler.s: UtililtyHandler.cpp.s
+.PHONY : UtililtyHandler.s
+
+# target to generate assembly for a file
+UtililtyHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/UtililtyHandler.cpp.s
+.PHONY : UtililtyHandler.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -469,6 +493,9 @@ help:
 	@echo "... PortalUsers.o"
 	@echo "... PortalUsers.i"
 	@echo "... PortalUsers.s"
+	@echo "... UtililtyHandler.o"
+	@echo "... UtililtyHandler.i"
+	@echo "... UtililtyHandler.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

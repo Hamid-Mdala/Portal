@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/portal.dir/NavigationMenus.cpp.o.d"
   "CMakeFiles/portal.dir/PortalUsers.cpp.o"
   "CMakeFiles/portal.dir/PortalUsers.cpp.o.d"
+  "CMakeFiles/portal.dir/UtililtyHandler.cpp.o"
+  "CMakeFiles/portal.dir/UtililtyHandler.cpp.o.d"
   "CMakeFiles/portal.dir/main.cpp.o"
   "CMakeFiles/portal.dir/main.cpp.o.d"
   "CMakeFiles/portal.dir/portal_autogen/mocs_compilation.cpp.o"

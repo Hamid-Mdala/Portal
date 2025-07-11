@@ -118,12 +118,12 @@ CMakeFiles/portal.dir/all: CMakeFiles/portal_autogen_timestamp_deps.dir/all
 CMakeFiles/portal.dir/all: CMakeFiles/portal_autogen.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=10,11,12,13,14,15,16,17 "Built target portal"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=10,11,12,13,14,15,16,17,18 "Built target portal"
 .PHONY : CMakeFiles/portal.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/portal.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/portal.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles 0
 .PHONY : CMakeFiles/portal.dir/rule
@@ -135,7 +135,7 @@ portal: CMakeFiles/portal.dir/rule
 # codegen rule for target.
 CMakeFiles/portal.dir/codegen: CMakeFiles/portal_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal.dir/build.make CMakeFiles/portal.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=10,11,12,13,14,15,16,17 "Finished codegen for target portal"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=10,11,12,13,14,15,16,17,18 "Finished codegen for target portal"
 .PHONY : CMakeFiles/portal.dir/codegen
 
 # clean rule for target.
@@ -182,7 +182,7 @@ CMakeFiles/portal_autogen_timestamp_deps.dir/clean:
 CMakeFiles/portal_autogen.dir/all: CMakeFiles/portal_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal_autogen.dir/build.make CMakeFiles/portal_autogen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal_autogen.dir/build.make CMakeFiles/portal_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=18 "Built target portal_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=19 "Built target portal_autogen"
 .PHONY : CMakeFiles/portal_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -199,7 +199,7 @@ portal_autogen: CMakeFiles/portal_autogen.dir/rule
 # codegen rule for target.
 CMakeFiles/portal_autogen.dir/codegen: CMakeFiles/portal_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/portal_autogen.dir/build.make CMakeFiles/portal_autogen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=18 "Finished codegen for target portal_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/hamidmdala/Desktop/CLionProjects/Portal/build/CMakeFiles --progress-num=19 "Finished codegen for target portal_autogen"
 .PHONY : CMakeFiles/portal_autogen.dir/codegen
 
 # clean rule for target.
