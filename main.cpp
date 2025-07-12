@@ -113,7 +113,7 @@ int main() {
 				Menu menu(data.username, data.category);
 				menu.studentMenu();
 				//menu.teacherMenu();
-				//menu.adminMenu();
+				menu.adminMenu();
 			}
 
 	} while (option != '\0');  //so that the user inputs either yes or no

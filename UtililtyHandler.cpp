@@ -5,8 +5,10 @@
 #include <conncpp/Connection.hpp>
 
 static float gpa;
+inline std::string global_course;
 
-CategoryStudent::CategoryStudent(const std::string &username) {this->username_ = username;}
+Category::Category(const std::string &username) {this->username_ = username;}
+
 
 bool CategoryStudent::enrollCourse() {  //a student is made when they enroll into a course
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
@@ -174,6 +176,35 @@ bool CategoryStudent::deleteProfile() {
         std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
         std::exit(EXIT_FAILURE);  //exit the program
     }
+}
+
+std::string CategoryAdmin::makeCourseInDB() {
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    sql::Connection& conn_ = dbManager.getConnectionRef();
+
+    std::cout << "Enter the course code: " << "\n";
+    std::cin >> course_code;
+
+    std::unique_ptr<sql::PreparedStatement> stmt(
+        conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
+
+    if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+        std::cout << "already exists" << "\n";
+    } else {
+        std::cout << "Enter course name: " << "\n";
+        std::cin >> course_name;
+        std::cout << "Enter department: " << "\n";
+        std::cin >> department;
+
+        if (bool exists = dbManager.createCourse(course_code, course_name, department)) {
+            std::cout << "Successfully created a course" << "\n";
+        } else {
+            std::cout << "Couldn't create a course" << "\n";
+            std::exit(EXIT_FAILURE);
+        }
+    }
+    return global_course = course_code;
 }
 
 

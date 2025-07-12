@@ -271,7 +271,7 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Students (student_id, class, user_id, gpa, course_code VALUES(?, ?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Students (student_id, class, user_id, gpa, course_code) VALUES(?, ?, ?, ?, ?)"));
 		stmt->setInt(1, student_id);
 		stmt->setString(2, class_);
 		stmt->setInt(3, user_id);
@@ -287,8 +287,26 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
-bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id) {
+bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const std::string& department,
+	const std::string& office_number, const std::string& hire_date) {
+	try {
+		if (!conn_) return false;
 
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("INSERT INTO Admin (admin_id, user_id, department, office_number, hire_date) VALUES(?, ?, ?, ?, ?)"));
+		stmt->setInt(1, admin_id);
+		stmt->setInt(2, user_id);
+		stmt->setString(3, department);
+		stmt->setString(4, office_number);
+		stmt->setString(5, hire_date);
+
+		std::cout << "The admin is successfully created" << "\n";
+		return stmt->executeUpdate() > 0;
+
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error creating admin: " << e.what() << "\n";
+		return false;
+	}
 }
 
 void DatabaseManager::setConnection(std::unique_ptr<sql::Connection> conn) {conn_ = std::move(conn);}

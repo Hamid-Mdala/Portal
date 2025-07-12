@@ -2,6 +2,8 @@
 #include "UtililtyHandler.h"
 #include <utility>
 
+#include "DatabaseManager.h"
+
 Menu::Menu(const std::string& username, const std::string& category) {
 	username_ = username;
 	category_ = category;
@@ -43,33 +45,73 @@ bool Menu::studentMenu() {
 }
 
 bool Menu::teacherMenu() {
-
+	return true;
 }
 
 bool Menu::adminMenu() {
-	while (category_ == "admin") {
-		int choice;
-		do {
-			std::cout << "1. View" << "\n";
-			std::cout << "2. Create course" << "\n";
-			std::cout << "3. Delete course" << "\n";
-			std::cout << "Enter your choice: " << "\n";
-			std::cin >> choice;
-			switch (choice) {
-				case 1: //viewing details in the database
+	while (category_ == "admin") {  //admin has access to full database controls that is why we
+		CategoryAdmin adminUser(username_);
+		//sign up an account in the admin database
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.connect();
+		sql::Connection& conn_ = dbManager.getConnectionRef();
 
-					break;
-				case 2: //Create the course
+		std::unique_ptr<sql::PreparedStatement> stmt(
+			conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
+		stmt->setString(1, username_);
+		std::cout << "Username is " << username_ << std::endl;
 
-					break;
-				case 3: //Delete the course
+		if (bool exists = dbManager.searchUser(username_)) {
+			int user_id;
+			std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+			user_id = res->getInt("id");
 
-					break;
-				default:
-					std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
-					return false;
+			stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE user_id = ?"));
+			stmt->setInt(1, user_id);
+
+			if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+				int choice;
+				do {
+					std::cout << "1. View" << "\n";
+					std::cout << "2. Create course" << "\n";
+					std::cout << "3. Delete course" << "\n";
+					std::cout << "Enter your choice: " << "\n";
+					std::cin >> choice;
+					switch (choice) {
+						case 1: //viewing details in the database
+
+							break;
+						case 2: //Create the course
+								adminUser.makeCourseInDB();
+							break;
+						case 3: //Delete the course
+
+							break;
+						default:
+							std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
+					}
+				} while (choice > 3 || choice < 1);
+			} else {
+				int admin_id;
+				std::string department_;
+				int day, month, year;
+				std::string hire_date;
+				std::string office_number;
+
+				std::cout << "What is your Identification Number(ID): " << "\n";
+				std::cin >> admin_id;
+				std::cout << "What is your office (room number): " << "\n";
+				std::cin >> office_number;
+				std::cout << "Which department do you work-in this corporation: " << "\n";
+				std::cin >> department_;
+
+				dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
 			}
-		} while (!false);
+		} else {
+			std::cout << "Couldn't find user" << "\n";
+			std::cout << "Please report to the software engineer teem to fix your issue" << "\n";
+			std::exit(EXIT_FAILURE);
+		}
 	}
 	return true;
 }
