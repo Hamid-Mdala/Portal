@@ -8,7 +8,7 @@ static float gpa;
 
 CategoryStudent::CategoryStudent(const std::string &username) {this->username_ = username;}
 
-bool CategoryStudent::enrollCourse() {
+bool CategoryStudent::enrollCourse() {  //a student is made when they enroll into a course
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     std::cout << "Enroll Course" << "\n";
     dbManager.connect();

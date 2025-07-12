@@ -18,7 +18,7 @@ class CategoryEmployee: category {
 };
 class CategoryStudent : category {
     public:
-        std::string year;      //the year the student is in
+        std::string year;      //the year the student is in like fresh-man
     private:
         int student_id;  //Used as a key in the table
     public:

@@ -2,14 +2,15 @@
 #include <iostream>
 
 class Menu {
-    public:
-        Menu(const std::string& username, const std::string& category);
-        bool studentMenu();
-        bool teacherMenu();
-        bool adminMenu();
-    private:
-        std::string username_;   //should be private because we do not want any user gaining access to other user profile
-        static std::string category_;  //so that the same category is use within methods in this class
+        private:
+                std::string username_;   //should be private because we do not want any user gaining access to other user profile
+                std::string category_;  //so that the same category is use within methods in this class
+        public:
+                Menu(const std::string& username, const std::string& category);
+                bool studentMenu();
+                bool teacherMenu();
+                bool adminMenu();
+
 };
 
 

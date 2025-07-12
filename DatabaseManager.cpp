@@ -287,6 +287,9 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
+bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id) {
+
+}
 
 void DatabaseManager::setConnection(std::unique_ptr<sql::Connection> conn) {conn_ = std::move(conn);}
 sql::Connection& DatabaseManager::getConnectionRef() {

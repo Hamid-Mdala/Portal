@@ -36,7 +36,7 @@ class DatabaseManager {
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const float& gpa, const std::string& course_code);
-
+        bool createAdmin(const int& admin_id, const int& user_id);
         //
     //setter and getters
         void setUser(const std::string& user);

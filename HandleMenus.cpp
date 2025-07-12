@@ -42,12 +42,37 @@ bool Menu::studentMenu() {
 	return true;
 }
 
+bool Menu::teacherMenu() {
 
+}
 
+bool Menu::adminMenu() {
+	while (category_ == "admin") {
+		int choice;
+		do {
+			std::cout << "1. View" << "\n";
+			std::cout << "2. Create course" << "\n";
+			std::cout << "3. Delete course" << "\n";
+			std::cout << "Enter your choice: " << "\n";
+			std::cin >> choice;
+			switch (choice) {
+				case 1: //viewing details in the database
 
+					break;
+				case 2: //Create the course
 
+					break;
+				case 3: //Delete the course
 
-
+					break;
+				default:
+					std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
+					return false;
+			}
+		} while (!false);
+	}
+	return true;
+}
 
 
 
