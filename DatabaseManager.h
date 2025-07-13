@@ -3,8 +3,7 @@
 #include<string>
 #include <mariadb/conncpp.hpp>
 
-extern std::string category;
-
+extern std::string category; //this is used to get the category when the user logs in
 class DatabaseManager {
     private:
         std::string user_;

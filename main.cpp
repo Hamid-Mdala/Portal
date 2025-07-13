@@ -3,6 +3,8 @@
 #include "DatabaseManager.h"    //Database operations
 #include "HandleMenus.h"
 
+inline std::string category;
+
 //int main() function will handle a case when the files are not yet made on a server: else take them to the logging page
 struct DataTypes {
 	std::string username;
@@ -12,8 +14,6 @@ struct DataTypes {
 	std::string category;
 	int day{}, month{}, year{};
 };
-
-inline std::string category;
 
 int main() {
 	DataTypes data;
@@ -106,17 +106,23 @@ int main() {
 				data.month, data.year);
 		} else {
 			std::cout << "Invalid choice option" << "\n";
-			return false;
+			std::cout << "option must be either yes('y' or 'Y') or no('n' or 'N')" << "\n";
 		}
-
 			{
 				Menu menu(data.username, data.category);
 				menu.studentMenu();
 				//menu.teacherMenu();
 				menu.adminMenu();
 			}
+			{
+				Menu menu(data.username, category);
+				menu.studentMenu();
+				//menu.teacherMenu();
+				menu.adminMenu();
+			}
 
-	} while (option != '\0');  //so that the user inputs either yes or no
+	} while (option != 'y' || option != 'Y' || option != 'n' || option != 'N');  //so that the user inputs either yes or no
+
 
 	return 0;
 }

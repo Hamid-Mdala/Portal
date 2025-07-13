@@ -1,8 +1,12 @@
 #include "HandleMenus.h"
+
+#include <filesystem>
+
 #include "UtililtyHandler.h"
 #include <utility>
 
 #include "DatabaseManager.h"
+#include "HandlingValidationCheck.h"
 
 Menu::Menu(const std::string& username, const std::string& category) {
 	username_ = username;
@@ -59,17 +63,17 @@ bool Menu::adminMenu() {
 		std::unique_ptr<sql::PreparedStatement> stmt(
 			conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
 		stmt->setString(1, username_);
-		std::cout << "Username is " << username_ << std::endl;
 
-		if (bool exists = dbManager.searchUser(username_)) {
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
 			int user_id;
-			std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+
 			user_id = res->getInt("id");
 
 			stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE user_id = ?"));
 			stmt->setInt(1, user_id);
 
-			if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+			res.reset(stmt->executeQuery());
+			if (res->next() && res->getInt(1)) {
 				int choice;
 				do {
 					std::cout << "1. View" << "\n";
@@ -91,21 +95,33 @@ bool Menu::adminMenu() {
 							std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
 					}
 				} while (choice > 3 || choice < 1);
+
 			} else {
 				int admin_id;
 				std::string department_;
 				int day, month, year;
 				std::string hire_date;
 				std::string office_number;
+				bool exists;
+				do {
+					std::cout << "What is your Identification Number(ID): " << "\n";
+					std::cin >> admin_id;  //add verification mechanism
+					std::cout << "What is your office (room number): " << "\n";
+					std::cin >> office_number;
+					std::cout << "Which department do you work-in this corporation: " << "\n";
+					std::cin >> department_;
+					std::cout << "What was is your hire date: " << "\n";
+					std::cout << "Day(DD): " << "\n";
+					std::cin >> day;
+					std::cout << "Month(MM): " << "\n";
+					std::cin >> month;
+					std::cout << "Year(YYYY): " << "\n";
+					std::cin >> year;
+					exists = ValidationCheck::validateDOB(day, month, year);
+					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
+					dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
+				} while (!exists);
 
-				std::cout << "What is your Identification Number(ID): " << "\n";
-				std::cin >> admin_id;
-				std::cout << "What is your office (room number): " << "\n";
-				std::cin >> office_number;
-				std::cout << "Which department do you work-in this corporation: " << "\n";
-				std::cin >> department_;
-
-				dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
 			}
 		} else {
 			std::cout << "Couldn't find user" << "\n";

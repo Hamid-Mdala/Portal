@@ -188,6 +188,7 @@ std::string CategoryAdmin::makeCourseInDB() {
 
     std::unique_ptr<sql::PreparedStatement> stmt(
         conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
+    stmt->setString(1, course_code);
 
     if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
         std::cout << "already exists" << "\n";

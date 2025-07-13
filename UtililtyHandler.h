@@ -53,7 +53,7 @@ class CategoryAdmin : CategoryEmployee, Category {
 
 };
 
-extern std::string global_course;
+extern  std::string global_course;  //used in teacher and student
 
 class CategoryTeacher : CategoryEmployee, Category {
     private:
