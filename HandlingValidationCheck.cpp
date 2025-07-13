@@ -93,11 +93,11 @@ bool ValidationCheck::validateYear(const string& year) {
 	printf("please make sure the year is either 'fresh-man, sophomore, junior, senior'");
 	return false;
 }
-bool ValidationCheck::validateStudentClassification(const string& student_classification) {
-	if(student_classification.length() > 5 && student_classification.length() <= 9) {
-		return true;
-	} else {
+bool ValidationCheck::validateAllString(const string& any_string) {
+	if(any_string.empty()) {
 		return false;
+	} else {
+		return true;
 	}
 }
 bool ValidationCheck::validateGpa(const string& gpa) {

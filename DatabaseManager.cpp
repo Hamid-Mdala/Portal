@@ -253,15 +253,17 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 	if (!conn_) return false;
 	//make a statement
 	std::unique_ptr<sql::PreparedStatement> stmt(
-	conn_->prepareStatement("SELECT COUNT(*) FROM Course WHERE code = ?"));
+	conn_->prepareStatement("SELECT COUNT(*) FROM Course WHERE course_code = ?"));
 	stmt->setString(1, code);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next() && res->getInt(1)) {
-		std::cout << "Successfully removed the user: " << code << "from the database" << "\n";
+		std::cout << "found the course: " << code << " from the database" << "\n";
 		return true;
+	} else {
+		std::cout << "No course found with course_code: " << code << "\n";
+		return false;
 	}
-	return false;
 }
 
 bool DatabaseManager::createStudent(const int &student_id, const std::string &class_,

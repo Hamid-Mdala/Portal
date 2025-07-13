@@ -13,7 +13,6 @@ Menu::Menu(const std::string& username, const std::string& category) {
 	category_ = category;
 }
 
-
 bool Menu::studentMenu() {
 	while(category_ == "student") {
 		CategoryStudent studentUser(username_);
@@ -79,22 +78,32 @@ bool Menu::adminMenu() {
 					std::cout << "1. View" << "\n";
 					std::cout << "2. Create course" << "\n";
 					std::cout << "3. Delete course" << "\n";
+					std::cout << "4. Update Profile" << "\n";
+					std::cout << "5. Delete Profile" << "\n";
+ 					std::cout << "Note: enter 0 to end program" << "\n";
 					std::cout << "Enter your choice: " << "\n";
 					std::cin >> choice;
-					switch (choice) {
-						case 1: //viewing details in the database
+					system("clear");
 
-							break;
-						case 2: //Create the course
-								adminUser.makeCourseInDB();
-							break;
-						case 3: //Delete the course
-
-							break;
-						default:
-							std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
+					if (choice == 1) {
+						//adminView(); either students, teachers and courses
+					} else if (choice == 2) {
+						adminUser.makeCourseInDB();
+					} else if (choice == 3) {
+						//adminUser.removeCourseInDB();
+					} else if (choice == 4) {
+						adminUser.updateProfile();
+					} else if (choice == 5) {
+						adminUser.deleteProfile();
 					}
-				} while (choice > 3 || choice < 1);
+					else if (choice == 0) {
+						std::cout << "Ended program.." << "\n";
+						std::exit(EXIT_SUCCESS);
+					} else {
+						std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
+						return false;
+					}
+				} while (choice != 0 || !false);
 
 			} else {
 				int admin_id;
@@ -104,24 +113,37 @@ bool Menu::adminMenu() {
 				std::string office_number;
 				bool exists;
 				do {
-					std::cout << "What is your Identification Number(ID): " << "\n";
-					std::cin >> admin_id;  //add verification mechanism
-					std::cout << "What is your office (room number): " << "\n";
-					std::cin >> office_number;
-					std::cout << "Which department do you work-in this corporation: " << "\n";
-					std::cin >> department_;
-					std::cout << "What was is your hire date: " << "\n";
-					std::cout << "Day(DD): " << "\n";
-					std::cin >> day;
-					std::cout << "Month(MM): " << "\n";
-					std::cin >> month;
-					std::cout << "Year(YYYY): " << "\n";
-					std::cin >> year;
-					exists = ValidationCheck::validateDOB(day, month, year);
+					do {
+						std::cout << "What is your Identification Number(ID): " << "\n";
+						std::cin >> admin_id;  //add verification mechanism
+						exists = ValidationCheck::validateId(admin_id);
+					} while (!exists);
+
+					do {
+						std::cout << "What is your office (room number): " << "\n";
+						std::cin >> office_number;
+						exists = ValidationCheck::validateAllString(office_number);
+					} while (!exists);
+
+					do {
+						std::cout << "Which department do you work-in this corporation: " << "\n";
+						std::cin >> department_;
+						exists = ValidationCheck::validateAllString(department_);
+					} while (!exists);
+
+					do {
+						std::cout << "What was is your hire date: " << "\n";
+						std::cout << "Day(DD): " << "\n";
+						std::cin >> day;
+						std::cout << "Month(MM): " << "\n";
+						std::cin >> month;
+						std::cout << "Year(YYYY): " << "\n";
+						std::cin >> year;
+						exists = ValidationCheck::validateDOB(day, month, year);
+					} while (!exists);
 					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
 					dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
 				} while (!exists);
-
 			}
 		} else {
 			std::cout << "Couldn't find user" << "\n";

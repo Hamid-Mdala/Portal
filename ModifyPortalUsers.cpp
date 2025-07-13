@@ -105,18 +105,24 @@ bool User::editFirstName() {
 	do {
 		std::cout << "Please Enter New First Name: ";
 		std::cin >> f_name;
-		while (f_name == first_name) {
-			std::cout << "You entered your old first name." << "\n";
-			std::cout << "Please Enter New first Name: ";
-			std::cin >> f_name;
-		}
 		exists = ValidationCheck::validateFirstName(f_name);
 	} while (!exists);
 
+	do {
+		if (exists && f_name == first_name) {std::cout << "You entered your old first name." << "\n";
+			std::cout << "Please Enter New first Name: ";
+			std::cin >> f_name;
+			exists = ValidationCheck::validateFirstName(f_name);
+		} else if (!exists) {
+			std::cout << "Please Enter New first Name: ";
+			std::cin >> f_name;
+			exists = ValidationCheck::validateFirstName(f_name);
+		}
+	} while (!exists || f_name == first_name);
 	{
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.connect();
 		dbManager.updateUser(username_, password_, f_name, last_name, category, birth_date);
-
 	}
 	return true;
 }
@@ -127,20 +133,23 @@ bool User::editLastName() {
 	do {
 		std::cout << "Please Enter New Last Name: ";
 		std::cin >> l_name;
-		while (l_name == last_name) {
-			std::cout << "You entered your old Last Name." << "\n";
-			std::cout << "Please Enter New Last Name: ";
-			std::cin >> l_name;
+		do {
+			exists = ValidationCheck::validateFirstName(l_name);
+			if (exists && l_name == first_name) {std::cout << "You entered your old last name." << "\n";
+				std::cout << "Please Enter New Last Name: ";
+				std::cin >> l_name;
+			} else if (!exists) {
+				std::cout << "Please Enter New Last Name: ";
+				std::cin >> l_name;
+			}
+		} while (l_name == first_name || !exists);
+		{
+			DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+			dbManager.connect();
+			dbManager.updateUser(username_, password_, first_name, l_name, category, birth_date);
 		}
 		exists = ValidationCheck::validateFirstName(l_name);
-
 	} while (!exists);
-
-	{
-		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-		dbManager.updateUser(username_, password_, l_name, last_name, category, birth_date);
-		std::cout << "Last name updated successfully." << "\n";
-	}
 	return true;
 }
 
@@ -148,7 +157,7 @@ bool User::editDOB() {
 	bool exists;
 	int day, month, year;
 	do {
-		std::cout << "Enter your new date of birth (DD MM YYYY)";
+		std::cout << "Enter your new date of birth (DD MM YYYY)" << "\n";
 		std::cout << "Day(DD): ";
 		std::cin >> day;
 		std::cout << "Month(MM): ";
@@ -158,12 +167,11 @@ bool User::editDOB() {
 		exists = ValidationCheck::validateDOB(day, month, year);
 
 	} while (!exists);
-
-	std::string birth_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
 	{
+		std::string new_dob = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-		dbManager.updateUser(username_, password_, first_name, last_name, category, birth_date);
-		std::cout << "Date Of Birth updated successfully." << "\n";
+		dbManager.connect();
+		dbManager.updateUser(username_, password_, first_name, last_name, category, new_dob);
 	}
 	return true;
 }

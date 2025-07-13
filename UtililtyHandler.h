@@ -8,6 +8,9 @@ class Category {
         int user_id;  //user_id
         std::string course_code;   //the course_code is made by the admin and used by the student and teacher
         std::string semester;     //the semester is made by the admin and used by student and teacher
+    public:
+        bool updateProfile();
+        bool deleteProfile();
 };
 
 
@@ -19,7 +22,7 @@ class CategoryEmployee {
 
 };
 
-class CategoryStudent : Category {
+class CategoryStudent : public Category {
     public:
         std::string year;      //the year the student is in like fresh-man
     private:
@@ -28,8 +31,6 @@ class CategoryStudent : Category {
         CategoryStudent(const std::string& username): Category(username) {};
         bool enrollCourse();   //use the student_id to enroll into the course
         bool getResults();     //use the student_id to get the results in gpa column
-        bool updateProfile();
-        bool deleteProfile();
     public:
         void setId(const int& id);
         int getId();
@@ -41,24 +42,22 @@ class CategoryStudent : Category {
          */
 };
 
-class CategoryAdmin : CategoryEmployee, Category {
+class CategoryAdmin : public CategoryEmployee, public Category {
     private:
         std::string admin_id; //Used as a key in the table
         std::string course_name;
     public:
-        CategoryAdmin(const std::string& username): Category(username) {};
+        CategoryAdmin(const std::string& username): CategoryEmployee(), Category(username) {};
         std::string makeCourseInDB();
     public:
-
-
 };
 
 extern  std::string global_course;  //used in teacher and student
 
-class CategoryTeacher : CategoryEmployee, Category {
+class CategoryTeacher : public CategoryEmployee, public Category {
     private:
         std::string teacher_id; //Used as the key in the table
         std::string gpa_;  //the role of teacher to make the students gpa
     public:
-    CategoryTeacher(const std::string& username): Category(username) {};
+    CategoryTeacher(const std::string& username): CategoryEmployee(), Category(username) {};
 };

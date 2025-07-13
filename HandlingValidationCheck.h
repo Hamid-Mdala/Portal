@@ -17,7 +17,7 @@ class ValidationCheck {
         static bool validateCourseName(const string& course_name);
         static bool validateYear(const string& course_year);
         static bool validateGpa(const string& gpa);
-        static bool validateStudentClassification(const string& student_classification);
+        static bool validateAllString(const string& any_string);
 };
 
 #endif //HANDLINGVALIDATIONCHECK_H

@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+#include "UtililtyHandler.h"
+
 class Menu {
         private:
                 std::string username_;   //should be private because we do not want any user gaining access to other user profile

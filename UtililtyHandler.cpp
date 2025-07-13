@@ -9,6 +9,61 @@ inline std::string global_course;
 
 Category::Category(const std::string &username) {this->username_ = username;}
 
+bool Category::updateProfile() {
+    int choice;
+    User user(username_);
+    do {
+        std::cout << "Update profile menu" << "\n";
+        std::cout << "1. Update password" << "\n";
+        std::cout << "2. Update first name" << "\n";
+        std::cout << "3. Update last name" << "\n";
+        std::cout << "4. Update date of birth" << "\n";
+        std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+        system("clear");
+
+        switch (choice) {
+            case 1:
+                user.editPassword();
+                break;
+            case 2:
+                user.editFirstName();
+                break;
+            case 3:
+                user.editFirstName();
+                break;
+            case 4:
+                user.editDOB();
+                break;
+            case 0:
+                std::cout << "Exited previous menu.." << "\n";
+                break;
+            default:
+                std::cout << "Invalid choice please enter between (1 - 5)";
+                break;
+        }
+    } while (choice != 0);  //while the choice is not equal to 5 we will stay in the loop
+    return true;
+}
+
+bool Category::deleteProfile() {
+    int choice;
+    User user(username_);
+
+    std::cout << "Delete profile menu" << "\n";
+
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    if (bool exists = dbManager.searchUser(username_)) {
+        dbManager.deleteUser(username_);
+        std::exit(EXIT_SUCCESS);  // exit the program
+    } else {
+        std::cout << "The User does no longer exist in the database" << "\n";
+        std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
+        std::exit(EXIT_FAILURE);  //exit the program
+    }
+}
 
 bool CategoryStudent::enrollCourse() {  //a student is made when they enroll into a course
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
@@ -122,62 +177,6 @@ bool CategoryStudent::getResults() {
     }
 }
 
-bool CategoryStudent::updateProfile() {
-    int choice;
-    User user(username_);
-    do {
-        std::cout << "Update profile menu" << "\n";
-        std::cout << "1. Update password" << "\n";
-        std::cout << "2. Update first name" << "\n";
-        std::cout << "3. Update last name" << "\n";
-        std::cout << "4. Update date of birth" << "\n";
-        std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
-        system("clear");
-
-        switch (choice) {
-            case 1:
-                user.editPassword();
-                break;
-            case 2:
-                user.editFirstName();
-                break;
-            case 3:
-                user.editFirstName();
-                break;
-            case 4:
-                user.editDOB();
-                break;
-            case 0:
-                std::cout << "Exited previous menu.." << "\n";
-                break;
-            default:
-                std::cout << "Invalid choice please enter between (1 - 5)";
-                break;
-        }
-    } while (choice != 0);  //while the choice is not equal to 5 we will stay in the loop
-    return true;
-}
-
-bool CategoryStudent::deleteProfile() {
-    int choice;
-    User user(username_);
-
-    std::cout << "Delete profile menu" << "\n";
-
-    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-    dbManager.connect();
-    if (bool exists = dbManager.searchUser(username_)) {
-        dbManager.deleteUser(username_);
-        std::exit(EXIT_SUCCESS);  // exit the program
-    } else {
-        std::cout << "The User does no longer exist in the database" << "\n";
-        std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
-        std::exit(EXIT_FAILURE);  //exit the program
-    }
-}
-
 std::string CategoryAdmin::makeCourseInDB() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
@@ -185,13 +184,10 @@ std::string CategoryAdmin::makeCourseInDB() {
 
     std::cout << "Enter the course code: " << "\n";
     std::cin >> course_code;
-
-    std::unique_ptr<sql::PreparedStatement> stmt(
-        conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
-    stmt->setString(1, course_code);
-
-    if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
-        std::cout << "already exists" << "\n";
+    //SEARCH COURSE_CODE
+    if (bool exists = dbManager.searchCourse(course_code)) {
+        std::cout << "already exists in course database" << "\n";
+        std::exit(EXIT_SUCCESS);
     } else {
         std::cout << "Enter course name: " << "\n";
         std::cin >> course_name;
