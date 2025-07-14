@@ -117,6 +117,17 @@ bool Menu::adminMenu() {
 						std::cout << "What is your Identification Number(ID): " << "\n";
 						std::cin >> admin_id;  //add verification mechanism
 						exists = ValidationCheck::validateId(admin_id);
+						do {
+							stmt.reset(conn_.prepareStatement("SELECT COUNT(*) FROM Admin WHERE admin_id = ?"));
+							stmt->setInt(1, admin_id);
+							res.reset(stmt->executeQuery());
+							if (res->next() && res->getInt(1)) {
+								std::cout << "Identification Number(ID) already exists" << "\n";
+								std::cout << "What is your Identification Number(ID): " << "\n";
+								std::cin >> admin_id;
+								exists = ValidationCheck::validateId(admin_id);
+							}
+						}while (res->next() && res->getInt(1));
 					} while (!exists);
 
 					do {
@@ -130,6 +141,7 @@ bool Menu::adminMenu() {
 						std::cin >> department_;
 						exists = ValidationCheck::validateAllString(department_);
 					} while (!exists);
+
 
 					do {
 						std::cout << "What was is your hire date: " << "\n";
