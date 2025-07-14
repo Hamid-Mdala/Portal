@@ -49,6 +49,8 @@ class CategoryAdmin : public CategoryEmployee, public Category {
     public:
         CategoryAdmin(const std::string& username): CategoryEmployee(), Category(username) {};
         std::string makeCourseInDB();
+        bool removeCourseInDB();
+        bool updateCourseInDB();
     public:
 };
 

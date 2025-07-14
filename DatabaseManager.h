@@ -4,6 +4,8 @@
 #include <mariadb/conncpp.hpp>
 
 extern std::string category; //this is used to get the category when the user logs in
+extern std::string course_name_;  //this is used when we want to update the course name
+extern std::string department_;   //this is used when we want to update the course department
 class DatabaseManager {
     private:
         std::string user_;

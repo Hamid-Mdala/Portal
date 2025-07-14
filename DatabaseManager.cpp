@@ -187,8 +187,7 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 			conn_->prepareStatement("DELETE FROM Course WHERE course_code = ?"));
 		stmt->setString(1, code);
 
-		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next() && res->getInt(1)) {
+		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
 			std::cout << "Successfully removed the course: " << code << " from the database" << "\n";
 			return true;
 		} else {
@@ -259,6 +258,7 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next() && res->getInt(1)) {
 		std::cout << "found the course: " << code << " from the database" << "\n";
+		//TODO: make a extern global course variable that gets the course name and department
 		return true;
 	} else {
 		std::cout << "No course found with course_code: " << code << "\n";

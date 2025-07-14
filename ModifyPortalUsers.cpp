@@ -20,8 +20,8 @@ User::User(const string& username) {
 	if (res->next() && res->getInt(1)) {
 		username_ = username;
 		password_ = res->getString("password");
-		first_name = res->getString("first_name"); //we actually have to search in the database for the first name
-		last_name = res->getString("last_name"); //we actually have to search in the database for the last name
+		first_name = res->getString("first_name");
+		last_name = res->getString("last_name");
 		category = res->getString("category");
 		birth_date = res->getString("birth_date");
 		//user_name = username; // Store the username for later use
@@ -109,7 +109,6 @@ bool User::editFirstName() {
 	} while (!exists);
 
 	do {
-		//the fault here is the constructor we have to make sure that we get the first name that is also updated
 		if (exists && f_name == first_name) {std::cout << "You entered your old first name." << "\n";
 			std::cout << "Please Enter New first Name: ";
 			std::cin >> f_name;
@@ -135,23 +134,26 @@ bool User::editLastName() {
 	do {
 		std::cout << "Please Enter New Last Name: ";
 		std::cin >> l_name;
-		do {
-			exists = ValidationCheck::validateFirstName(l_name);
-			if (exists && l_name == first_name) {std::cout << "You entered your old last name." << "\n";
-				std::cout << "Please Enter New Last Name: ";
-				std::cin >> l_name;
-			} else if (!exists) {
-				std::cout << "Please Enter New Last Name: ";
-				std::cin >> l_name;
-			}
-		} while (l_name == first_name || !exists);
-		{
-			DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-			dbManager.connect();
-			dbManager.updateUser(username_, password_, first_name, l_name, category, birth_date);
-		}
-		exists = ValidationCheck::validateFirstName(l_name);
+		exists = ValidationCheck::validateLastName(l_name);
 	} while (!exists);
+
+	do {
+		if (exists && l_name == last_name) {std::cout << "You entered your old last name." << "\n";
+			std::cout << "Please Enter New Last Name: ";
+			std::cin >> l_name;
+			exists = ValidationCheck::validateLastName(l_name);
+		} else if (!exists) {
+			std::cout << "Please Enter New Last Name: ";
+			std::cin >> l_name;
+			exists = ValidationCheck::validateLastName(l_name);
+		}
+	} while (!exists || l_name == last_name);
+	{
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.connect();
+		dbManager.updateUser(username_, password_, first_name, l_name, category, birth_date);
+		last_name = l_name; //update the first name in the constructor so that in code everything goes well
+	}
 	return true;
 }
 

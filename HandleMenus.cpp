@@ -75,32 +75,35 @@ bool Menu::adminMenu() {
 			if (res->next() && res->getInt(1)) {
 				int choice;
 				do {
-					std::cout << "1. View" << "\n";
+					std::cout << "1. View" << "\n";//TODO: make a list for the admin that views all the content in the user, teacher, admin and student and even the course database
 					std::cout << "2. Create course" << "\n";
-					std::cout << "3. Delete course" << "\n";
-					std::cout << "4. Update Profile" << "\n";
-					std::cout << "5. Delete Profile" << "\n";
+					std::cout << "3. Update course" << "\n";
+					std::cout << "4. Delete course" << "\n";
+					std::cout << "5. Update Profile" << "\n";
+					std::cout << "6. Delete Profile" << "\n";
  					std::cout << "Note: enter 0 to end program" << "\n";
 					std::cout << "Enter your choice: " << "\n";
 					std::cin >> choice;
 					system("clear");
 
 					if (choice == 1) {
-						//adminView(); either students, teachers and courses
+						//adminView(); either students, teachers and courses table
 					} else if (choice == 2) {
 						adminUser.makeCourseInDB();
 					} else if (choice == 3) {
-						//adminUser.removeCourseInDB();
+						adminUser.updateCourseInDB();
 					} else if (choice == 4) {
-						adminUser.updateProfile();
+						adminUser.removeCourseInDB();
 					} else if (choice == 5) {
+						adminUser.updateProfile();
+					} else if (choice == 6) {
 						adminUser.deleteProfile();
 					}
 					else if (choice == 0) {
 						std::cout << "Ended program.." << "\n";
 						std::exit(EXIT_SUCCESS);
 					} else {
-						std::cout << "Invalid choice. Please enter value between(1-3)" << "\n";
+						std::cout << "Invalid choice. Please enter value between (1-3)" << "\n";
 						return false;
 					}
 				} while (choice != 0 || !false);

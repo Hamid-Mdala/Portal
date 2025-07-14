@@ -1,5 +1,7 @@
 #include "UtililtyHandler.h"
 #include <iostream>
+#include <qhash.h>
+
 #include "ModifyPortalUsers.h"
 #include "DatabaseManager.h"
 #include <conncpp/Connection.hpp>
@@ -40,7 +42,7 @@ bool Category::updateProfile() {
                 std::cout << "Exited previous menu.." << "\n";
                 break;
             default:
-                std::cout << "Invalid choice please enter between (1 - 5)";
+                std::cout << "Invalid choice. Please enter value between (1-5)" << "\n";
                 break;
         }
     } while (choice != 0);  //while the choice is not equal to 5 we will stay in the loop
@@ -48,20 +50,17 @@ bool Category::updateProfile() {
 }
 
 bool Category::deleteProfile() {
-    int choice;
-    User user(username_);
-
     std::cout << "Delete profile menu" << "\n";
 
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
     if (bool exists = dbManager.searchUser(username_)) {
         dbManager.deleteUser(username_);
-        std::exit(EXIT_SUCCESS);  // exit the program
+        std::exit(EXIT_SUCCESS);   //exit the program
     } else {
         std::cout << "The User does no longer exist in the database" << "\n";
         std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
-        std::exit(EXIT_FAILURE);  //exit the program
+        std::exit(EXIT_FAILURE);   //exit the program
     }
 }
 
@@ -203,6 +202,90 @@ std::string CategoryAdmin::makeCourseInDB() {
     }
     return global_course = course_code;
 }
+
+bool CategoryAdmin::removeCourseInDB() {
+    std::cout << "Delete course menu " << "\n";
+
+    std::cout << "Enter the course code of the course you want to delete: " << "\n";
+    std::cin >> course_code;
+
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    if (bool exists = dbManager.searchCourse(course_code)) {
+        dbManager.deleteCourse(course_code);
+        std::exit(EXIT_SUCCESS);   //exit the program
+    } else {
+        std::cout << "The Course does no longer exist in the database" << "\n";
+        std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
+        std::exit(EXIT_FAILURE);   //exit the program
+    }
+}
+inline std::string course_name_;
+inline std::string department_;
+
+bool CategoryAdmin::updateCourseInDB() {
+    std::cout << "Update course menu " << "\n";
+
+    std::cout << "Enter the course code of the course you want to update: " << "\n";
+    std::cin >> course_code;
+
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    if (bool exists = dbManager.searchCourse(course_code)) {
+        int choice;
+        do {
+            std::cout << "1. Update course name" << "\n";
+            std::cout << "2. Update the class which the course is to be learned" << "\n";
+            std::cout << "Enter your choice: " << "\n";
+            std::cin >> choice;
+            if (choice == 1) {
+                do {
+                    std::cout << "Enter new course name: " << "\n";
+                    std::cin >> course_name;
+                    exists = ValidationCheck::validateCourseName(course_name);
+                } while (!exists);
+
+                do {
+                    if (exists && course_name == course_name_) {
+                        std::cout << "You  entered your old course name" << "\n";
+                        std::cout << "Enter new course name: " << "\n";
+                        std::cin >> course_name;
+                        exists = ValidationCheck::validateCourseName(course_name);
+                    } else if (!exists) {
+                        std::cout << "Enter new course name: " << "\n";
+                        std::cin >> course_name;
+                        exists = ValidationCheck::validateCourseName(course_name);
+                    }
+                } while (!exists && course_name == course_name_ );
+                dbManager.updateCourse(course_code, course_name_, department_);
+            } else if (choice == 2) {
+                do {
+                    std::cout << "Enter new department where the course will be taught: " << "\n";
+                    std::cin >> department;
+                    exists = ValidationCheck::validateAllString(department);
+                } while (!exists);
+
+                do {
+                    if (exists && department == department_) {
+                        std::cout << "You  entered your old department name" << "\n";
+                        std::cout << "Enter new department where the course will be taught: " << "\n";
+                        std::cin >> department;
+                        exists = ValidationCheck::validateCourseName(department);
+                    } else if (!exists) {
+                        std::cout << "Enter new course name: " << "\n";
+                        std::cin >> department;
+                        exists = ValidationCheck::validateCourseName(department);
+                    }
+                } while (!exists && department == department_ );
+                dbManager.updateCourse(course_code, course_name_, department_);
+            } else {
+                std::cout << "Invalid choice. Please enter valid between (1-2)" << "\n";
+            }
+        } while (choice > 2 && choice < 0);
+    }
+}
+
+
 
 
 void CategoryStudent::setId(const int& id) { user_id = id;}
