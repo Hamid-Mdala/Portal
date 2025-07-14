@@ -31,7 +31,7 @@ bool Category::updateProfile() {
                 user.editFirstName();
                 break;
             case 3:
-                user.editFirstName();
+                user.editLastName();
                 break;
             case 4:
                 user.editDOB();

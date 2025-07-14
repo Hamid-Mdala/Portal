@@ -89,7 +89,7 @@ bool DatabaseManager::updateUser(const std::string &username, const std::string 
 		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
 			std::cout << "Successfully updated the user: " << username << " in the database" << "\n";
 			return true;
-		} else  {
+		} else  {  //display: the first name is the recently updated name
 			std::cout << "Can not update user because the user is not found: " << username << "\n";
 			return false;
 		}

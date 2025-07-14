@@ -20,8 +20,8 @@ User::User(const string& username) {
 	if (res->next() && res->getInt(1)) {
 		username_ = username;
 		password_ = res->getString("password");
-		first_name = res->getString("first_name");
-		last_name = res->getString("last_name");
+		first_name = res->getString("first_name"); //we actually have to search in the database for the first name
+		last_name = res->getString("last_name"); //we actually have to search in the database for the last name
 		category = res->getString("category");
 		birth_date = res->getString("birth_date");
 		//user_name = username; // Store the username for later use
@@ -109,6 +109,7 @@ bool User::editFirstName() {
 	} while (!exists);
 
 	do {
+		//the fault here is the constructor we have to make sure that we get the first name that is also updated
 		if (exists && f_name == first_name) {std::cout << "You entered your old first name." << "\n";
 			std::cout << "Please Enter New first Name: ";
 			std::cin >> f_name;
@@ -123,6 +124,7 @@ bool User::editFirstName() {
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
 		dbManager.updateUser(username_, password_, f_name, last_name, category, birth_date);
+		first_name = f_name; //update the first name in the constructor so that in code everything goes well
 	}
 	return true;
 }
