@@ -101,12 +101,12 @@ bool DatabaseManager::updateUser(const std::string &username, const std::string 
 	}
 }
 
-bool DatabaseManager::displayUser(const std::string& username, const std::string& category) {
+bool DatabaseManager::displayUser() {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("SHOW COLUMN username, first_name, last_name, category, birth_date FROM Users"));
+			conn_->prepareStatement("SHOW COLUMNS FROM Users"));
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 		if (res->next() && res->getInt(1)) {
@@ -119,7 +119,7 @@ bool DatabaseManager::displayUser(const std::string& username, const std::string
 			std::cout << "Total number of users in database: " << index << "\n";
 			return true;
 		} else {
-			std::cout << "No user found with username: " << username << "\n";
+			std::cout << "User table is empty" << "\n";
 			return false;
 		}
 	} catch (sql::SQLDataException& e) {
@@ -224,13 +224,12 @@ bool DatabaseManager::updateCourse(const std::string &code, const std::string &n
 	}
 }
 
-bool DatabaseManager::displayCourse(const std::string &code) {
+bool DatabaseManager::displayCourse() {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
 			conn_->prepareStatement("SHOW COLUMN course_code, name, department FROM Course"));
-		stmt->setString(1, code);
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 		if (res->next() && res->getInt(1)) {
@@ -239,7 +238,7 @@ bool DatabaseManager::displayCourse(const std::string &code) {
 			std::cout << ", Department: " << res->getString("department") << "\n";
 			return true;
 		} else {
-			std::cout << "No courses found with the code: " << code << "\n";
+			std::cout << "Course table is empty" << "\n";
 			return false;
 		}
 	} catch (sql::SQLDataException& e) {
@@ -310,6 +309,84 @@ bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const
 		return false;
 	}
 }
+
+bool DatabaseManager::displayStudent() {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("SHOW COLUMN student_id, class, user_id,"
+						   "gpa, enrollment_date, course_code, semester FROM Students"));
+
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
+			std::cout << "Student_ID: " << res->getInt("student_id");
+			std::cout << ", Class: " << res->getString("class");
+			std::cout << ", User_ID: " << res->getInt("user_id");
+			std::cout << ", GPA: " << res->getFloat("gpa");
+			std::cout << ", Enrollment_date: " << res->getString("enrollment_date");
+			std::cout << ", Course_code: " << res->getString("course_code");
+			std::cout << ", Semester: " << res->getInt("semester") << "\n";
+			return true;
+		} else {
+			std::cout << "Student table is empty" << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error displaying student: " << e.what() << "\n";
+		return false;
+	}
+}
+
+bool DatabaseManager::displayTeacher() {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("SHOW COLUMN teacher_id, user_id, office_number,"
+						   "hire_date, department, course_code, semester"));
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
+			std::cout << "Teacher_ID: " << res->getInt("teacher_id");
+			std::cout << ", User_ID: " << res->getInt("class");
+			std::cout << ", Office_number: " << res->getString("user_id");
+			std::cout << ", Hire_date: " << res->getString("hire_date");
+			std::cout << ", Department: " << res->getString("department");
+			std::cout << ", Course_code: " << res->getString("course_code");
+			std::cout << ", Semester: " << res->getInt("semester") << "\n";
+			return true;
+		} else {
+			std::cout << "Teacher table is empty" << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error displaying teacher: " << e.what() << "\n";
+		return false;
+	}
+}
+
+bool DatabaseManager::displayAdmin() {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("SHOW COLUMNS admin_id, user_id, department,"
+						   "office_number, hire_date"));
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
+			std::cout << "Admin_ID: " << res->getInt("teacher_id");
+			std::cout << ", User_ID: " << res->getInt("class");
+			std::cout << ", Department: " << res->getString("user_id");
+			std::cout << ", Office_number: " << res->getString("hire_date");
+			std::cout << ", Hire_date: " << res->getString("department") << "\n";
+			return true;
+		} else {
+			std::cout << "Teacher table is empty" << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error displaying teacher: " << e.what() << "\n";
+		return false;
+	}
+}
+
 
 void DatabaseManager::setConnection(std::unique_ptr<sql::Connection> conn) {conn_ = std::move(conn);}
 sql::Connection& DatabaseManager::getConnectionRef() {

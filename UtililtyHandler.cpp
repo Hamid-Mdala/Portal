@@ -42,10 +42,10 @@ bool Category::updateProfile() {
                 std::cout << "Exited previous menu.." << "\n";
                 break;
             default:
-                std::cout << "Invalid choice. Please enter value between (1-5)" << "\n";
+                std::cout << "Invalid choice. Please enter valid value between (1-5)" << "\n";
                 break;
         }
-    } while (choice != 0);  //while the choice is not equal to 5 we will stay in the loop
+    } while (choice != 0);  //while the choice is not equal to 0 we will stay in the loop
     return true;
 }
 
@@ -283,10 +283,42 @@ bool CategoryAdmin::updateCourseInDB() {
             }
         } while (choice > 2 && choice < 0);
     }
+    return true;
 }
 
-
-
+bool CategoryAdmin::adminView() {
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    int choice;
+    do {
+        std::cout << "1. View all users" << "\n";
+        std::cout << "2. View all courses" << "\n";
+        std::cout << "3. View all students" << "\n";
+        std::cout << "4. View all teachers" << "\n";
+        std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
+        std::cin >> choice;
+        switch(choice) {
+            case 1:
+                dbManager.displayUser();
+                break;
+            case 2:
+                dbManager.displayCourse();
+                break;
+            case 3:
+                dbManager.displayStudent();
+                break;
+            case 4:
+                dbManager.displayTeacher();
+                break;
+            case 0:
+                std::cout << "Exited previous menu.." << "\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Please enter a valid value between (1-4)" << "\n";
+        }
+    } while (choice != 0);  //while choice is not equal to 0 we will stay in the loop and the messages will be displayed
+    return true;
+}
 
 void CategoryStudent::setId(const int& id) { user_id = id;}
 int CategoryStudent::getId() {return user_id;}

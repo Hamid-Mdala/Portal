@@ -87,7 +87,7 @@ bool Menu::adminMenu() {
 					system("clear");
 
 					if (choice == 1) {
-						//adminView(); either students, teachers and courses table
+						adminUser.adminView();
 					} else if (choice == 2) {
 						adminUser.makeCourseInDB();
 					} else if (choice == 3) {

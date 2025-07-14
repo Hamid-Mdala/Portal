@@ -51,6 +51,7 @@ class CategoryAdmin : public CategoryEmployee, public Category {
         std::string makeCourseInDB();
         bool removeCourseInDB();
         bool updateCourseInDB();
+        bool adminView();
     public:
 };
 

@@ -25,21 +25,23 @@ class DatabaseManager {
         bool updateUser(const std::string& username, const std::string& new_password,
             const std::string& new_first_name, const std::string& new_last_name,
             const std::string& new_category, const std::string& new_dob);
-        bool displayUser(const std::string& username, const std::string& category);
+        bool displayUser();
         bool searchUser(const std::string& username);
         bool authenticateUser(const std::string& username, const std::string& password);
 
         bool createCourse(const std::string& code, const std::string& name, const std::string& department);
         bool deleteCourse(const std::string& code);
         bool updateCourse(const std::string& code, const std::string& new_name, const std::string& new_department);
-        bool displayCourse(const std::string& code);
+        bool displayCourse();
         bool searchCourse(const std::string& code);
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const float& gpa, const std::string& course_code);
         bool createAdmin(const int& admin_id, const int& user_id, const std::string& department,
             const std::string& office_number, const std::string& hire_date);
-
+        bool displayStudent();
+        bool displayTeacher();
+        bool displayAdmin();
     //setter and getters
         void setUser(const std::string& user);
         std::string getUser();
