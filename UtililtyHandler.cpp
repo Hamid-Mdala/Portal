@@ -176,6 +176,22 @@ bool CategoryStudent::getResults() {
     }
 }
 
+bool CategoryTeacher::teacherView() {
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    sql::Connection& conn_ = dbManager.getConnectionRef();
+    int choice;
+    do {
+        //view students that you are teaching
+        //view the students gpa results in the students table
+        //view my profile office number, department, hire date teacher_id and the course he teaches
+        std::cout << "View option menu" << "\n";
+        std::cout << "1. Display students that learn your course" << "\n";
+        std::cout <<
+    }
+}
+
+
 bool CategoryAdmin::makeCourseInDB() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();

@@ -61,4 +61,7 @@ class CategoryTeacher : public CategoryEmployee, public Category {
         std::string gpa_;  //the role of teacher to make the students gpa
     public:
     CategoryTeacher(const std::string& username): CategoryEmployee(), Category(username) {};
+    bool teacherView();
+    bool uploadGPA();
+    bool updateGPA();
 };

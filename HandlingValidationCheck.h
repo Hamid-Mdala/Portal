@@ -15,9 +15,9 @@ class ValidationCheck {
         static bool validateDOB(const int& day, const int& month, const int& year);
         static bool validateCourseId(const string& course_id);
         static bool validateCourseName(const string& course_name);
-        static bool validateYear(const string& course_year);
-        static bool validateGpa(const string& gpa);
+        static bool validateGpa(const float& gpa);
         static bool validateAllString(const string& any_string);
+        static bool validateAllInt(const int& any_int);
 };
 
 #endif //HANDLINGVALIDATIONCHECK_H

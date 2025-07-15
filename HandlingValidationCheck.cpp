@@ -42,6 +42,7 @@ bool ValidationCheck::validateCategory(const string& category) {
 	if(category == "student" || category == "teacher" || category == "admin") {
 		return true;
 	}
+	printf("Error: Invalid category\n");
 	printf("please make sure the category is either 'student, teacher, admin'");
 	return false;
 }
@@ -85,24 +86,22 @@ bool ValidationCheck::validateCourseName(const string& course_name) {
 			return false;
 		}
 }
-bool ValidationCheck::validateYear(const string& year) {
-	if (year == "fresh-man" || year == "sophomore" || year == "junior" || year == "senior") {
-		//Fresh-man, Sophomore, Junior or Senior
-		return true;
-	}
-	printf("please make sure the year is either 'fresh-man, sophomore, junior, senior'");
-	return false;
-}
+
 bool ValidationCheck::validateAllString(const string& any_string) {
 	if(any_string.empty()) {
+		printf("Error: The string value is invalid\n");
 		return false;
-	} else {
+	}
+
+	return true;
+}
+bool ValidationCheck::validateGpa(const float& gpa) {
+	//TODO: I HAVE TO VALIDATE THE GPA OF THE STUDNET THE TEACHER ENTER
+}
+bool ValidationCheck::validateAllInt(const int &any_int) {
+	if (any_int > 0) {
 		return true;
 	}
-}
-bool ValidationCheck::validateGpa(const string& gpa) {
-	if(gpa.length() == 4) {return true;
-	} else {
-		return false;
-	}
+	printf("Error: The int value is invalid\n");
+	return false;
 }

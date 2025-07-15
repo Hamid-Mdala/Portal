@@ -69,8 +69,35 @@ bool Menu::teacherMenu() {
 			if (res->next()) {
 
 			} else {
-				int gpa;
-				std::cout << "1. View" << "\n";   //this vi
+				int gpa, choice;
+				do {
+					std::cout << "1. View" << "\n";   //this view the students enrolled into his course
+					std::cout << "2. Upload GPA" << "\n";
+					std::cout << "3. Update GPA" << "\n";
+					std::cout << "4. Update Profile" << "\n";
+					std::cout << "5. Delete Profile" << "\n";
+					std::cout << "Note: enter 0 to end program" << "\n";
+					std::cout << "Enter your choice: " << "\n";
+					std::cin >> choice;
+					system("clear");
+					if (choice == 1) {
+
+					} else if (choice == 2) {
+
+					} else if (choice == 3) {
+
+					} else if (choice == 4) {
+						teacherUser.updateProfile();
+					} else if (choice == 5) {
+						teacherUser.deleteProfile();
+					} else if (choice == 0) {
+
+					} else {
+
+					}
+				} while (choice != 0);
+
+
 			}
 		}
 	}
