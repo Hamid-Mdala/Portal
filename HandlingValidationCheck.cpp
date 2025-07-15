@@ -106,6 +106,11 @@ bool ValidationCheck::validateAllInt(const int &any_int) {
 	return false;
 }
 
-bool ValidationCheck::validateYear(const int &year) {
-	
+bool ValidationCheck::validateYear(const string& year) {
+	if (year == "fresh-man" || year == "sophomore" || year == "junior" || year == "senior") {
+		//Fresh-man, Sophomore, Junior or Senior
+		return true;
+	}
+	printf("please make sure the year is either 'fresh-man, sophomore, junior, senior'");
+	return false;
 }

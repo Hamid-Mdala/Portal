@@ -197,10 +197,14 @@ bool CategoryTeacher::teacherView() {
                 dbManager.numOfUsersThatLearnFromTeacher(course_code);
                 break;
             case 2:
-                //display gpa
+                dbManager.displayGPA();
                 break;
             case 3:
+                //TODO: NEXT TIME WE START CODING HAVE TO MAKE A VIEW PROFILE FOR A SINGLE USER
                 //view profile inside the database manager file
+                break;
+            case 0:
+                std::cout << "Exited previous menu.." << "\n";
                 break;
             default:
                 std::cout << "Invalid choice. Please enter valid value between (1-3)" << "\n";

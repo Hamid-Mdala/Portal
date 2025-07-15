@@ -322,9 +322,10 @@ bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, c
 	}
 }
 
-bool DatabaseManager::numOfUsersThatLearnFromTeacher(const std::string course_code) {
+bool DatabaseManager::numOfUsersThatLearnFromTeacher(const std::string& course_code) {
 	try {
 		if (!conn_) return false;
+
 		std::unique_ptr<sql::PreparedStatement> stmt (
 			conn_->prepareStatement("SELECT * FROM Students WHERE course_code = ?"));
 		stmt->setString(1, course_code);
@@ -346,6 +347,34 @@ bool DatabaseManager::numOfUsersThatLearnFromTeacher(const std::string course_co
 		}
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error getting the number of users that learn from your course" << "\n";
+		return false;
+	}
+}
+
+bool DatabaseManager::displayGPA() {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("SELECT student_id, class, course_code, gpa FROM Students"));
+
+		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
+		int index = 0;
+		while (res->next()) {
+			std::cout << ++index << ". Student_ID: " << res->getInt("student_id");
+			std::cout << ", Class: " << res->getString("class");
+			std::cout << ", Course_code: " << res->getString("course_code");
+			std::cout << ", GPA: " << res->getFloat("gpa");
+		}
+		if (index > 0) {
+			std::cout << "Total number of students: " << index << "\n";
+			return true;
+		} else {
+			std::cout << "Student table is empty" << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error creating admin: " << e.what() << "\n";
 		return false;
 	}
 }

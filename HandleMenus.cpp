@@ -81,7 +81,7 @@ bool Menu::teacherMenu() {
 					std::cin >> choice;
 					system("clear");
 					if (choice == 1) {
-
+						teacherUser.teacherView();
 					} else if (choice == 2) {
 
 					} else if (choice == 3) {

@@ -1,5 +1,4 @@
-#ifndef HANDLINGVALIDATIONCHECK_H
-#define HANDLINGVALIDATIONCHECK_H
+#pragma once
 
 #include<string>
 using namespace std;
@@ -18,7 +17,7 @@ class ValidationCheck {
         static bool validateGpa(const float& gpa);
         static bool validateAllString(const string& any_string);
         static bool validateAllInt(const int& any_int);
-        static bool validateYear(const int& year);
+        static bool validateYear(const std::string& year);
 };
 
-#endif //HANDLINGVALIDATIONCHECK_H
+

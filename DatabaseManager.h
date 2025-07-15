@@ -41,7 +41,8 @@ class DatabaseManager {
         //TODO: WE MUST BE ABLE TO MAKE THE TEACHER AND MAKE ALSO HIS FUNCTIONS
         bool createTeacher(const int& teacher_id, const int& user_id, const std::string& office_number,
              const std::string& hire_date, const std::string& department, const std::string& course_code);
-        bool numOfUsersThatLearnFromTeacher(const std::string course_code);
+        bool numOfUsersThatLearnFromTeacher(const std::string& course_code);
+        bool displayGPA();
         bool createAdmin(const int& admin_id, const int& user_id, const std::string& department,
             const std::string& office_number, const std::string& hire_date);
         bool displayStudent();
