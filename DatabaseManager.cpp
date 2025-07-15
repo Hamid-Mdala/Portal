@@ -165,7 +165,8 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 	return false;
 }
 
-bool DatabaseManager::createCourse(const std::string &code, const std::string &name, const std::string &department) {
+bool DatabaseManager::createCourse(const std::string &code, const std::string &name,
+	const std::string &department, const int& semester) {
 	try {
 		if (!conn_) return false;
 
@@ -174,6 +175,7 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 		stmt->setString(1, code);
 		stmt->setString(2, name);
 		stmt->setString(3, department);
+		stmt->setInt(4, semester);
 
 		return stmt->executeUpdate() > 0; //returns true if the course is created successfully
 	} catch (sql::SQLDataException& e) {
@@ -294,7 +296,30 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
-bool DatabaseManager::c
+bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, const std::string &office_number,
+	const std::string &hire_date, const std::string &department, const std::string &course_code) {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("INSERT INTO Teachers (teacher_id, user_id, office_number, "
+						   "hire_date, department, course_code) VALUES(?, ?, ?, ?, ?, ?"));
+		stmt->setInt(1, teacher_id);
+		stmt->setInt(2, user_id);
+		stmt->setString(3, office_number);
+		stmt->setString(4, hire_date);
+		stmt->setString(5, department);
+		stmt->setString(6, course_code);
+
+		std::cout << "The teacher is successfully created" << "\n";
+		return stmt->executeUpdate() > 0;
+
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error creating teacher: " << e.what() << "\n";
+		return false;
+	}
+}
+
 
 bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const std::string& department,
 	const std::string& office_number, const std::string& hire_date) {

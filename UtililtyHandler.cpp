@@ -1,13 +1,13 @@
 #include "UtililtyHandler.h"
 #include <iostream>
-#include <qhash.h>
 
 #include "ModifyPortalUsers.h"
 #include "DatabaseManager.h"
 #include <conncpp/Connection.hpp>
 
 static float gpa;
-inline std::string global_course;
+inline std::string course_name_;  //IMPORTANT! value that compares with the course_name the admin enters
+inline std::string department_;   //IMPORTANT! value that compares with the department the admin enters
 
 Category::Category(const std::string &username) {this->username_ = username;}
 
@@ -176,31 +176,46 @@ bool CategoryStudent::getResults() {
     }
 }
 
-std::string CategoryAdmin::makeCourseInDB() {
+bool CategoryAdmin::makeCourseInDB() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
+    bool exists;
+    do {
+        std::cout << "Enter the course code: " << "\n";
+        std::cin >> course_code;
+        exists = ValidationCheck::validateCourseId(course_code);
+    } while (!exists);
 
-    std::cout << "Enter the course code: " << "\n";
-    std::cin >> course_code;
-    //SEARCH COURSE_CODE
-    if (bool exists = dbManager.searchCourse(course_code)) {
-        std::cout << "already exists in course database" << "\n";
-        std::exit(EXIT_SUCCESS);
-    } else {
-        std::cout << "Enter course name: " << "\n";
-        std::cin >> course_name;
-        std::cout << "Enter department: " << "\n";
-        std::cin >> department;
-
-        if (bool exists = dbManager.createCourse(course_code, course_name, department)) {
-            std::cout << "Successfully created a course" << "\n";
+    do {
+        if (exists == dbManager.searchCourse(course_code)) {
+            std::cout << "already exists in course database" << "\n";
+            return false;
         } else {
-            std::cout << "Couldn't create a course" << "\n";
-            std::exit(EXIT_FAILURE);
+            do {
+                std::cout << "Enter course name: " << "\n";
+                std::cin >> course_name;
+                exists = ValidationCheck::validateCourseName(course_name);
+            } while (!exists);
+
+            do {
+                std::cout << "Enter department: " << "\n";
+                std::cin >> department;
+                exists = ValidationCheck::validateAllString(department);
+            } while (!exists);
+
+            do {
+                std::cout << "What semester will the course be learned in:  " << "\n";
+                std::cin >> semester;
+                exists = ValidationCheck::validateAllInt(semester);
+            } while (!exists);
+
+            {
+                dbManager.createCourse(course_code, course_name, department, semester);
+            }
         }
-    }
-    return global_course = course_code;
+    } while (false);  //if the course code is found in the database
+
 }
 
 bool CategoryAdmin::removeCourseInDB() {
@@ -220,8 +235,6 @@ bool CategoryAdmin::removeCourseInDB() {
         std::exit(EXIT_FAILURE);   //exit the program
     }
 }
-inline std::string course_name_;
-inline std::string department_;
 
 bool CategoryAdmin::updateCourseInDB() {
     std::cout << "Update course menu " << "\n";

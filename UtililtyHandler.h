@@ -7,7 +7,7 @@ class Category {
         std::string username_;     //the admin, student and teacher user_id is used as a key in the table
         int user_id;  //user_id
         std::string course_code;   //the course_code is made by the admin and used by the student and teacher
-        std::string semester;     //the semester is made by the admin and used by student and teacher
+        int semester;     //the semester is made by the admin and used by student and teacher
     public:
         bool updateProfile();
         bool deleteProfile();
@@ -48,14 +48,12 @@ class CategoryAdmin : public CategoryEmployee, public Category {
         std::string course_name;
     public:
         CategoryAdmin(const std::string& username): CategoryEmployee(), Category(username) {};
-        std::string makeCourseInDB();
+        bool makeCourseInDB();
         bool removeCourseInDB();
         bool updateCourseInDB();
         bool adminView();
     public:
 };
-
-extern  std::string global_course;  //used in teacher and student
 
 class CategoryTeacher : public CategoryEmployee, public Category {
     private:

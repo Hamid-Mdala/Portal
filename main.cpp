@@ -117,7 +117,7 @@ int main() {
 			{
 				Menu menu(data.username, category);
 				menu.studentMenu();
-				//menu.teacherMenu();
+				menu.teacherMenu();
 				menu.adminMenu();
 			}
 

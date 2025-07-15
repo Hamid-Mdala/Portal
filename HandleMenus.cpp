@@ -47,7 +47,33 @@ bool Menu::studentMenu() {
 }
 
 bool Menu::teacherMenu() {
-	return true;
+	while (category_ == "teacher") { //a teacher is able to make the students gpa and teaches course
+		//the teacher views the studnet who are learning from the're course
+		//the teacher is able to view the semester made by the admin
+		CategoryTeacher teacherUser(username_);
+		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+		dbManager.connect();
+		sql::Connection& conn_ = dbManager.getConnectionRef();
+
+		std::unique_ptr<sql::PreparedStatement> stmt(
+			conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
+		stmt->setString(1, username_);
+
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next()) {
+			int user_id = res->getInt("id");
+
+			stmt.reset(conn_.prepareStatement("SELECT * FROM Teacher WHERE user_id = ?"));
+			stmt->setInt(1, user_id);
+
+			res.reset(stmt->executeQuery());
+			if (res->next()) {
+
+			} else {
+				int gpa;
+				std::cout << "1. View" << "\n";   //this vi
+			}
+		}
+	}
 }
 
 bool Menu::adminMenu() {
@@ -62,19 +88,18 @@ bool Menu::adminMenu() {
 			conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
 		stmt->setString(1, username_);
 
-		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
-			int user_id;
-
-			user_id = res->getInt("id");
+		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next()) {
+			int user_id = res->getInt("id");
 
 			stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE user_id = ?"));
 			stmt->setInt(1, user_id);
 
 			res.reset(stmt->executeQuery());
-			if (res->next() && res->getInt(1)) {
+			if (res->next()) {
 				int choice;
 				do {
-					std::cout << "1. View" << "\n";//TODO: make a list for the admin that views all the content in the user, teacher, admin and student and even the course database
+					std::cout << "1. View" << "\n";
+					//std::cout << "TODO: the admin must be able to make the semester so that the teacher and student can use"
 					std::cout << "2. Create course" << "\n";
 					std::cout << "3. Update course" << "\n";
 					std::cout << "4. Delete course" << "\n";
@@ -110,7 +135,6 @@ bool Menu::adminMenu() {
 				int admin_id;
 				std::string department_;
 				int day, month, year;
-				std::string hire_date;
 				std::string office_number;
 				bool exists;
 				do {
@@ -154,8 +178,11 @@ bool Menu::adminMenu() {
 					std::cin >> year;
 					exists = ValidationCheck::validateDOB(day, month, year);
 				} while (!exists);
-				hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
-				dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
+				{
+					std::string hire_date;
+					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
+					dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
+				}
 			}
 		} else {
 			std::cout << "Couldn't find user" << "\n";

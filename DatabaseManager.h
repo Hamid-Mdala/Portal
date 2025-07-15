@@ -29,7 +29,8 @@ class DatabaseManager {
         bool searchUser(const std::string& username);
         bool authenticateUser(const std::string& username, const std::string& password);
 
-        bool createCourse(const std::string& code, const std::string& name, const std::string& department);
+        bool createCourse(const std::string& code, const std::string& name,
+            const std::string& department, const int& semester);
         bool deleteCourse(const std::string& code);
         bool updateCourse(const std::string& code, const std::string& new_name, const std::string& new_department);
         bool displayCourse();
@@ -37,7 +38,9 @@ class DatabaseManager {
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const float& gpa, const std::string& course_code);
-        bool create
+        //TODO: WE MUST BE ABLE TO MAKE THE TEACHER AND MAKE ALSO HIS FUNCTIONS
+        bool createTeacher(const int& teacher_id, const int& user_id, const std::string& office_number,
+             const std::string& hire_date, const std::string& department, const std::string& course_code);
         bool createAdmin(const int& admin_id, const int& user_id, const std::string& department,
             const std::string& office_number, const std::string& hire_date);
         bool displayStudent();
