@@ -105,3 +105,7 @@ bool ValidationCheck::validateAllInt(const int &any_int) {
 	printf("Error: The int value is invalid\n");
 	return false;
 }
+
+bool ValidationCheck::validateYear(const int &year) {
+	
+}

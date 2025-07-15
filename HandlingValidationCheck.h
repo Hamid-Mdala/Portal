@@ -18,6 +18,7 @@ class ValidationCheck {
         static bool validateGpa(const float& gpa);
         static bool validateAllString(const string& any_string);
         static bool validateAllInt(const int& any_int);
+        static bool validateYear(const int& year);
 };
 
 #endif //HANDLINGVALIDATIONCHECK_H

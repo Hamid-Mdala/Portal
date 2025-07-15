@@ -186,9 +186,27 @@ bool CategoryTeacher::teacherView() {
         //view the students gpa results in the students table
         //view my profile office number, department, hire date teacher_id and the course he teaches
         std::cout << "View option menu" << "\n";
-        std::cout << "1. Display students that learn your course" << "\n";
-        std::cout <<
-    }
+        std::cout << "1. View students that learn your course" << "\n";
+        std::cout << "2. View students GPA results" << "\n";
+        std::cout << "3. View profile" << "\n";
+        std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
+        std::cout << "Enter your choice: " << "\n";
+        std::cin >> choice;
+        switch (choice) {
+            case 1:
+                dbManager.numOfUsersThatLearnFromTeacher(course_code);
+                break;
+            case 2:
+                //display gpa
+                break;
+            case 3:
+                //view profile inside the database manager file
+                break;
+            default:
+                std::cout << "Invalid choice. Please enter valid value between (1-3)" << "\n";
+                break;
+        }
+    } while (choice != 0);
 }
 
 
@@ -320,11 +338,14 @@ bool CategoryAdmin::adminView() {
     dbManager.connect();
     int choice;
     do {
+        std::cout << "View option menu" << "\n";
         std::cout << "1. View all users" << "\n";
         std::cout << "2. View all courses" << "\n";
         std::cout << "3. View all students" << "\n";
         std::cout << "4. View all teachers" << "\n";
+        std::cout << "5. View profile" << "\n";  //TODO: THIS LATER
         std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
+        std::cout << "Enter your choice: " << "\n";
         std::cin >> choice;
         switch(choice) {
             case 1:
@@ -343,7 +364,7 @@ bool CategoryAdmin::adminView() {
                 std::cout << "Exited previous menu.." << "\n";
                 break;
             default:
-                std::cout << "Invalid choice. Please enter a valid value between (1-4)" << "\n";
+                std::cout << "Invalid choice. Please enter valid value between (1-4)" << "\n";
         }
     } while (choice != 0);  //while choice is not equal to 0 we will stay in the loop and the messages will be displayed
     return true;

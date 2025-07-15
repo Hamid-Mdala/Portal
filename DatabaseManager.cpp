@@ -112,10 +112,12 @@ bool DatabaseManager::displayUser() {
 		int index = 0;
 		while (res->next()) {
 			std::cout << ++index << ". Username: " << res->getString("username");
+			std::cout << ", User_ID: " << res->getInt("user_ID");
 			std::cout << ", First Name: " << res->getString("first_name");
 			std::cout << ", Last Name: " << res->getString("last_name");
 			std::cout << ", Category: " << res->getString("category");
-			std::cout << ", birth_date: " << res->getString("birth_date") << "\n";
+			std::cout << ", birth_date: " << res->getString("birth_date");
+			std::cout << ", created_at: " << res->getString("created_at");
 		}
 		if (index > 0) {
 			std::cout << "Total number of users in database: " << index << "\n";
@@ -316,6 +318,34 @@ bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, c
 
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error creating teacher: " << e.what() << "\n";
+		return false;
+	}
+}
+
+bool DatabaseManager::numOfUsersThatLearnFromTeacher(const std::string course_code) {
+	try {
+		if (!conn_) return false;
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("SELECT * FROM Students WHERE course_code = ?"));
+		stmt->setString(1, course_code);
+
+		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+		int index = 0;
+		while (res->next()) {
+			std::cout << ++index << ". Username: " << res->getString("username");
+			std::cout << ", User_ID: " << res->getInt("user_ID");
+			std::cout << ", First Name: " << res->getString("first_name");
+			std::cout << ", Last Name: " << res->getString("last_name") << "\n";
+		}
+		if (index > 0) {
+			std::cout << "Total number of students: " << index << "\n";
+			return true;
+		} else {
+			std::cout << "No student has enrolled to your course" << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error getting the number of users that learn from your course" << "\n";
 		return false;
 	}
 }
