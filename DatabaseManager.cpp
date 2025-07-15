@@ -106,16 +106,18 @@ bool DatabaseManager::displayUser() {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("SHOW COLUMNS FROM Users"));
+			conn_->prepareStatement("SELECT * FROM Users"));
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next() && res->getInt(1)) {
-			int index = 0;
+		int index = 0;
+		while (res->next()) {
 			std::cout << ++index << ". Username: " << res->getString("username");
-			std::cout << ",First Name: " << res->getString("first_name");
-			std::cout << ",Last Name: " << res->getString("last_name");
-			std::cout << ",Category: " << res->getString("category");
-			std::cout << ",birth_date: " << res->getString("birth_date") << "\n";
+			std::cout << ", First Name: " << res->getString("first_name");
+			std::cout << ", Last Name: " << res->getString("last_name");
+			std::cout << ", Category: " << res->getString("category");
+			std::cout << ", birth_date: " << res->getString("birth_date") << "\n";
+		}
+		if (index > 0) {
 			std::cout << "Total number of users in database: " << index << "\n";
 			return true;
 		} else {
@@ -131,11 +133,11 @@ bool DatabaseManager::searchUser(const std::string &username) {
 	if (!conn_) return false;
 	//make a statement
 	std::unique_ptr<sql::PreparedStatement> stmt(
-	conn_->prepareStatement("SELECT COUNT(*) FROM Users WHERE username =?"));
+	conn_->prepareStatement("SELECT * FROM Users WHERE username =?"));
 	stmt->setString(1, username);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-	if (res->next() && res->getInt(1)) {
+	if (res->next()) {
 		std::cout << "found the user: " << username << " from the database" << "\n";
 		return true;
 	} else {
@@ -154,7 +156,7 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-	if (res->next() && res->getInt(1)) {
+	if (res->next()) {
 		std::cout << "Login successful" << "\n";
 		category = res->getString("category");
 		return true;
@@ -211,7 +213,7 @@ bool DatabaseManager::updateCourse(const std::string &code, const std::string &n
 		stmt->setString(3, code);
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next() && res->getInt(1)) {
+		if (res->next()) {
 			std::cout << "Successfully updated the user: " << code << " in the database" << "\n";
 			return true;
 		} else {
@@ -229,13 +231,17 @@ bool DatabaseManager::displayCourse() {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
-			conn_->prepareStatement("SHOW COLUMN course_code, name, department FROM Course"));
+			conn_->prepareStatement("SELECT * FROM Course"));
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next() && res->getInt(1)) {
-			std::cout << "Course Code: " << res->getString("course_code");
+		int index = 0;
+		while (res->next()) {
+			std::cout << ++index << ". Course Code: " << res->getString("course_code");
 			std::cout << ", Name: " << res->getString("name");
 			std::cout << ", Department: " << res->getString("department") << "\n";
+		}
+		if (index > 0) {
+			std::cout << "Total number of courses in database: " << index << "\n";
 			return true;
 		} else {
 			std::cout << "Course table is empty" << "\n";
@@ -251,11 +257,11 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 	if (!conn_) return false;
 	//make a statement
 	std::unique_ptr<sql::PreparedStatement> stmt(
-	conn_->prepareStatement("SELECT COUNT(*) FROM Course WHERE course_code = ?"));
+	conn_->prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
 	stmt->setString(1, code);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-	if (res->next() && res->getInt(1)) {
+	if (res->next()) {
 		std::cout << "found the course: " << code << " from the database" << "\n";
 		//TODO: make a extern global course variable that gets the course name and department
 		return true;
@@ -288,6 +294,8 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
+bool DatabaseManager::c
+
 bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const std::string& department,
 	const std::string& office_number, const std::string& hire_date) {
 	try {
@@ -315,17 +323,21 @@ bool DatabaseManager::displayStudent() {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("SHOW COLUMN student_id, class, user_id,"
-						   "gpa, enrollment_date, course_code, semester FROM Students"));
+			conn_->prepareStatement("SELECT * FROM Students"));
 
-		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
-			std::cout << "Student_ID: " << res->getInt("student_id");
+		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+		int index = 0;
+		while ( res->next()) {
+			std::cout << ++index << ". Student_ID: " << res->getInt("student_id");
 			std::cout << ", Class: " << res->getString("class");
 			std::cout << ", User_ID: " << res->getInt("user_id");
 			std::cout << ", GPA: " << res->getFloat("gpa");
 			std::cout << ", Enrollment_date: " << res->getString("enrollment_date");
 			std::cout << ", Course_code: " << res->getString("course_code");
 			std::cout << ", Semester: " << res->getInt("semester") << "\n";
+		}
+		if (index > 0) {
+			std::cout << "Total number of students in database: " << index << "\n";
 			return true;
 		} else {
 			std::cout << "Student table is empty" << "\n";
@@ -342,16 +354,21 @@ bool DatabaseManager::displayTeacher() {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("SHOW COLUMN teacher_id, user_id, office_number,"
-						   "hire_date, department, course_code, semester"));
-		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
-			std::cout << "Teacher_ID: " << res->getInt("teacher_id");
+			conn_->prepareStatement("SELECT * FROM Teachers"));
+
+		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+		int index = 0;
+		while (res->next()) {
+			std::cout << ++index << ". Teacher_ID: " << res->getInt("teacher_id");
 			std::cout << ", User_ID: " << res->getInt("class");
 			std::cout << ", Office_number: " << res->getString("user_id");
 			std::cout << ", Hire_date: " << res->getString("hire_date");
 			std::cout << ", Department: " << res->getString("department");
 			std::cout << ", Course_code: " << res->getString("course_code");
 			std::cout << ", Semester: " << res->getInt("semester") << "\n";
+		}
+		if (index > 0) {
+			std::cout << "Total number of teachers in database: " << index << "\n";
 			return true;
 		} else {
 			std::cout << "Teacher table is empty" << "\n";
@@ -368,14 +385,19 @@ bool DatabaseManager::displayAdmin() {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("SHOW COLUMNS admin_id, user_id, department,"
-						   "office_number, hire_date"));
-		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next() && res->getInt(1)) {
-			std::cout << "Admin_ID: " << res->getInt("teacher_id");
+			conn_->prepareStatement("SELECT * FROM Admin"));
+
+		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+		int index = 0;
+		while (res->next()) {
+			std::cout << ++index << ". Admin_ID: " << res->getInt("teacher_id");
 			std::cout << ", User_ID: " << res->getInt("class");
 			std::cout << ", Department: " << res->getString("user_id");
 			std::cout << ", Office_number: " << res->getString("hire_date");
 			std::cout << ", Hire_date: " << res->getString("department") << "\n";
+		}
+		if (index > 0) {
+			std::cout << "Total number of admins in database: " << index << "\n";
 			return true;
 		} else {
 			std::cout << "Teacher table is empty" << "\n";

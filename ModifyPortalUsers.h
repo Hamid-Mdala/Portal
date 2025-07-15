@@ -1,5 +1,4 @@
-#ifndef PORTALUSERS_H
-#define PORTALUSERS_H
+#pragma once
 #include<string>
 #include <fstream>
 #include <iostream>
@@ -10,13 +9,15 @@
 
 class AbstractClass {
     public:
+        AbstractClass();
         virtual ~AbstractClass();
     public:
-        virtual void editPassword() = 0;
-        virtual void editFirstName() = 0;
-        virtual void editlastName() = 0;
-        virtual void editDOB() = 0;
+        virtual bool editPassword() = 0;
+        virtual bool editFirstName() = 0;
+        virtual bool editLastName() = 0;
+        virtual bool editDOB() = 0;
 };
+
 class User {
     public:
         //More attributes
@@ -33,10 +34,10 @@ class User {
         virtual ~User()  = default;
 
     public:
-        bool editPassword();
-        bool editFirstName();
-        bool editLastName();
-        bool editDOB();
+        virtual bool editPassword();
+        virtual bool editFirstName();
+        virtual bool editLastName();
+        virtual bool editDOB();
 
         void setUsername(const string& username);
         string getUsername();
@@ -44,17 +45,3 @@ class User {
         string getPassword();
 };
 
-
-class Student : public User {
-
-};
-
-class Teacher : public User{
-    public:
-
-};
-class Admin : public User{
-
-};
-
-#endif //PORTALUSERS_H

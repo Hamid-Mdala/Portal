@@ -40,9 +40,8 @@ bool Menu::studentMenu() {
 				std::exit(EXIT_SUCCESS);  //end the program
 			} else {
 				std::cout << "Please enter a valid choice between (1-4)" << "\n";
-				return false;
 			}
-		} while (choice != 0 || !false);
+		} while (choice != 0);
 	}
 	return true;
 }
@@ -104,9 +103,8 @@ bool Menu::adminMenu() {
 						std::exit(EXIT_SUCCESS);
 					} else {
 						std::cout << "Invalid choice. Please enter value between (1-3)" << "\n";
-						return false;
 					}
-				} while (choice != 0 || !false);
+				} while (choice != 0);
 
 			} else {
 				int admin_id;
@@ -116,49 +114,48 @@ bool Menu::adminMenu() {
 				std::string office_number;
 				bool exists;
 				do {
+					std::cout << "What is your Identification Number(ID): " << "\n";
+					std::cin >> admin_id;  //add verification mechanism
+					exists = ValidationCheck::validateId(admin_id);
 					do {
-						std::cout << "What is your Identification Number(ID): " << "\n";
-						std::cin >> admin_id;  //add verification mechanism
-						exists = ValidationCheck::validateId(admin_id);
-						do {
-							stmt.reset(conn_.prepareStatement("SELECT COUNT(*) FROM Admin WHERE admin_id = ?"));
-							stmt->setInt(1, admin_id);
-							res.reset(stmt->executeQuery());
-							if (res->next() && res->getInt(1)) {
-								std::cout << "Identification Number(ID) already exists" << "\n";
-								std::cout << "What is your Identification Number(ID): " << "\n";
-								std::cin >> admin_id;
-								exists = ValidationCheck::validateId(admin_id);
-							}
-						}while (res->next() && res->getInt(1));
-					} while (!exists);
+						stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE admin_id = ?"));
 
-					do {
-						std::cout << "What is your office (room number): " << "\n";
-						std::cin >> office_number;
-						exists = ValidationCheck::validateAllString(office_number);
-					} while (!exists);
-
-					do {
-						std::cout << "Which department do you work-in this corporation: " << "\n";
-						std::cin >> department_;
-						exists = ValidationCheck::validateAllString(department_);
-					} while (!exists);
-
-
-					do {
-						std::cout << "What was is your hire date: " << "\n";
-						std::cout << "Day(DD): " << "\n";
-						std::cin >> day;
-						std::cout << "Month(MM): " << "\n";
-						std::cin >> month;
-						std::cout << "Year(YYYY): " << "\n";
-						std::cin >> year;
-						exists = ValidationCheck::validateDOB(day, month, year);
-					} while (!exists);
-					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
-					dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
+						stmt->setInt(1, admin_id);
+						res.reset(stmt->executeQuery());
+						if (res->next()) {
+							std::cout << "Identification Number(ID) already exists" << "\n";
+							std::cout << "What is your Identification Number(ID): " << "\n";
+							std::cin >> admin_id;
+							exists = ValidationCheck::validateId(admin_id);
+						}
+					}while (res->next());
 				} while (!exists);
+
+				do {
+					std::cout << "What is your office (room number): " << "\n";
+					std::cin >> office_number;
+					exists = ValidationCheck::validateAllString(office_number);
+				} while (!exists);
+
+				do {
+					std::cout << "Which department do you work-in this corporation: " << "\n";
+					std::cin >> department_;
+					exists = ValidationCheck::validateAllString(department_);
+				} while (!exists);
+
+
+				do {
+					std::cout << "What was is your hire date: " << "\n";
+					std::cout << "Day(DD): " << "\n";
+					std::cin >> day;
+					std::cout << "Month(MM): " << "\n";
+					std::cin >> month;
+					std::cout << "Year(YYYY): " << "\n";
+					std::cin >> year;
+					exists = ValidationCheck::validateDOB(day, month, year);
+				} while (!exists);
+				hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
+				dbManager.createAdmin(admin_id, user_id, department_, office_number, hire_date);
 			}
 		} else {
 			std::cout << "Couldn't find user" << "\n";
@@ -168,201 +165,3 @@ bool Menu::adminMenu() {
 	}
 	return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// #include "PortalUsers.h"
-// using namespace std;
-//     //Function handling the users allocation the aim is after logged in by the system during runtime they will have their own menu.
-//     bool AllocateUser::allocateUserLoginClassification(const string& username) {
-//      	int choice;
-// 			User user(username);
-// 			cout<<endl;
-// 			if(user.getUserClassification() == "student") {
-// 				Student student(username);
-// 				cout<<"\t/1. Option to enroll into a course/"<<endl;
-// 				cout<<"\t/2. Option to view details/"<<endl;
-// 				cout<<"\t/3. Option to edit password/"<<endl;
-//                 cout<<"\t/4. Exit"<<endl;
-// 				cout<<endl;
-// 				cout<<"Enter your Option: ";
-// 				cin>>choice;
-// 				cin.ignore();
-// 				system("CLS");
-// 				if(choice == 1) {
-// 		// 			Utility utilityTools;
-// 		// 			cout<<"Here is the course details we offer in our schools management system."<<endl<<endl;
-// 		// 			Utility2::handlingDuplication("course_table_file.txt", 2);
-// 		// 			for(auto& pair: threeFieldsMap) {
-// 		// 				cout
-// 		// 				<<"COURSE-ID: "<<pair.first<<endl
-		// 				<<"COURSE_NAME: "<<pair.second.details_field2<<endl
-		// 				<<"COURSE_YEAR: "<<pair.second.details_field3<<endl
-		// 				<<endl;
-		// 			}
-		// 			if(threeFieldsMap.empty() == 0) {
-		// 				string course_id;
-  //                       system("CLS");
-		// 				while(true) {
-		// 					cout<<"1. Enroll into a course"<<endl;
-		// 					cout<<"2. Exit these students enroll course page"<<endl;
-  //                           cout<<"3. cancel"<<endl;
-		// 					cout<<"Enter your Option: ";
-		// 					cin>>choice;
-		// 					cin.ignore();
-		// 					system("CLS");
-		// 					if (choice == 1) {
-		// 						cout<<endl;
-		// 						cout<<"Enter course-ID: ";
-		// 						cin>>course_id;
-		// 						cin.ignore();
-		// 						Course program(course_id);
-		// 						student.makeStudentsEnrollCourseTable(course_id);
-		// 					} else if (choice == 2) {
-		// 						AllocateUser::allocateUserLoginClassification(username);
-		// 					} else if(choice == 3) {
-		// 						return false;
-		// 					} else {
-		// 						cout<<"Error: Invalid choice Option."<<endl;
-  // 								return false;
-		// 					}
-		// 				}
-		// 			} else {
-		// 				cout
-		// 				<<"You can't enroll into a course because the file containing the course is not yet made by the "
-		// 				<<"admin/register in the management system."
-		// 				<<endl;
-		// 			}
-		// 		} else if(choice == 2) {
-		// 			Student *ptr = &student;
-		// 			ptr->view();
-		// 		} else if(choice == 3) {
-		// 			Student *ptr = &student;
-		// 			ptr->editDetails();
-		// 		} else if(choice == 4) {
-  //               	return false;
-  //               } else {
-		// 			cout<<"Error: Invalid choice Option."<<endl;
-  //                   return false;
-		// 		}
-		// 	} else if(user.getUserClassification() == "teacher") {
-		// 		Teacher teacher(username);
-		// 		cout<<"\t/1. Option to upload grades/"<<endl;
-		// 		cout<<"\t/2. Option to view details/"<<endl;
-		// 		cout<<"\t/3. Option to edit password/"<<endl;
-		// 		cout<<"\t/4. Exit"<<endl;
-  //               cout<<endl;
-		// 		cout<<"Enter your Option: ";
-		// 		cin>>choice;
-		// 		cin.ignore();
-		// 		system("CLS");
-		// 		if(choice == 1) {
-		// 			teacher.makeStudentsGradeTable();
-		// 		} else if(choice == 2) {
-		// 			Teacher *ptr = &teacher;
-		// 			ptr->view();
-		// 		} else if(choice == 3) {
-		// 			teacher.editDetails();
-		// 		} else if(choice == 4) {
-  //                   return false;
-		// 		} else {
-		// 			cout<<"Error: Invalid choice of Option."<<endl;
-		// 			return false;
-  //               }
-		// 	} else if(user.getUserClassification() == "Admin") {
-		// 		Admin admin(username);
-		// 		cout<<"\t/1. Option used for registration of new details in files/"<<endl;
-		// 		cout<<"\t/2. Option to view details/"<<endl;
-		// 		cout<<"\t/3. Option to edit user details/"<<endl;
-		// 		cout<<"\t/4. Option to search for the username in the user's file/"<<endl;
-		// 		cout<<"\t/5. Exit"<<endl;
-  //               cout<<endl;
-		// 		cout<<"Enter your Option: ";
-		// 		cin>>choice;
-		// 		cin.ignore();
-		// 		system("CLS");
-		// 		if(choice == 1) {
-		// 			admin.registration();
-		// 		} else if(choice == 2) {
-		// 			Admin *ptr1 = &admin;
-		// 			ptr1->view();
-		// 		} else if(choice == 3) {
-		// 			Admin *ptr2 = &admin;
-		// 			ptr2->editDetails();
-		// 		} else if(choice == 4){
-		// 			string search_for_username;
-		// 			cout<<"Enter username: ";
-		// 			cin>>search_for_username;
-		// 			cin.ignore();
-		// 			Employee::searchForUsername(search_for_username);
-		// 		} else if(choice == 5) {
-  //               	return false;
-		// 		} else {
-		// 			cout<<"Error: Invalid choice option."<<endl;
-		// 			return false;
-  //               }
-		// 	} else {
-		// 		cout
-		// 		<<"You are not classified/group into any user classification in our management system, "
-		// 		<<"please inform the registrar to fix the issue."
-		// 		<<endl;
-		// 	} return true;
-		// }
-  //  bool login::handlingLogin() {
-  //   	const char* FileName = "temp_file_two.txt";
-  //   	if(remove(FileName) == 0) {
-  //   		//"The memory in the temp file two text file has being cleaned/deleted.";
-  //   	} else {
-  //   		perror("Error: the temp file two failed to be released/deleted.");
-  //   	}
-  //   	const char* otherFileName = "temp_file_one.txt";
-  //   	if(remove(otherFileName) == 0) {
-  //   		//"The memory in the temp file one text file has being cleaned/deleted.";
-  //   	} else {
-  //   		perror("Error: the temp file one failed to be released/deleted.");
-  //   	}
-  //   	string username;
-  //   	cout<<"\t\t\t\t\t\t\t\t\tHIE WELCOME TO THE LOGIN PAGE"<<endl;
-  //   	cout<<"To login"<<endl;
-  //   	cout<<"Please Enter your username: ";
-  //   	cin>>username;
-  //   	cin.ignore();
-  //   	if(bool exists = ValidationCheck::validateUsername(username)) {
-  //   		string password;
-  //   		cout<<"Please Enter your password: ";
-  //   		cin>>password;
-  //   		cin.ignore();
-  //   		system("CLS");
-  //   		exists = ValidationCheck::validatePassword(password);
-  //   		if(exists) {
-  //   			exists = DatabaseManager::authenticateUserInFileManagementSystem(username,
-		// 		password, "users_File.txt", 6);
-  //   			if(exists) {
-  //   				//if logged in these function will handle their menu on regards to what their logged in as
-  //   				User user(username);
-  //   				cout
-		// 			<<"HIE USER "<<user.getId()<<" User INFO: "<<user.first_name<<" "<<user.last_name
-		// 			<<" TO THE FREE LEARNINGS MANAGEMENT SYSTEM"<<endl;
-  //   				AllocateUser::allocateUserLoginClassification(username);
-  //   			} else {
-  //   				//User failed to authenticate the account
-  //   				cout<<"Our records don't have these credentials stored in the file."<<endl;
-  //   				return false;
-  //   			}
-  //   		} else {
-  //   			cout<<"Error: the password is invalid."<<endl;
-  //   		}
-  //   	} else {
-  //   		cout<<"Error: the username is invalid."<<endl;
-  //   	} return true;
-  //   }
