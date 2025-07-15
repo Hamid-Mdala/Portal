@@ -47,9 +47,8 @@ bool Menu::studentMenu() {
 }
 
 bool Menu::teacherMenu() {
-	while (category_ == "teacher") { //a teacher is able to make the students gpa and teaches course
-		//the teacher views the studnet who are learning from the're course
-		//the teacher is able to view the semester made by the admin
+	while (category_ == "teacher") {
+		//the teacher is able to view the semester made by the admin in the course table
 		CategoryTeacher teacherUser(username_);
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
@@ -62,12 +61,12 @@ bool Menu::teacherMenu() {
 		if (std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next()) {
 			int user_id = res->getInt("id");
 
-			stmt.reset(conn_.prepareStatement("SELECT * FROM Teacher WHERE user_id = ?"));
+			stmt.reset(conn_.prepareStatement("SELECT * FROM Teachers WHERE user_id = ?"));
 			stmt->setInt(1, user_id);
 
 			res.reset(stmt->executeQuery());
 			if (res->next()) {
-
+				//todo: have to add the enter id, office number, department, hire date  just like admin however on the course code i have to input he course code that i am given in the school as i do this i can see when the course is tought in the semester column
 			} else {
 				int gpa, choice;
 				do {
@@ -100,6 +99,7 @@ bool Menu::teacherMenu() {
 
 			}
 		}
+		return true;
 	}
 }
 
@@ -126,7 +126,6 @@ bool Menu::adminMenu() {
 				int choice;
 				do {
 					std::cout << "1. View" << "\n";
-					//std::cout << "TODO: the admin must be able to make the semester so that the teacher and student can use"
 					std::cout << "2. Create course" << "\n";
 					std::cout << "3. Update course" << "\n";
 					std::cout << "4. Delete course" << "\n";

@@ -28,6 +28,7 @@ class DatabaseManager {
         bool displayUser();
         bool searchUser(const std::string& username);
         bool authenticateUser(const std::string& username, const std::string& password);
+        bool viewProfile(const std::string& username);
 
         bool createCourse(const std::string& code, const std::string& name,
             const std::string& department, const int& semester);

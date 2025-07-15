@@ -109,12 +109,14 @@ int main() {
 			std::cout << "option must be either yes('y' or 'Y') or no('n' or 'N')" << "\n";
 		}
 			{
+				//when the user is signing up
 				Menu menu(data.username, data.category);
 				menu.studentMenu();
-				//menu.teacherMenu();
+				menu.teacherMenu();
 				menu.adminMenu();
 			}
 			{
+				//when the user is already logged in
 				Menu menu(data.username, category);
 				menu.studentMenu();
 				menu.teacherMenu();

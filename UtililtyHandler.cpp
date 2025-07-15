@@ -200,8 +200,7 @@ bool CategoryTeacher::teacherView() {
                 dbManager.displayGPA();
                 break;
             case 3:
-                //TODO: NEXT TIME WE START CODING HAVE TO MAKE A VIEW PROFILE FOR A SINGLE USER
-                //view profile inside the database manager file
+                dbManager.viewProfile(username_);
                 break;
             case 0:
                 std::cout << "Exited previous menu.." << "\n";
@@ -211,6 +210,7 @@ bool CategoryTeacher::teacherView() {
                 break;
         }
     } while (choice != 0);
+    return true;
 }
 
 
@@ -253,7 +253,7 @@ bool CategoryAdmin::makeCourseInDB() {
             }
         }
     } while (false);  //if the course code is found in the database
-
+    return true;
 }
 
 bool CategoryAdmin::removeCourseInDB() {
@@ -363,6 +363,9 @@ bool CategoryAdmin::adminView() {
                 break;
             case 4:
                 dbManager.displayTeacher();
+                break;
+            case 5:
+                dbManager.viewProfile(username_);
                 break;
             case 0:
                 std::cout << "Exited previous menu.." << "\n";

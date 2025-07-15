@@ -167,6 +167,35 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 	return false;
 }
 
+bool DatabaseManager::viewProfile(const std::string& username) {
+	try {
+		if (!conn_) return false;
+		std::unique_ptr<sql::PreparedStatement> stmt(
+			conn_->prepareStatement("SELECT * FROM Users WHERE username = ?"));
+		stmt->setString(1, username);
+
+		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+		int index = 0;
+		if (res->next()) {
+			std::cout << ++index << ". Username: " << res->getString("username");
+			std::cout << ", User_ID: " << res->getInt("id");
+			std::cout << ", First Name: " << res->getString("first_name");
+			std::cout << ", Last Name: " << res->getString("last_name");
+			std::cout << ", Category: " << res->getString("category");
+			std::cout << ", birth_date: " << res->getString("birth_date");
+			std::cout << ", created_at: " << res->getString("created_at");
+			return true;
+		} else {
+			std::cout << "No user found with username: " << username << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error viewing profile: " << e.what() << "\n";
+		return false;
+	}
+}
+
+
 bool DatabaseManager::createCourse(const std::string &code, const std::string &name,
 	const std::string &department, const int& semester) {
 	try {
