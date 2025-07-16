@@ -64,9 +64,10 @@ bool Category::deleteProfile() {
     }
 }
 
-bool CategoryStudent::enrollCourse() {  //a student is made when they enroll into a course
+bool CategoryStudent::enrollCourse() {
+    std::cout << "Enroll course menu" << "\n";
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-    std::cout << "Enroll Course" << "\n";
+
     dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
 
@@ -186,6 +187,33 @@ bool CategoryTeacher::teacherView() {
     return true;
 }
 
+bool CategoryTeacher::uploadGPA() {
+    std::cout << "Upload students results menu" << "\n";
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    sql::Connection& conn_ = dbManager.getConnectionRef();
+
+
+    bool exists;
+    int student_id;
+    std::string course_code_;
+    do {
+        dbManager.numOfUsersThatLearnFromTeacher(course_code);
+        std::cout << "Enter the students ID: " << "\n";
+        std::cin >> student_id;
+        exists = ValidationCheck::validateId(student_id);
+    } while (!exists);
+    do {
+        exists = dbManager.searchStudent(student_id);
+        if (exists) {
+            std::cout << "Enter student course: " << "\n";
+            std::cin >> course_code;
+            std::unique_ptr<sql::PreparedStatement> stmt(
+                conn_.prepareStatement("SELECT * Students "))
+
+        }
+    }
+}
 
 
 
@@ -199,7 +227,7 @@ bool CategoryAdmin::makeCourseInDB() {
         std::cin >> course_code;
         exists = ValidationCheck::validateCourseId(course_code);
     } while (!exists);
-    bool check;
+    bool check = false;
     do {
         exists = dbManager.searchCourse(course_code);
         if (exists) {

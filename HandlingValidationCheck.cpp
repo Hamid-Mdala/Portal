@@ -96,7 +96,11 @@ bool ValidationCheck::validateAllString(const string& any_string) {
 	return true;
 }
 bool ValidationCheck::validateGpa(const float& gpa) {
-	//TODO: I HAVE TO VALIDATE THE GPA OF THE STUDNET THE TEACHER ENTER
+	if (gpa > 0.0 || gpa < 4.1) {
+		return true;
+	}
+	printf("Error: The GPA value is out of range\n");
+	return false;
 }
 bool ValidationCheck::validateAllInt(const int &any_int) {
 	if (any_int > 0) {

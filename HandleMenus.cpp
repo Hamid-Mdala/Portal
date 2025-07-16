@@ -78,7 +78,7 @@ bool Menu::teacherMenu() {
 					} else if (choice == 2) {
 						teacherUser.uploadGPA();
 					} else if (choice == 3) {
-						teacherUser.updateGPA();
+						teacherUser.uploadGPA();
 					} else if (choice == 4) {
 						teacherUser.updateProfile();
 					} else if (choice == 5) {
@@ -99,7 +99,7 @@ bool Menu::teacherMenu() {
 					std::cin >> teacher_id;
 					exists = ValidationCheck::validateId(teacher_id);
 				} while (!exists);
-				bool check;
+				bool check = false;
 				do {
 					exists = dbManager.searchTeacher(teacher_id);
 					if (exists) {
@@ -139,7 +139,6 @@ bool Menu::teacherMenu() {
 					std::cin >> course_code;
 					exists = ValidationCheck::validateCourseId(course_code);
 				} while (!exists);
-				bool check;
 				do {
 					exists = dbManager.searchCourse(course_code);
 					if (!exists) {
