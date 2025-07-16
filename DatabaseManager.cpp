@@ -305,18 +305,16 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 }
 
 bool DatabaseManager::createStudent(const int &student_id, const std::string &class_,
-	const int &user_id, const float &gpa,
-	const std::string &course_code) {
+	const int &user_id, const std::string &course_code) {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Students (student_id, class, user_id, gpa, course_code) VALUES(?, ?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Students (student_id, class, user_id, course_code) VALUES(?, ?, ?, ?, ?)"));
 		stmt->setInt(1, student_id);
 		stmt->setString(2, class_);
 		stmt->setInt(3, user_id);
-		stmt->setFloat(4, gpa);
-		stmt->setString(5, course_code);
+		stmt->setString(4, course_code);
 
 		std::cout << "The student is successfully created" << "\n";
 		return stmt->executeUpdate() > 0;

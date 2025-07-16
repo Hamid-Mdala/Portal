@@ -5,7 +5,7 @@
 #include "DatabaseManager.h"
 #include <conncpp/Connection.hpp>
 
-static float gpa;
+
 inline std::string course_name_;  //IMPORTANT! value that compares with the course_name the admin enters
 inline std::string department_;   //IMPORTANT! value that compares with the department the admin enters
 
@@ -106,7 +106,7 @@ bool CategoryStudent::enrollCourse() {  //a student is made when they enroll int
                 std::cout << "Course_code: " << res->getString("course_code");
                 std::cout << ", Name: " << res->getString("name");
                 std::cout << ", Department: " << res->getString("department") << "\n";
-                dbManager.createStudent(student_id, year, user_id, gpa, course_code);
+                dbManager.createStudent(student_id, year, user_id, course_code);
                 std::cout << "Successfully enrolled into the course" << "\n";
             } else {
                 //the course code does not exist
@@ -145,7 +145,7 @@ bool CategoryStudent::enrollCourse() {  //a student is made when they enroll int
                     std::cout << "Course_code: " << res->getString("course_code");
                     std::cout << ", Name: " << res->getString("name");
                     std::cout << ", Department: " << res->getString("department") << "\n";
-                    dbManager.createStudent(student_id, year, user_id, gpa, course_code);
+                    dbManager.createStudent(student_id, year, user_id, course_code);
                     std::cout << "Successfully enrolled into the course" << "\n";
                 } else {
                     //the course code does not exist
@@ -167,7 +167,7 @@ bool CategoryStudent::getResults() {
 
     std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
     if (res->next() && res->getInt(1)) {
-        gpa = res->getFloat("gpa");
+        float gpa = res->getFloat("gpa");
         std::cout << "Your grade score difference is: " << gpa << "\n";
         return true;
     } else {

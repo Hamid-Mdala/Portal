@@ -38,7 +38,7 @@ class DatabaseManager {
         bool searchCourse(const std::string& code);
 
         bool createStudent(const int& student_id, const std::string& class_,
-            const int& user_id, const float& gpa, const std::string& course_code);
+            const int& user_id, const std::string& course_code);
         //TODO: WE MUST BE ABLE TO MAKE THE TEACHER AND MAKE ALSO HIS FUNCTIONS
         bool createTeacher(const int& teacher_id, const int& user_id, const std::string& office_number,
              const std::string& hire_date, const std::string& department, const std::string& course_code);

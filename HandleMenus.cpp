@@ -66,9 +66,7 @@ bool Menu::teacherMenu() {
 
 			res.reset(stmt->executeQuery());
 			if (res->next()) {
-				//todo: have to add the enter id, office number, department, hire date  just like admin however on the course code i have to input he course code that i am given in the school as i do this i can see when the course is tought in the semester column
-			} else {
-				int gpa, choice;
+				int choice;
 				do {
 					std::cout << "1. View" << "\n";   //this view the students enrolled into his course
 					std::cout << "2. Upload GPA" << "\n";
@@ -79,6 +77,7 @@ bool Menu::teacherMenu() {
 					std::cout << "Enter your choice: " << "\n";
 					std::cin >> choice;
 					system("clear");
+
 					if (choice == 1) {
 						teacherUser.teacherView();
 					} else if (choice == 2) {
@@ -96,11 +95,93 @@ bool Menu::teacherMenu() {
 					}
 				} while (choice != 0);
 
+			} else {
+				//todo: have to add the enter id, office number, department, hire date  just like admin
+				//however on the course code i have to input the course code that i am given in the school
+				//and i have to check if the course exists in db
+				//as i do this i can see when the course is taught in the semester column
+				int teacher_id, day, month, year;
+				std::string department_, course_code, office_number;
+				bool exists;
+				do {
+					std::cout << "What is your Identification Number(ID): " << "\n";
+					std::cin >> teacher_id;  //add verification mechanism
+					exists = ValidationCheck::validateId(teacher_id);
+					do {
+						stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE admin_id = ?"));
 
+						stmt->setInt(1, teacher_id);
+						res.reset(stmt->executeQuery());
+						if (res->next()) {
+							std::cout << "Identification Number(ID) already exists" << "\n";
+							std::cout << "What is your Identification Number(ID): " << "\n";
+							std::cin >> teacher_id;
+							exists = ValidationCheck::validateId(teacher_id);
+						}
+					}while (res->next());
+				} while (!exists);
+
+				do {
+					std::cout << "What is your office (room number): " << "\n";
+					std::cin >> office_number;
+					exists = ValidationCheck::validateAllString(office_number);
+				} while (!exists);
+
+				do {
+					std::cout << "Which department do you work-in this corporation: " << "\n";
+					std::cin >> department_;
+					exists = ValidationCheck::validateAllString(department_);
+				} while (!exists);
+
+				do {
+					std::cout << "What was your hire date: " << "\n";
+					std::cout << "Day(DD): ";
+					std::cin >> day;
+					std::cout << "Month(MM): ";
+					std::cin >> month;
+					std::cout << "Year(YYYY): ";
+					std::cin >> year;
+					exists = ValidationCheck::validateDOB(day, month, year);
+				} while (!exists);
+
+				//before search check if the course table has columns using the course display
+				do {
+					exists = dbManager.displayCourse();
+					if (!exists) {
+						return false && void (std::exit(1));
+					} else {
+						do {
+							std::cout << "What course code are you teaching?" << "\n";
+							std::cin >> course_code;
+							exists = ValidationCheck::validateCourseId(course_code);
+							if (!exists) {
+								return false;
+							} else {
+								do {
+									exists = dbManager.searchCourse(course_code);
+									if (!exists) {
+										return false;
+									} else {
+										std::cout << "processing information" << "\n";
+									}
+								} while (false);
+							}
+						} while (false);
+					}
+				} while (false);
+				{
+					std::string hire_date;
+					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
+					dbManager.createAdmin(teacher_id, user_id, department_, office_number, hire_date);
+				}
 			}
+		} else {
+			std::cout << "Couldn't find user" << "\n";
+			std::cout << "Please report to the software engineer teem to fix your issue" << "\n";
+			std::exit(EXIT_FAILURE);
 		}
-		return true;
 	}
+	return true;
 }
 
 bool Menu::adminMenu() {
@@ -158,10 +239,8 @@ bool Menu::adminMenu() {
 				} while (choice != 0);
 
 			} else {
-				int admin_id;
-				std::string department_;
-				int day, month, year;
-				std::string office_number;
+				int admin_id, day, month, year;
+				std::string department_, office_number;
 				bool exists;
 				do {
 					std::cout << "What is your Identification Number(ID): " << "\n";
@@ -195,12 +274,12 @@ bool Menu::adminMenu() {
 
 
 				do {
-					std::cout << "What was is your hire date: " << "\n";
-					std::cout << "Day(DD): " << "\n";
+					std::cout << "What was your hire date: " << "\n";
+					std::cout << "Day(DD): ";
 					std::cin >> day;
-					std::cout << "Month(MM): " << "\n";
+					std::cout << "Month(MM): ";
 					std::cin >> month;
-					std::cout << "Year(YYYY): " << "\n";
+					std::cout << "Year(YYYY): ";
 					std::cin >> year;
 					exists = ValidationCheck::validateDOB(day, month, year);
 				} while (!exists);
