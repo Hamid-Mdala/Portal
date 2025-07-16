@@ -202,11 +202,12 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
-			conn_->prepareStatement("INSERT INTO Course (course_code, name, department) VALUES (?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Course (course_code, name, department, semester) VALUES (?, ?, ?, ?)"));
 		stmt->setString(1, code);
 		stmt->setString(2, name);
 		stmt->setString(3, department);
 		stmt->setInt(4, semester);
+		std::cout << "The course is successfully created" << "\n";
 
 		return stmt->executeUpdate() > 0; //returns true if the course is created successfully
 	} catch (sql::SQLDataException& e) {

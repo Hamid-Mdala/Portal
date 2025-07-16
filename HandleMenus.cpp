@@ -148,7 +148,9 @@ bool Menu::teacherMenu() {
 				do {
 					exists = dbManager.displayCourse();
 					if (!exists) {
-						return false && void (std::exit(1));
+						std::cout << "The admin has not yet created any course in the database" << "\n";
+						std::cout << "Due to the above you can not processed in creating your teacher account" << "\n";
+						return EXIT_SUCCESS;
 					} else {
 						do {
 							std::cout << "What course code are you teaching?" << "\n";
@@ -168,11 +170,11 @@ bool Menu::teacherMenu() {
 							}
 						} while (false);
 					}
-				} while (false);
+				} while (!exists);
 				{
 					std::string hire_date;
 					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
-					dbManager.createAdmin(teacher_id, user_id, department_, office_number, hire_date);
+					dbManager.createTeacher(teacher_id, user_id, office_number, hire_date, department_, course_code);
 				}
 			}
 		} else {

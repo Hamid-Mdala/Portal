@@ -75,9 +75,9 @@ bool ValidationCheck::validateDOB(const int& day, const int& month, const int& y
 bool ValidationCheck::validateCourseId(const string& course_id) {
 	if(course_id.length() > 9 && course_id.length() <= 15) {
 		return true;
-	} else {
-		return false;
 	}
+	printf("Error: Invalid course code length\n");
+	return false;
 }
 bool ValidationCheck::validateCourseName(const string& course_name) {
 		if(course_name.length() > 3 && course_name.length() <= 20) {
