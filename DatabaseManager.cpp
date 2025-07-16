@@ -124,7 +124,7 @@ bool DatabaseManager::displayUser() {
 			return true;
 		} else {
 			std::cout << "User table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "Error displaying user: " << e.what() << "\n";
@@ -175,9 +175,8 @@ bool DatabaseManager::viewProfile(const std::string& username) {
 		stmt->setString(1, username);
 
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		int index = 0;
 		if (res->next()) {
-			std::cout << ++index << ". Username: " << res->getString("username");
+			std::cout <<  "Username: " << res->getString("username");
 			std::cout << ", User_ID: " << res->getInt("id");
 			std::cout << ", First Name: " << res->getString("first_name");
 			std::cout << ", Last Name: " << res->getString("last_name");
@@ -186,7 +185,7 @@ bool DatabaseManager::viewProfile(const std::string& username) {
 			std::cout << ", created_at: " << res->getString("created_at");
 			return true;
 		} else {
-			std::cout << "No user found with username: " << username << "\n";
+			std::cout << "Sorry could not display your profile lately, please contact +265994500600 " << username << "\n";
 			return false;
 		}
 	} catch (sql::SQLException& e) {
@@ -207,9 +206,10 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 		stmt->setString(2, name);
 		stmt->setString(3, department);
 		stmt->setInt(4, semester);
-		std::cout << "The course is successfully created" << "\n";
 
-		return stmt->executeUpdate() > 0; //returns true if the course is created successfully
+		std::cout << "The course is successfully created" << "\n";
+		return stmt->executeUpdate() > 0;
+
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "Course creation failed: " << e.what() << "\n";
 		return false;
@@ -223,7 +223,8 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 			conn_->prepareStatement("DELETE FROM Course WHERE course_code = ?"));
 		stmt->setString(1, code);
 
-		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
+		if (res->next()) {
 			std::cout << "Successfully removed the course: " << code << " from the database" << "\n";
 			return true;
 		} else {
@@ -279,7 +280,7 @@ bool DatabaseManager::displayCourse() {
 			return true;
 		} else {
 			std::cout << "Course table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "Error displaying course: " << e.what() << "\n";
@@ -297,7 +298,6 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
 		std::cout << "found the course: " << code << " from the database" << "\n";
-		//TODO: make a extern global course variable that gets the course name and department
 		return true;
 	} else {
 		std::cout << "No course found with course_code: " << code << "\n";
@@ -326,14 +326,31 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
+bool DatabaseManager::searchStudent(const int &student_id) {
+	if (conn_) return false;
+
+	std::unique_ptr<sql::PreparedStatement> stmt (
+		conn_->prepareStatement("SELECT * FROM Students where student_id = ?"));
+	stmt->setInt(1, student_id);
+
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next()) {
+		std::cout << "found the student: " << student_id << " from the database" << "\n";
+		return true;
+	} else {
+		std::cout << "No course found with course_code: " << student_id << "\n";
+		return false;
+	}
+}
+
+
 bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, const std::string &office_number,
 	const std::string &hire_date, const std::string &department, const std::string &course_code) {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Teachers (teacher_id, user_id, office_number, "
-						   "hire_date, department, course_code) VALUES(?, ?, ?, ?, ?, ?"));
+			conn_->prepareStatement("INSERT INTO Teachers (teacher_id, user_id, office_number, hire_date, department, course_code) VALUES(?, ?, ?, ?, ?, ?)"));
 		stmt->setInt(1, teacher_id);
 		stmt->setInt(2, user_id);
 		stmt->setString(3, office_number);
@@ -399,13 +416,36 @@ bool DatabaseManager::displayGPA() {
 			return true;
 		} else {
 			std::cout << "Student table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error creating admin: " << e.what() << "\n";
 		return false;
 	}
 }
+
+bool DatabaseManager::uploadResults(const float &gpa, const int& student_id) {
+	try {
+		if (!conn_) return false;
+
+		std::unique_ptr<sql::PreparedStatement> stmt (
+			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE user_id = ?"));
+		stmt->setInt(1, student_id);
+
+		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
+		if (res->next()) {
+			std::cout << "Successfully uploaded the students(" << student_id  << ") grade in the database" << "\n";
+			return true;
+		} else  {
+			std::cout << "Can not update students grade because the student ID is not found: " << student_id << "\n";
+			return false;
+		}
+	} catch (sql::SQLException& e) {
+		std::cerr << "Error uploading results: " << e.what() << "\n";
+		return false;
+	}
+}
+
 
 
 bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const std::string& department,
@@ -453,7 +493,7 @@ bool DatabaseManager::displayStudent() {
 			return true;
 		} else {
 			std::cout << "Student table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error displaying student: " << e.what() << "\n";
@@ -484,7 +524,7 @@ bool DatabaseManager::displayTeacher() {
 			return true;
 		} else {
 			std::cout << "Teacher table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error displaying teacher: " << e.what() << "\n";
@@ -513,7 +553,7 @@ bool DatabaseManager::displayAdmin() {
 			return true;
 		} else {
 			std::cout << "Teacher table is empty" << "\n";
-			return false;
+			return EXIT_FAILURE;
 		}
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error displaying teacher: " << e.what() << "\n";

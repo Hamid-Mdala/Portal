@@ -39,16 +39,21 @@ class DatabaseManager {
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const std::string& course_code);
+        bool searchStudent(const int& student_id);
         //TODO: WE MUST BE ABLE TO MAKE THE TEACHER AND MAKE ALSO HIS FUNCTIONS
         bool createTeacher(const int& teacher_id, const int& user_id, const std::string& office_number,
              const std::string& hire_date, const std::string& department, const std::string& course_code);
         bool numOfUsersThatLearnFromTeacher(const std::string& course_code);
         bool displayGPA();
+        bool uploadResults(const float& gpa, const int& student_id);
+        bool searchTeacher(const int& teacher_id);
         bool createAdmin(const int& admin_id, const int& user_id, const std::string& department,
             const std::string& office_number, const std::string& hire_date);
+        bool searchAdmin(const int& admin_id);
         bool displayStudent();
         bool displayTeacher();
         bool displayAdmin();
+
     //setter and getters
         void setUser(const std::string& user);
         std::string getUser();

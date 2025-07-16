@@ -213,6 +213,36 @@ bool CategoryTeacher::teacherView() {
     return true;
 }
 
+bool CategoryTeacher::uploadGPA() {
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    sql::Connection& conn_ = dbManager.getConnectionRef();
+    int gpa, student_id;
+    bool exists;
+    do {
+        std::cout << "Upload Student Results Menu" << "\n";
+        std::cout << "Enter the Students Identification Number: " << "\n";  //all student are in students table okay
+        std::cin >> student_id;
+        exists = ValidationCheck::validateId(student_id);
+    } while (!exists);
+
+    do {
+        exists = dbManager.searchStudent(student_id);
+        if (!exists) {
+            std::cout << "Student not found" << "\n";
+            std::exit()
+        }
+    } while (!exists);
+}
+
+
+bool CategoryTeacher::updateGPA() {
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+    sql::Connection& conn_ = dbManager.getConnectionRef();
+
+}
+
 
 bool CategoryAdmin::makeCourseInDB() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");

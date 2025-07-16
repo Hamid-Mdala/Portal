@@ -81,15 +81,16 @@ bool Menu::teacherMenu() {
 					if (choice == 1) {
 						teacherUser.teacherView();
 					} else if (choice == 2) {
-
+						teacherUser.uploadGPA();
 					} else if (choice == 3) {
-
+						teacherUser.updateGPA();
 					} else if (choice == 4) {
 						teacherUser.updateProfile();
 					} else if (choice == 5) {
 						teacherUser.deleteProfile();
 					} else if (choice == 0) {
-
+						std::cout << "Ended program.." << "\n";
+						std::exit(EXIT_SUCCESS);
 					} else {
 
 					}
@@ -144,33 +145,28 @@ bool Menu::teacherMenu() {
 					exists = ValidationCheck::validateDOB(day, month, year);
 				} while (!exists);
 
-				//before search check if the course table has columns using the course display
 				do {
 					exists = dbManager.displayCourse();
-					if (!exists) {
-						std::cout << "The admin has not yet created any course in the database" << "\n";
-						std::cout << "Due to the above you can not processed in creating your teacher account" << "\n";
-						return EXIT_SUCCESS;
-					} else {
-						do {
-							std::cout << "What course code are you teaching?" << "\n";
-							std::cin >> course_code;
-							exists = ValidationCheck::validateCourseId(course_code);
-							if (!exists) {
-								return false;
-							} else {
-								do {
-									exists = dbManager.searchCourse(course_code);
-									if (!exists) {
-										return false;
-									} else {
-										std::cout << "processing information" << "\n";
-									}
-								} while (false);
-							}
-						} while (false);
-					}
+					//NOTE: If the course table does not exist the program ends
+					//NOTE: If the course table does exist the program continues
 				} while (!exists);
+				do {
+					std::cout << "What course code are you teaching?" << "\n";
+					std::cin >> course_code;
+					exists = ValidationCheck::validateCourseId(course_code);
+				} while (!exists);
+				bool check;
+				do {
+					exists = dbManager.searchCourse(course_code);
+					if (!exists) {
+						std::cout << "Course is not found" << "\n";
+						std::cout << "(Again)What is your course code you are learning?" << "\n";
+						std::cin >> course_code;
+						check = ValidationCheck::validateCourseId(course_code);
+					}
+				} while (!exists || !check);
+
+
 				{
 					std::string hire_date;
 					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
@@ -244,10 +240,13 @@ bool Menu::adminMenu() {
 				int admin_id, day, month, year;
 				std::string department_, office_number;
 				bool exists;
+
 				do {
 					std::cout << "What is your Identification Number(ID): " << "\n";
 					std::cin >> admin_id;  //add verification mechanism
 					exists = ValidationCheck::validateId(admin_id);
+				} while (!exists);
+
 					do {
 						stmt.reset(conn_.prepareStatement("SELECT * FROM Admin WHERE admin_id = ?"));
 
