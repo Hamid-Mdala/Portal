@@ -2,6 +2,7 @@
 #include "UtililtyHandler.h"    //handles functionalities of students
 #include "DatabaseManager.h"    //Database operations
 #include "HandleMenus.h"
+#include "HandlingValidationCheck.h"
 
 inline std::string category;
 

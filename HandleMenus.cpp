@@ -96,18 +96,19 @@ bool Menu::teacherMenu() {
 				std::string department_, course_code, office_number;
 				do {
 					std::cout << "What is your Identification Number(ID): " << "\n";
-					std::cin >> teacher_id;  //add verification mechanism
+					std::cin >> teacher_id;
 					exists = ValidationCheck::validateId(teacher_id);
-					do {
-						exists = dbManager.searchTeacher(teacher_id);
-						if (exists) {
-							std::cout << "Identification Number(ID) already exists" << "\n";
-							std::cout << "What is your Identification Number(ID): " << "\n";
-							std::cin >> teacher_id;
-							exists = ValidationCheck::validateId(teacher_id);
-						}
-					} while (res->next());
 				} while (!exists);
+				bool check;
+				do {
+					exists = dbManager.searchTeacher(teacher_id);
+					if (exists) {
+						std::cout << "Identification Number(ID) already exist" << "\n";
+						std::cout << "What is your Identification Number(ID): " << "\n";
+						std::cin >> teacher_id;
+						check = ValidationCheck::validateId(teacher_id);
+					}
+				} while (exists || !check);
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;
@@ -164,9 +165,9 @@ bool Menu::teacherMenu() {
 }
 
 bool Menu::adminMenu() {
-	while (category_ == "admin") {  //admin has access to full database controls that is why we
+	while (category_ == "admin") {
+		//admin has access to full database controls
 		CategoryAdmin adminUser(username_);
-		//sign up an account in the admin database
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
 		sql::Connection& conn_ = dbManager.getConnectionRef();
@@ -216,18 +217,19 @@ bool Menu::adminMenu() {
 				std::string department_, office_number;
 				do {
 					std::cout << "What is your Identification Number(ID): " << "\n";
-					std::cin >> admin_id;  //add verification mechanism
+					std::cin >> admin_id;
 					exists = ValidationCheck::validateId(admin_id);
 				} while (!exists);
+				bool check;
 				do {
 					exists = dbManager.searchAdmin(admin_id);
 					if (exists) {
 						std::cout << "Identification Number(ID) already exists" << "\n";
 						std::cout << "What is your Identification Number(ID): " << "\n";
 						std::cin >> admin_id;
-						exists = ValidationCheck::validateId(admin_id);
+						check = ValidationCheck::validateId(admin_id);
 					}
-				} while (exists);
+				} while (exists || !check);
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;

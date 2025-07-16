@@ -1,12 +1,11 @@
-#include "ModifyPortalUsers.h"
-#include "DatabaseManager.h"
-#include "HandlingValidationCheck.h"
-#include <mariadb/conncpp.hpp>
 #include <memory>
+#include <iostream>
+#include <mariadb/conncpp.hpp>
+#include "DatabaseManager.h"
+#include "ModifyPortalUsers.h"
+#include "HandlingValidationCheck.h"
 
-
-User::User(const string& username) {
-	//so if we search for the unique username let us get the fields
+User::User(const std::string& username) {
 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 	dbManager.connect();
 	sql::Connection& conn_ = dbManager.getConnectionRef();
@@ -28,20 +27,6 @@ User::User(const string& username) {
 	}
 }
 
-void User::setUsername(const string& username) {username_ = username;}
-string User::getUsername() {return username_;}
-
-void User::setPassword(const string& password) {password_ = password;}
-string User::getPassword() {return password_;}
-
-// bool User::view() {
-// 	//view algorithm for user used to view all the users file in the management system,
-// 	//However it is possible for the function to change completely under other user's implementation
-// 	DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-// 	dbManager.displayUser(username_, category);
-// 	return true;
-// }
-
 bool User::editPassword() {
 	bool exists;
 	std::string old_pass;
@@ -49,7 +34,6 @@ bool User::editPassword() {
 	do {
 		std::cout << "Please Enter Old Password: ";
 		std::cin >> old_pass;
-
 		while (old_pass != password_) {
 			std::cout << "Incorrect password!" << "\n";
 			std::cout << "Please Enter Old Password: ";
@@ -57,25 +41,22 @@ bool User::editPassword() {
 		}
 		exists = ValidationCheck::validatePassword(old_pass);
 	} while (!exists);
-
 	if (password_ == old_pass) {
 		do {
 			std::cout << "Please Enter New Password: ";
 			std::cin >> new_pass;
-
 			while (new_pass == old_pass) {
-				std::cout << "The new password cannot be the same as the old password. Please enter a different password." << "\n";
+				std::cout << "The new password cannot be the same as the old password."
+				 "Please enter a different password." << "\n";
 				std::cout << "Please Enter New Password: ";
 				std::cin >> new_pass;
 			}
 			exists = ValidationCheck::validatePassword(new_pass);
 		} while (!exists);
-
 		std::string confirm_pass;
 		do {
 			std::cout << "Confirm Password: ";
 			std::cin >> confirm_pass;
-
 			while (confirm_pass != new_pass) {
 				std::cout << "The confirmation password does not match the new password. Please try again." << "\n";
 				std::cout << "Confirm Password: ";
@@ -84,13 +65,10 @@ bool User::editPassword() {
 			exists = ValidationCheck::validatePassword(confirm_pass);
 		} while (!exists);
 	}
-
 	{
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-		dbManager.connect();  //when i make the contractor I must always make a new connection
-
+		dbManager.connect();
 		dbManager.updateUser(username_, new_pass, first_name, last_name, category, birth_date);
-
 	}
 	return true;
 }
@@ -121,7 +99,7 @@ bool User::editFirstName() {
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
 		dbManager.updateUser(username_, password_, f_name, last_name, category, birth_date);
-		first_name = f_name; //update the first name in the constructor so that in code everything goes well
+		first_name = f_name;
 	}
 	return true;
 }
@@ -150,7 +128,7 @@ bool User::editLastName() {
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
 		dbManager.updateUser(username_, password_, first_name, l_name, category, birth_date);
-		last_name = l_name; //update the first name in the constructor so that in code everything goes well
+		last_name = l_name;
 	}
 	return true;
 }
@@ -174,6 +152,13 @@ bool User::editDOB() {
 		DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
 		dbManager.connect();
 		dbManager.updateUser(username_, password_, first_name, last_name, category, new_dob);
+		birth_date = new_dob;
 	}
 	return true;
 }
+
+void User::setUsername(const std::string& username) {username_ = username;}
+std::string User::getUsername() {return username_;}
+
+void User::setPassword(const std::string& password) {password_ = password;}
+std::string User::getPassword() {return password_;}

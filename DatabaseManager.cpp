@@ -303,6 +303,8 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
+		course_name_ = res->getString("course_name");
+		department_ = res->getString("department");
 		std::cout << "found the course: " << code << " from the database" << "\n";
 		return true;
 	} else {
@@ -430,14 +432,15 @@ bool DatabaseManager::displayGPA() {
 	}
 }
 
-bool DatabaseManager::uploadResults(const float &gpa, const int& student_id) {
+bool DatabaseManager::uploadResults(const float &gpa, const int& student_id, const std::string& course_code) {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE user_id = ?"));
+			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE user_id = ? AND course_code = ?"));
 		stmt->setFloat(1, gpa);
 		stmt->setInt(2, student_id);
+		stmt->setString(3, course_code);
 
 		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
 		if (res->next()) {

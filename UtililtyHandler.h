@@ -1,67 +1,43 @@
 #pragma once
 #include <string>
-//I have to store student category details
+
 class Category {
     public:
-        Category(const std::string& username);   //this will give us all the needed requirements
-        std::string username_;     //the admin, student and teacher user_id is used as a key in the table
-        int user_id;  //user_id
-        std::string course_code;   //the course_code is made by the admin and used by the student and teacher
-        int semester;     //the semester is made by the admin and used by student and teacher
-    public:
+        std::string username_;
+        std::string course_code;
+
+        Category(const std::string& username);
         bool updateProfile();
         bool deleteProfile();
 };
-
-
-class CategoryEmployee {
-    protected:
-        std::string department;
-        std::string hire_date;
-        std::string office_num;
-
-};
-
 class CategoryStudent : public Category {
-    public:
-        std::string year;      //the year the student is in like fresh-man
-    private:
-        int student_id;  //Used as a key in the table
+
     public:
         CategoryStudent(const std::string& username): Category(username) {};
-        bool enrollCourse();   //use the student_id to enroll into the course
-        bool getResults();     //use the student_id to get the results in gpa column
-    public:
-        void setId(const int& id);
-        int getId();
-        //once they are logged in the student is able to either
-        /* 1. enroll into course(input class, course_code, student_id)
-         * using the username we will get the user_id,
-         * 2. get results(teacher will give the student gpa)
-         * 3. update profile (inside this the student is able to update their details
-         */
-};
-
-class CategoryAdmin : public CategoryEmployee, public Category {
+        bool enrollCourse();
+        bool getResults();
     private:
-        std::string admin_id; //Used as a key in the table
-        std::string course_name;
+        int student_id, user_id;
+        std::string year;
+};
+class CategoryAdmin : public Category {
+    private:
+        int admin_id, semester;
+        std::string course_name, department;
     public:
-        CategoryAdmin(const std::string& username): CategoryEmployee(), Category(username) {};
+        CategoryAdmin(const std::string& username) : Category(username) {};
         bool makeCourseInDB();
         bool removeCourseInDB();
         bool updateCourseInDB();
         bool adminView();
     public:
 };
-
-class CategoryTeacher : public CategoryEmployee, public Category {
+class CategoryTeacher : public Category {
     private:
-        std::string teacher_id; //Used as the key in the table
-        std::string gpa_;  //the role of teacher to make the students gpa
+        int teacher_id;
+        float gpa_;
     public:
-    CategoryTeacher(const std::string& username): CategoryEmployee(), Category(username) {};
+    CategoryTeacher(const std::string& username) : Category(username) {};
     bool teacherView();
     bool uploadGPA();
-    bool updateGPA();
 };

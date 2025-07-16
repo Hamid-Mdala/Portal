@@ -1,9 +1,9 @@
-#include "UtililtyHandler.h"
 #include <iostream>
-
-#include "ModifyPortalUsers.h"
-#include "DatabaseManager.h"
 #include <conncpp/Connection.hpp>
+#include "UtililtyHandler.h"
+#include "DatabaseManager.h"
+#include "ModifyPortalUsers.h"
+#include "HandlingValidationCheck.h"
 
 
 inline std::string course_name_;  //IMPORTANT! value that compares with the course_name the admin enters
@@ -45,7 +45,7 @@ bool Category::updateProfile() {
                 std::cout << "Invalid choice. Please enter valid value between (1-5)" << "\n";
                 break;
         }
-    } while (choice != 0);  //while the choice is not equal to 0 we will stay in the loop
+    } while (choice != 0);
     return true;
 }
 
@@ -56,11 +56,11 @@ bool Category::deleteProfile() {
     dbManager.connect();
     if (bool exists = dbManager.searchUser(username_)) {
         dbManager.deleteUser(username_);
-        std::exit(EXIT_SUCCESS);   //exit the program
+        std::exit(EXIT_SUCCESS);
     } else {
         std::cout << "The User does no longer exist in the database" << "\n";
         std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
-        std::exit(EXIT_FAILURE);   //exit the program
+        std::exit(EXIT_FAILURE);
     }
 }
 
@@ -76,88 +76,58 @@ bool CategoryStudent::enrollCourse() {  //a student is made when they enroll int
 
     std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
     if (res->next() &&  res->getInt(1)) {
-        //the username exist
         user_id = res->getInt("id");
-        std::cout << "Found the users username" << "\n";
-    } else {
-        //the username does not exist
-        std::cout << "Couldn't find the users username" << "\n";
-    }
-    stmt.reset( conn_.prepareStatement("SELECT * FROM Students WHERE user_id = ?"));
-    stmt->setInt(1, user_id);  //this is an index in the database
-
-    res.reset( stmt->executeQuery());
-    if (res->next() && res->getInt(1)) {
-        //user already exists in the students table
-        do {
+        if (bool exists = dbManager.searchStudent(user_id)) {
             student_id = res->getInt("student_id");
             year = res->getString("class");
-
-            std::cout << "Enter the course: " << "\n";
-            std::cin >> course_code;
-            system("clear");
-
-            stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
-            stmt->setString(1, course_code);
-
-            res.reset(stmt->executeQuery());
-            if (res->next() && res->getInt(1)) {
-                //the course code exist
-                std::cout << "Course_code: " << res->getString("course_code");
-                std::cout << ", Name: " << res->getString("name");
-                std::cout << ", Department: " << res->getString("department") << "\n";
-                dbManager.createStudent(student_id, year, user_id, course_code);
-                std::cout << "Successfully enrolled into the course" << "\n";
-            } else {
-                //the course code does not exist
-                std::cout << "Couldn't find course course_code" << "\n";
-                return false;
-            }
-        } while (!false);
-    }
-        {
-            //user does not exist in the students table
-            bool exists;
+            do {
+                dbManager.displayCourse();
+                std::cout << "Enter the course you want to learn: " << "\n";
+                std::cin >> course_code;
+                exists = ValidationCheck::validateCourseId(course_code);
+            } while (!exists);
+            do {
+                exists = dbManager.searchCourse(course_code);
+                if (exists) {
+                    dbManager.createStudent(student_id, year, user_id, course_code);
+                    std::cout << "Successfully enrolled into the course" << "\n";
+                }
+            } while (!exists);
+        } else {
             do {
                 std::cout << "Enter your student ID: " << "\n";
-                std::cin >> student_id;  //2420016
+                std::cin >> student_id;
                 exists = ValidationCheck::validateId(student_id);
                 system("clear");
             } while (exists);
             do {
-                std::cout << "what is your class year\n" << "Are you either 'fresh-man, sophomore, junior or senior'?" << "\n";
+                std::cout << "what is your class year\n" << "Are you either 'fresh-man,"
+                                                            "sophomore, junior or senior'?" << "\n";
                 std::cout << "Enter your year: " << "\n";
                 std::cin >> year;   //what the year of their class
                 exists = ValidationCheck::validateYear(year);
                 system("clear");
             } while (!exists);
             do  {
-                std::cout << "Enter the course code: " << "\n";
+                dbManager.displayCourse();
+                std::cout << "Enter the course you want to learn: " << "\n";
                 std::cin >> course_code;
                 system("clear");
-
-                stmt.reset(conn_.prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
-                stmt->setString(1, course_code);
-
-                res.reset(stmt->executeQuery());
-                if (res->next() && res->getInt(1)) {
-                    //if the course code exist
-                    std::cout << "Course_code: " << res->getString("course_code");
-                    std::cout << ", Name: " << res->getString("name");
-                    std::cout << ", Department: " << res->getString("department") << "\n";
-                    dbManager.createStudent(student_id, year, user_id, course_code);
-                    std::cout << "Successfully enrolled into the course" << "\n";
-                } else {
-                    //the course code does not exist
-                    std::cout << "Couldn't find any course code in the database" << "\n";
-                    return false;
-                }
-            } while (!false);
+                exists = dbManager.searchCourse(course_code);
+                    if (exists) {
+                        dbManager.createStudent(student_id, year, user_id, course_code);
+                        std::cout << "Successfully enrolled into the course" << "\n";
+                    }
+            } while (!exists);
         }
+    } else {
+        std::cout << "Couldn't find the users username" << "\n";
+        std::cout << "Please report to the software engineer teem to fix your issue" << "\n";
+        std::exit(EXIT_FAILURE);
+    }
 }
 
 bool CategoryStudent::getResults() {
-
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     sql::Connection& conn_ = dbManager.getConnectionRef();
 
@@ -166,12 +136,18 @@ bool CategoryStudent::getResults() {
     stmt->setInt(1, student_id);
 
     std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-    if (res->next() && res->getInt(1)) {
-        float gpa = res->getFloat("gpa");
-        std::cout << "Your grade score difference is: " << gpa << "\n";
+    int index = 0;
+    while(res->next() && res->getString("gpa") != nullptr) {
+        std::cout << ++index << ". Student_ID: " << res->getInt("student_id");
+        std::cout << ", Class: " << res->getString("class");
+        std::cout << ", Course_code: " << res->getString("course_code");
+        std::cout << ", GPA: " << res->getFloat("gpa");
+    }
+    if (index > 0) {
+        std::cout << "Total number of courses with results: " << index << "\n";
         return true;
     } else {
-        std::cout << "Your grade score difference is null" << "\n";
+        std::cout << "Your grade score results is empty" << "\n";
         return false;
     }
 }
@@ -182,9 +158,6 @@ bool CategoryTeacher::teacherView() {
     sql::Connection& conn_ = dbManager.getConnectionRef();
     int choice;
     do {
-        //view students that you are teaching
-        //view the students gpa results in the students table
-        //view my profile office number, department, hire date teacher_id and the course he teaches
         std::cout << "View option menu" << "\n";
         std::cout << "1. View students that learn your course" << "\n";
         std::cout << "2. View students GPA results" << "\n";
@@ -213,35 +186,7 @@ bool CategoryTeacher::teacherView() {
     return true;
 }
 
-bool CategoryTeacher::uploadGPA() {
-    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-    dbManager.connect();
-    sql::Connection& conn_ = dbManager.getConnectionRef();
-    int gpa, student_id;
-    bool exists;
-    do {
-        std::cout << "Upload Student Results Menu" << "\n";
-        std::cout << "Enter the Students Identification Number: " << "\n";  //all student are in students table okay
-        std::cin >> student_id;
-        exists = ValidationCheck::validateId(student_id);
-    } while (!exists);
 
-    do {
-        exists = dbManager.searchStudent(student_id);
-        if (!exists) {
-            std::cout << "Student not found" << "\n";
-            std::exit()
-        }
-    } while (!exists);
-}
-
-
-bool CategoryTeacher::updateGPA() {
-    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-    dbManager.connect();
-    sql::Connection& conn_ = dbManager.getConnectionRef();
-
-}
 
 
 bool CategoryAdmin::makeCourseInDB() {
@@ -254,35 +199,29 @@ bool CategoryAdmin::makeCourseInDB() {
         std::cin >> course_code;
         exists = ValidationCheck::validateCourseId(course_code);
     } while (!exists);
-
+    bool check;
     do {
-        if (exists == dbManager.searchCourse(course_code)) {
-            std::cout << "already exists in course database" << "\n";
-            return false;
-        } else {
-            do {
-                std::cout << "Enter course name: " << "\n";
-                std::cin >> course_name;
-                exists = ValidationCheck::validateCourseName(course_name);
-            } while (!exists);
-
-            do {
-                std::cout << "Enter department: " << "\n";
-                std::cin >> department;
-                exists = ValidationCheck::validateAllString(department);
-            } while (!exists);
-
-            do {
-                std::cout << "What semester will the course be learned in:  " << "\n";
-                std::cin >> semester;
-                exists = ValidationCheck::validateAllInt(semester);
-            } while (!exists);
-
-            {
-                dbManager.createCourse(course_code, course_name, department, semester);
-            }
+        exists = dbManager.searchCourse(course_code);
+        if (exists) {
+            std::cout << "Course code already exist" << "\n";
+            std::cout << "Enter course name: " << "\n";
+            std::cin >> course_name;
+            check = ValidationCheck::validateCourseName(course_name);
         }
-    } while (false);  //if the course code is found in the database
+    } while (exists || !check);
+    do {
+        std::cout << "Enter department: " << "\n";
+        std::cin >> department;
+        exists = ValidationCheck::validateAllString(department);
+    } while (!exists);
+    do {
+        std::cout << "What semester will the course be learned in:  " << "\n";
+        std::cin >> semester;
+        exists = ValidationCheck::validateAllInt(semester);
+    } while (!exists);
+    {
+        dbManager.createCourse(course_code, course_name, department, semester);
+    }
     return true;
 }
 
@@ -296,22 +235,25 @@ bool CategoryAdmin::removeCourseInDB() {
     dbManager.connect();
     if (bool exists = dbManager.searchCourse(course_code)) {
         dbManager.deleteCourse(course_code);
-        std::exit(EXIT_SUCCESS);   //exit the program
+        std::exit(EXIT_SUCCESS);
     } else {
         std::cout << "The Course does no longer exist in the database" << "\n";
-        std::cout << "For any issues please report to the software developer to help you fix the issue or contact +256994500600" << "\n";
-        std::exit(EXIT_FAILURE);   //exit the program
+        std::cout << "For any issues please report to the software developer to help"
+                     "you fix the issue or contact +256994500600" << "\n";
+        std::exit(EXIT_FAILURE);
     }
 }
 
 bool CategoryAdmin::updateCourseInDB() {
     std::cout << "Update course menu " << "\n";
 
+    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
+
+    dbManager.displayCourse();
     std::cout << "Enter the course code of the course you want to update: " << "\n";
     std::cin >> course_code;
 
-    DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
-    dbManager.connect();
     if (bool exists = dbManager.searchCourse(course_code)) {
         int choice;
         do {
@@ -325,7 +267,6 @@ bool CategoryAdmin::updateCourseInDB() {
                     std::cin >> course_name;
                     exists = ValidationCheck::validateCourseName(course_name);
                 } while (!exists);
-
                 do {
                     if (exists && course_name == course_name_) {
                         std::cout << "You  entered your old course name" << "\n";
@@ -377,7 +318,7 @@ bool CategoryAdmin::adminView() {
         std::cout << "2. View all courses" << "\n";
         std::cout << "3. View all students" << "\n";
         std::cout << "4. View all teachers" << "\n";
-        std::cout << "5. View profile" << "\n";  //TODO: THIS LATER
+        std::cout << "5. View profile" << "\n";
         std::cout << "Note: enter 0 to go back to the previous menu" << "\n";
         std::cout << "Enter your choice: " << "\n";
         std::cin >> choice;
@@ -403,11 +344,7 @@ bool CategoryAdmin::adminView() {
             default:
                 std::cout << "Invalid choice. Please enter valid value between (1-4)" << "\n";
         }
-    } while (choice != 0);  //while choice is not equal to 0 we will stay in the loop and the messages will be displayed
+    } while (choice != 0);
     return true;
 }
-
-void CategoryStudent::setId(const int& id) { user_id = id;}
-int CategoryStudent::getId() {return user_id;}
-
 
