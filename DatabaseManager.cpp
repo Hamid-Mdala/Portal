@@ -12,14 +12,14 @@ bool DatabaseManager::connect() {
 		sql::Driver *driver = sql::mariadb::get_driver_instance();
 		sql::SQLString url("jdbc:mariadb://localhost:3306/" + db_);
 		sql::Properties properties({
-			{"user", user_},       //admin username
+			{"user", user_},
 			{"password", password_}}
 			);
 
 		conn_ = std::unique_ptr<sql::Connection>(driver->connect(url, properties));
 		//Display << "connected to the MariaDB" << "\n";
 		return true;
-	} catch (sql::SQLException& e) {    //this is for error condition using mariaDB
+	} catch (sql::SQLException& e) {
 		std::cerr << "Error: " << e.what() << "\n";
 		return false;
 	}
@@ -29,24 +29,23 @@ bool DatabaseManager::connect() {
 bool DatabaseManager::createUser(const std::string &username, const std::string &password,
 	const std::string &first_name, const std::string &last_name,
 	const std::string &category, const int& day,
-	const int& month, const int& year)
-{
+	const int& month, const int& year) {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Users (username, password, first_name, last_name, category, birth_date) VALUES (?, ?, ?, ?, ?, ?)")); //insert the fields in the User table with no value
+			conn_->prepareStatement("INSERT INTO Users (username, password, first_name,"
+						   "last_name, category, birth_date) VALUES (?, ?, ?, ?, ?, ?)"));
 		stmt->setString(1, username);
 		stmt->setString(2, password);
 		stmt->setString(3, first_name);
 		stmt->setString(4, last_name);
 		stmt->setString(5, category);
-
 		std::string birth_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
 		stmt->setString(6, birth_date);  //this is dd/mm/yyyy format
-		std::cout << "The user is successfully created" << "\n";
 
-		return stmt->executeUpdate() > 0; //returns true if the user is created successfully
+		std::cout << "The user is successfully created" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "User creation failed: " << e.what() << "\n";
 		return false;
@@ -60,7 +59,8 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 				conn_->prepareStatement("DELETE FROM Users WHERE username = ?"));
 		stmt->setString(1, username);
 
-		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
+		if (res->next()) {
 			std::cout << "removed the user: " << username << " from the database" << "\n";
 		} else {
 			std::cout << "Can not delete user because the user is not found: " << username << "\n";
@@ -73,28 +73,29 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 	return true;
 }
 
-bool DatabaseManager::updateUser(const std::string &username, const std::string &new_password, const std::string &new_first_name, const std::string &new_last_name, const std::string &new_category, const std::string &new_dob) {
-
+bool DatabaseManager::updateUser(const std::string &username, const std::string &new_password,
+	const std::string &new_first_name, const std::string &new_last_name,
+	const std::string &new_category, const std::string &new_dob) {
 	try {
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
-			conn_->prepareStatement("UPDATE Users SET first_name = ?, last_name = ?, password = ?, birth_date = ? WHERE username = ?"));
+			conn_->prepareStatement("UPDATE Users SET first_name = ?, last_name = ?,"
+						   "password = ?, birth_date = ? WHERE username = ?"));
 		stmt->setString(1, new_first_name);
 		stmt->setString(2, new_last_name);
 		stmt->setString(3, new_password);
 		stmt->setString(4, new_dob);
 		stmt->setString(5, username);
 
-		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
+		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
+		if (res->next()) {
 			std::cout << "Successfully updated the user: " << username << " in the database" << "\n";
 			return true;
-		} else  {  //display: the first name is the recently updated name
+		} else  {
 			std::cout << "Can not update user because the user is not found: " << username << "\n";
 			return false;
 		}
-
-
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error updating details: "  << e.what() << "\n";
 		return false;
@@ -133,7 +134,7 @@ bool DatabaseManager::displayUser() {
 }
 bool DatabaseManager::searchUser(const std::string &username) {
 	if (!conn_) return false;
-	//make a statement
+
 	std::unique_ptr<sql::PreparedStatement> stmt(
 	conn_->prepareStatement("SELECT * FROM Users WHERE username =?"));
 	stmt->setString(1, username);
@@ -152,9 +153,9 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 	if (!conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt(
-		conn_->prepareStatement("SELECT * FROM Users WHERE username =? AND password =?"));
-	stmt->setString(1, username);   //this is the username from the user while logging in
-	stmt->setString(2, password);   //this is the password from the user while logging in
+		conn_->prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?"));
+	stmt->setString(1, username);
+	stmt->setString(2, password);
 
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
@@ -162,14 +163,16 @@ bool DatabaseManager::authenticateUser(const std::string& username, const std::s
 		std::cout << "Login successful" << "\n";
 		category = res->getString("category");
 		return true;
+	} else {
+		std::cout << "Invalid credentials, please try again." << "\n";
+		return false;
 	}
-	std::cout << "Invalid credentials, please try again." << "\n";
-	return false;
 }
 
 bool DatabaseManager::viewProfile(const std::string& username) {
 	try {
 		if (!conn_) return false;
+
 		std::unique_ptr<sql::PreparedStatement> stmt(
 			conn_->prepareStatement("SELECT * FROM Users WHERE username = ?"));
 		stmt->setString(1, username);
@@ -185,7 +188,8 @@ bool DatabaseManager::viewProfile(const std::string& username) {
 			std::cout << ", created_at: " << res->getString("created_at");
 			return true;
 		} else {
-			std::cout << "Sorry could not display your profile lately, please contact +265994500600 " << username << "\n";
+			std::cout << "Sorry could not display your profile lately,"
+				"please contact +265994500600 " << username << "\n";
 			return false;
 		}
 	} catch (sql::SQLException& e) {
@@ -201,7 +205,8 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
-			conn_->prepareStatement("INSERT INTO Course (course_code, name, department, semester) VALUES (?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Course (course_code, name,"
+						   "department, semester) VALUES (?, ?, ?, ?)"));
 		stmt->setString(1, code);
 		stmt->setString(2, name);
 		stmt->setString(3, department);
@@ -209,7 +214,6 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 
 		std::cout << "The course is successfully created" << "\n";
 		return stmt->executeUpdate() > 0;
-
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "Course creation failed: " << e.what() << "\n";
 		return false;
@@ -219,6 +223,7 @@ bool DatabaseManager::createCourse(const std::string &code, const std::string &n
 bool DatabaseManager::deleteCourse(const std::string &code) {
 	try {
 		if (!conn_) return false;
+
 		std::unique_ptr<sql::PreparedStatement> stmt(
 			conn_->prepareStatement("DELETE FROM Course WHERE course_code = ?"));
 		stmt->setString(1, code);
@@ -237,7 +242,8 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 	}
 }
 
-bool DatabaseManager::updateCourse(const std::string &code, const std::string &new_name, const std::string &new_department) {
+bool DatabaseManager::updateCourse(const std::string &code, const std::string &new_name,
+	const std::string &new_department) {
 	try {
 		if (!conn_) return false;
 
@@ -290,7 +296,7 @@ bool DatabaseManager::displayCourse() {
 
 bool DatabaseManager::searchCourse(const std::string &code) {
 	if (!conn_) return false;
-	//make a statement
+
 	std::unique_ptr<sql::PreparedStatement> stmt(
 	conn_->prepareStatement("SELECT * FROM Course WHERE course_code = ?"));
 	stmt->setString(1, code);
@@ -311,7 +317,8 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Students (student_id, class, user_id, course_code) VALUES(?, ?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Students (student_id, class,"
+						   "user_id, course_code) VALUES(?, ?, ?, ?, ?)"));
 		stmt->setInt(1, student_id);
 		stmt->setString(2, class_);
 		stmt->setInt(3, user_id);
@@ -319,7 +326,6 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 
 		std::cout << "The student is successfully created" << "\n";
 		return stmt->executeUpdate() > 0;
-
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error creating student: " << e.what() << "\n";
 		return false;
@@ -338,7 +344,7 @@ bool DatabaseManager::searchStudent(const int &student_id) {
 		std::cout << "found the student: " << student_id << " from the database" << "\n";
 		return true;
 	} else {
-		std::cout << "No course found with course_code: " << student_id << "\n";
+		std::cout << "No student found with student_id: " << student_id << "\n";
 		return false;
 	}
 }
@@ -350,7 +356,8 @@ bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, c
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Teachers (teacher_id, user_id, office_number, hire_date, department, course_code) VALUES(?, ?, ?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Teachers (teacher_id, user_id, office_number,"
+						   "hire_date, department, course_code) VALUES(?, ?, ?, ?, ?, ?)"));
 		stmt->setInt(1, teacher_id);
 		stmt->setInt(2, user_id);
 		stmt->setString(3, office_number);
@@ -360,7 +367,6 @@ bool DatabaseManager::createTeacher(const int &teacher_id, const int &user_id, c
 
 		std::cout << "The teacher is successfully created" << "\n";
 		return stmt->executeUpdate() > 0;
-
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error creating teacher: " << e.what() << "\n";
 		return false;
@@ -430,10 +436,12 @@ bool DatabaseManager::uploadResults(const float &gpa, const int& student_id) {
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
 			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE user_id = ?"));
-		stmt->setInt(1, student_id);
+		stmt->setFloat(1, gpa);
+		stmt->setInt(2, student_id);
 
 		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
 		if (res->next()) {
+
 			std::cout << "Successfully uploaded the students(" << student_id  << ") grade in the database" << "\n";
 			return true;
 		} else  {
@@ -446,7 +454,22 @@ bool DatabaseManager::uploadResults(const float &gpa, const int& student_id) {
 	}
 }
 
+bool DatabaseManager::searchTeacher(const int &teacher_id) {
+	if (conn_) return false;
 
+	std::unique_ptr<sql::PreparedStatement> stmt (
+		conn_->prepareStatement("SELECT * FROM Teachers where teacher_id = ?"));
+	stmt->setInt(1, teacher_id);
+
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next()) {
+		std::cout << "found the teacher: " << teacher_id << " from the database" << "\n";
+		return true;
+	} else {
+		std::cout << "No teacher found with teacher_id: " << teacher_id << "\n";
+		return false;
+	}
+}
 
 bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const std::string& department,
 	const std::string& office_number, const std::string& hire_date) {
@@ -454,7 +477,8 @@ bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("INSERT INTO Admin (admin_id, user_id, department, office_number, hire_date) VALUES(?, ?, ?, ?, ?)"));
+			conn_->prepareStatement("INSERT INTO Admin (admin_id, user_id, department,"
+						   "office_number, hire_date) VALUES(?, ?, ?, ?, ?)"));
 		stmt->setInt(1, admin_id);
 		stmt->setInt(2, user_id);
 		stmt->setString(3, department);
@@ -466,6 +490,23 @@ bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const
 
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error creating admin: " << e.what() << "\n";
+		return false;
+	}
+}
+
+bool DatabaseManager::searchAdmin(const int &admin_id) {
+	if (conn_) return false;
+
+	std::unique_ptr<sql::PreparedStatement> stmt (
+		conn_->prepareStatement("SELECT * FROM Admin where admin_id = ?"));
+	stmt->setInt(1, admin_id);
+
+	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+	if (res->next()) {
+		std::cout << "found the admin: " << admin_id << " from the database" << "\n";
+		return true;
+	} else {
+		std::cout << "No admin found with admin_id: " << admin_id << "\n";
 		return false;
 	}
 }
