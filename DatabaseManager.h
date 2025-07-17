@@ -4,8 +4,11 @@
 #include <mariadb/conncpp.hpp>
 
 extern std::string category;        //IMPORTANT: global variable used to get the category when the user authenticates
-extern std::string course_name_;    //IMPORTANT: global variable used when we want to update the course name
+extern std::string course_code_;    //IMPORTANT: global variable used when we want to update the course name
 extern std::string department_;     //IMPORTANT: global variable used when we want to update the course department
+extern int teacher_id_;
+extern int student_id_;
+extern std::string year_;
 class DatabaseManager {
     public:
         ~DatabaseManager() = default; //Destructor

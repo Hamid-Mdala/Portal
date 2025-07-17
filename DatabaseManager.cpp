@@ -303,7 +303,7 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
-		course_name_ = res->getString("course_name");
+		course_code_ = res->getString("course_code");
 		department_ = res->getString("department");
 		std::cout << "found the course: " << code << " from the database" << "\n";
 		return true;
@@ -334,19 +334,21 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 	}
 }
 
-bool DatabaseManager::searchStudent(const int &student_id) {
+bool DatabaseManager::searchStudent(const int &user_id) {
 	if (conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt (
-		conn_->prepareStatement("SELECT * FROM Students where student_id = ?"));
-	stmt->setInt(1, student_id);
+		conn_->prepareStatement("SELECT * FROM Students where user_id = ?"));
+	stmt->setInt(1, user_id);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
-		std::cout << "found the student: " << student_id << " from the database" << "\n";
+		std::cout << "found the student: " << user_id << " from the database" << "\n";
+		student_id_ = res->getInt("student_id");
+		year_ = res->getString("year");
 		return true;
 	} else {
-		std::cout << "No student found with student_id: " << student_id << "\n";
+		std::cout << "No student found with student_id: " << user_id << "\n";
 		return false;
 	}
 }
@@ -437,7 +439,7 @@ bool DatabaseManager::uploadResults(const float &gpa, const int& student_id, con
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
-			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE user_id = ? AND course_code = ?"));
+			conn_->prepareStatement("UPDATE Students SET gpa = ? WHERE student_id = ? AND course_code = ?"));
 		stmt->setFloat(1, gpa);
 		stmt->setInt(2, student_id);
 		stmt->setString(3, course_code);
@@ -457,19 +459,24 @@ bool DatabaseManager::uploadResults(const float &gpa, const int& student_id, con
 	}
 }
 
-bool DatabaseManager::searchTeacher(const int &teacher_id) {
+bool DatabaseManager::searchTeacher(const int &user_id) {
 	if (conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt (
-		conn_->prepareStatement("SELECT * FROM Teachers where teacher_id = ?"));
-	stmt->setInt(1, teacher_id);
+		conn_->prepareStatement("SELECT * FROM Teachers where user_id = ?"));
+	stmt->setInt(1, user_id);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
-		std::cout << "found the teacher: " << teacher_id << " from the database" << "\n";
+		std::cout << "found the teacher with user_ID: " << user_id << " from the database" << "\n";
+		teacher_id_ = res->getInt("teacher_id");
+		//do not get this course would be a list course_code_ = res->getString("course_code");
+		//NOTE: We could use Vectors to store information or Lists to store that information and clean memory after
+		//if later we want to get the lists of the course the teacher is teaching so that we can use them for data integrity
+		//teacher is not allowed to claim accounts that it's theirs
 		return true;
 	} else {
-		std::cout << "No teacher found with teacher_id: " << teacher_id << "\n";
+		std::cout << "No teacher found with user_id: " << user_id << "\n";
 		return false;
 	}
 }

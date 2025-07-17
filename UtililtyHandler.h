@@ -24,8 +24,8 @@ class CategoryTeacher : public Category {
         CategoryTeacher(const std::string& username) : Category(username) {};
         bool teacherView();
         bool uploadGPA();
-    private:
-        int teacher_id;
+    public:
+        int user_id, teacher_id;
         float gpa_;
 };
 class CategoryAdmin : public Category {
@@ -35,7 +35,7 @@ class CategoryAdmin : public Category {
         bool removeCourseInDB();
         bool updateCourseInDB();
         bool adminView();
-    private:
-        int admin_id, semester;
+    public:
+        int semester;
         std::string course_name, department;
 };
