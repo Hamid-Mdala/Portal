@@ -344,9 +344,9 @@ bool DatabaseManager::searchStudent(const int &user_id) {
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
-		std::cout << "found the student: " << user_id << " from the database" << "\n";
 		student_id_ = res->getInt("student_id");
 		year_ = res->getString("year");
+		std::cout << "found the student: " << user_id << " from the database" << "\n";
 		return true;
 	} else {
 		std::cout << "No student found with student_id: " << user_id << "\n";

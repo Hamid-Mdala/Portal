@@ -223,37 +223,45 @@ bool CategoryTeacher::uploadGPA() {
                 }
             } while (!EXIT_FAILURE);
             do {
-                std::cout << "Enter the students ID: " << "\n";
+                std::cout << "Enter the students ID to upload the results: " << "\n";
                 std::cin >> student_id;
                 exists = ValidationCheck::validateId(student_id);
-            } while (!exists); //TODO: I HAVE TO FINISH UP THIS UPLOAD GPA
-            bool check = false;
+            } while (!exists);
             do {
                 exists = dbManager.searchStudent(student_id);
-                if (!exists) {
-                    std::cout << "student is not found" << "\n";
-                    std::cout << "Enter student ID: " << "\n";
+                if (!exists && student_id != student_id_) {
+                    std::cout << "Student is not found" << "\n";
+                    std::cout << "Enter student ID to upload the results: " << "\n";
                     std::cin >> student_id;
-                    check = ValidationCheck::validateId(student_id);
-                    //NOTE: Once i enter the student ID, I Must get the students courses lists
+                    exists = ValidationCheck::validateId(student_id);
+
+                } else if (!exists) {
+                    std::cout << "Enter student ID to upload the results: " << "\n";
+                    std::cin >> student_id;
+                    exists = ValidationCheck::validateId(student_id);
                 }
-            } while (!exists || !check);
+                //NOTE: Once I enter the student ID, I must get the students courses lists
+            } while (student_id != student_id_ || !exists);
             do {
-                //NOTE: I also have to validate the course code the teacher enters so that the teacher does not false clam
-                //NOTE: And validate here so that when i am updating the students table it does not give me SQL errors
                 std::cout << "What course code you teach and want to upload results? " << "\n";
                 std::cin >> code;
                 exists = ValidationCheck::validateCourseId(code);
+                //NOTE: I also have to validate the course code the teacher enters so that the teacher does not false clam
+                //NOTE: And validate here so that when I am updating the students table it does not give me SQL errors
             } while (!exists);
             do {
                 exists = dbManager.searchCourse(code);
-                if (!exists) {
+                if (!exists && code != course_code_) {
                     std::cout << "Course is not found" << "\n";
                     std::cout << "What course code you teach and want to upload results? " << "\n";
                     std::cin >> code;
-                    check = ValidationCheck::validateCourseId(code);
+                    exists = ValidationCheck::validateCourseId(code);
+                } else if (!exists) {
+                    std::cout << "What course code you teach and want to upload results? " << "\n";
+                    std::cin >> code;
+                    exists = ValidationCheck::validateCourseId(code);
                 }
-            } while (!exists || !check);
+            } while (code != course_code_ || !exists);
             do {
                 std::cout << "Enter the students results: " << "\n";
                 std::cin >> gpa_;
@@ -305,8 +313,12 @@ bool CategoryAdmin::makeCourseInDB() {
         exists = ValidationCheck::validateCourseName(course_name);
     } while (!exists);
     do {
-        if (course_name == course_name_) {
+        if (exists && course_name == course_name_) {
             std::cout << "Course name already exist" << "\n";
+            std::cout << "Enter course name: " << "\n";
+            std::cin >> course_name;
+            exists = ValidationCheck::validateCourseName(course_name);
+        } else if (!exists) {
             std::cout << "Enter course name: " << "\n";
             std::cin >> course_name;
             exists = ValidationCheck::validateCourseName(course_name);
@@ -353,64 +365,73 @@ bool CategoryAdmin::updateCourseInDB() {
 
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
+    bool exists;
+    do {
+        dbManager.displayCourse();
+        std::cout << "Enter the course code of the course you want to update: " << "\n";
+        std::cin >> course_code;
+        exists = ValidationCheck::validateCourseId(course_code);
+        } while (!exists);
 
-    dbManager.displayCourse();
-    std::cout << "Enter the course code of the course you want to update: " << "\n";
-    std::cin >> course_code;
-
-    if (bool exists = dbManager.searchCourse(course_code)) {
-        int choice;
-        do {
-            std::cout << "1. Update course name" << "\n";
-            std::cout << "2. Update the class which the course is to be learned" << "\n";
-            std::cout << "Enter your choice: " << "\n";
-            std::cin >> choice;
-            if (choice == 1) {
-                do {
-                    std::cout << "Enter new course name: " << "\n";
-                    std::cin >> course_name;
-                    exists = ValidationCheck::validateCourseName(course_name);
-                } while (!exists);
-                do {
-                    if (exists && course_name == course_code_) {
-                        std::cout << "You  entered your old course name" << "\n";
+    do {
+        exists = dbManager.searchCourse(course_code);
+        if (exists) {
+            int choice;
+            do {
+                std::cout << "1. Update course name" << "\n";
+                std::cout << "2. Update the class which the course is to be learned" << "\n";
+                std::cout << "Enter your choice: " << "\n";
+                std::cin >> choice;
+                if (choice == 1) {
+                    do {
                         std::cout << "Enter new course name: " << "\n";
                         std::cin >> course_name;
                         exists = ValidationCheck::validateCourseName(course_name);
-                    } else if (!exists) {
-                        std::cout << "Enter new course name: " << "\n";
-                        std::cin >> course_name;
-                        exists = ValidationCheck::validateCourseName(course_name);
-                    }
-                } while (!exists && course_name == course_code_ );
-                dbManager.updateCourse(course_code, course_code_, department_);
-                course_name = course_code_;
-            } else if (choice == 2) {
-                do {
-                    std::cout << "Enter new department where the course will be taught: " << "\n";
-                    std::cin >> department;
-                    exists = ValidationCheck::validateAllString(department);
-                } while (!exists);
-
-                do {
-                    if (exists && department == department_) {
-                        std::cout << "You  entered your old department name" << "\n";
+                    } while (!exists);
+                    do {
+                        if (exists && course_name == course_code_) {
+                            std::cout << "You  entered your old course name" << "\n";
+                            std::cout << "Enter new course name: " << "\n";
+                            std::cin >> course_name;
+                            exists = ValidationCheck::validateCourseName(course_name);
+                        } else if (!exists) {
+                            std::cout << "Enter new course name: " << "\n";
+                            std::cin >> course_name;
+                            exists = ValidationCheck::validateCourseName(course_name);
+                        }
+                    } while (!exists && course_name == course_code_ );
+                    dbManager.updateCourse(course_code, course_code_, department_);
+                    course_name = course_code_;
+                } else if (choice == 2) {
+                    do {
                         std::cout << "Enter new department where the course will be taught: " << "\n";
                         std::cin >> department;
-                        exists = ValidationCheck::validateCourseName(department);
-                    } else if (!exists) {
-                        std::cout << "Enter new course name: " << "\n";
-                        std::cin >> department;
-                        exists = ValidationCheck::validateCourseName(department);
-                    }
-                } while (!exists && department == department_ );
-                dbManager.updateCourse(course_code, course_code_, department_);
-                department = department_;
-            } else {
-                std::cout << "Invalid choice. Please enter valid between (1-2)" << "\n";
-            }
-        } while (choice > 2 && choice < 0);
-    }
+                        exists = ValidationCheck::validateAllString(department);
+                    } while (!exists);
+
+                    do {
+                        if (exists && department == department_) {
+                            std::cout << "You  entered your old department name" << "\n";
+                            std::cout << "Enter new department where the course will be taught: " << "\n";
+                            std::cin >> department;
+                            exists = ValidationCheck::validateCourseName(department);
+                        } else if (!exists) {
+                            std::cout << "Enter new department where the course wil be taught: " << "\n";
+                            std::cin >> department;
+                            exists = ValidationCheck::validateCourseName(department);
+                        }
+                    } while (!exists && department == department_ );
+                    dbManager.updateCourse(course_code, course_code_, department_);
+                    department = department_;
+                } else {
+                    std::cout << "Invalid choice. Please enter valid between (1-2)" << "\n";
+                }
+            } while (choice > 2 && choice < 0);
+        } else {
+            std::cout << "Could not processed because of the message above" << "\n";
+            return false;
+        }
+    } while (false);
     return true;
 }
 
@@ -453,4 +474,3 @@ bool CategoryAdmin::adminView() {
     } while (choice != 0);
     return true;
 }
-
