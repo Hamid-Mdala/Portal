@@ -6,9 +6,10 @@
 extern std::string category;        //IMPORTANT: global variable used to get the category when the user authenticates
 extern std::string course_code_;    //IMPORTANT: global variable used when we want to update the course name
 extern std::string department_;     //IMPORTANT: global variable used when we want to update the course department
-extern int teacher_id_;
-extern int student_id_;
-extern std::string year_;
+extern int teacher_id_;             //IMPORTANT: global variable used by teacher to get the teacher_id_
+extern int student_id_;             //IMPORTANT: global variable used by student in the utilityHandler to enroll into course
+extern std::string year_;           //IMPORTANT: global variable used by student in the utilityHandler to enroll into course
+extern std::string course_name_;    //IMPORTANT: global variable used by admin to get the course name so that the admin does not expect an SQLError when the syntax is the same
 class DatabaseManager {
     public:
         ~DatabaseManager() = default; //Destructor
@@ -37,17 +38,17 @@ class DatabaseManager {
 
         bool createStudent(const int& student_id, const std::string& class_,
             const int& user_id, const std::string& course_code);
-        bool searchStudent(const int& student_id);
+        bool searchStudent(const int& user_id);
         //TODO: WE MUST BE ABLE TO MAKE THE TEACHER AND MAKE ALSO HIS FUNCTIONS
         bool createTeacher(const int& teacher_id, const int& user_id, const std::string& office_number,
              const std::string& hire_date, const std::string& department, const std::string& course_code);
         bool numOfUsersThatLearnFromTeacher(const std::string& course_code);
         bool displayGPA();
         bool uploadResults(const float& gpa, const int& student_id, const std::string& course_code);
-        bool searchTeacher(const int& teacher_id);
+        bool searchTeacher(const int& user_id);
         bool createAdmin(const int& admin_id, const int& user_id, const std::string& department,
             const std::string& office_number, const std::string& hire_date);
-        bool searchAdmin(const int& admin_id);
+        bool searchAdmin(const int& user_id);
         bool displayStudent();
         bool displayTeacher();
         bool displayAdmin();

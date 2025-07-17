@@ -11,9 +11,10 @@
 
 inline std::string course_code_;  //IMPORTANT! value that compares with the course_name the admin enters
 inline std::string department_;   //IMPORTANT! value that compares with the department the admin enters
-inline int student_id_;
-inline int teacher_id_;
+inline int student_id_;           //IMPORTANT! value that is used by student who is already logged in to enroll into more courses
+inline int teacher_id_;           //IMPORTANT! value that is used by teacher when
 inline std::string year_;
+inline std::string course_name_;
 
 Category::Category(const std::string &username) {this->username_ = username;}
 
@@ -132,6 +133,7 @@ bool CategoryStudent::enrollCourse() {
         std::cout << "Please report to the software engineer teem to fix your issue" << "\n";
         std::exit(EXIT_FAILURE);
     }
+    return true;
 }
 
 bool CategoryStudent::getResults() {
@@ -195,7 +197,7 @@ bool CategoryTeacher::teacherView() {
 
 //NOTE: That the teacher could claim that a course is his while the course is not actually his in the database
 bool CategoryTeacher::uploadGPA() {
-    std::cout << "Upload students results menu" << "\n";
+    std::cout << "Upload/Update students results menu" << "\n";
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
@@ -206,7 +208,7 @@ bool CategoryTeacher::uploadGPA() {
 
     std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
     if (res->next()) {
-        user_id =  res->getInt("user_id");
+        user_id =  res->getInt("id");
         if (bool exists = dbManager.searchTeacher(user_id)) {
             teacher_id = teacher_id_;
             int student_id;
@@ -214,6 +216,7 @@ bool CategoryTeacher::uploadGPA() {
             do {
                 exists = dbManager.numOfUsersThatLearnFromTeacher(course_code);
                 if (!exists) {
+                    std::cout << "So do not have the priviledge to upload results" << "\n";
                     return EXIT_FAILURE;
                 } else {
                     std::cout << "Use the students ID below that learn from your course" << "\n";
@@ -272,6 +275,12 @@ bool CategoryAdmin::makeCourseInDB() {
     dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
     bool exists;
+    exists = dbManager.displayCourse();
+    if (exists) {
+        std::cout << "Those are the course you have created lately in the course table" << "\n";
+    } else {
+        std::cout << "This is the first course that will be created in the course table" << "\n";
+    }
     do {
         std::cout << "Enter the course code: " << "\n";
         std::cin >> course_code;
@@ -282,11 +291,25 @@ bool CategoryAdmin::makeCourseInDB() {
         exists = dbManager.searchCourse(course_code);
         if (exists) {
             std::cout << "Course code already exist" << "\n";
-            std::cout << "Enter course name: " << "\n";
-            std::cin >> course_name;
-            check = ValidationCheck::validateCourseName(course_name);
+            std::cout << "Enter course code: " << "\n";
+            std::cin >> course_code;
+            check = ValidationCheck::validateCourseId(course_code);
         }
     } while (exists || !check);
+    do {
+        std::cout << "Enter course name: " << "\n";
+        std::cin >> course_name;
+        exists = ValidationCheck::validateCourseName(course_name);
+    } while (!exists);
+    do {
+        if (course_name == course_name_) {
+            std::cout << "Course name already exist" << "\n";
+            std::cout << "Enter course name: " << "\n";
+            std::cin >> course_name;
+            exists = ValidationCheck::validateCourseName(course_name);
+        }
+
+    } while (!exists);
     do {
         std::cout << "Enter department: " << "\n";
         std::cin >> department;

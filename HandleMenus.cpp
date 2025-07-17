@@ -64,10 +64,9 @@ bool Menu::teacherMenu() {
 				int choice;
 				do {
 					std::cout << "1. View" << "\n";
-					std::cout << "2. Upload GPA" << "\n";
-					std::cout << "3. Update GPA" << "\n";
-					std::cout << "4. Update Profile" << "\n";
-					std::cout << "5. Delete Profile" << "\n";
+					std::cout << "2. Upload/update results" << "\n";
+					std::cout << "3. Update Profile" << "\n";
+					std::cout << "4. Delete Profile" << "\n";
 					std::cout << "Note: enter 0 to end program" << "\n";
 					std::cout << "Enter your choice: " << "\n";
 					std::cin >> choice;
@@ -78,10 +77,8 @@ bool Menu::teacherMenu() {
 					} else if (choice == 2) {
 						teacherUser.uploadGPA();
 					} else if (choice == 3) {
-						teacherUser.uploadGPA();
-					} else if (choice == 4) {
 						teacherUser.updateProfile();
-					} else if (choice == 5) {
+					} else if (choice == 4) {
 						teacherUser.deleteProfile();
 					} else if (choice == 0) {
 						std::cout << "Ended program.." << "\n";
