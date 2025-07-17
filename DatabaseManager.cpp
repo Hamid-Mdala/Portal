@@ -514,6 +514,7 @@ bool DatabaseManager::searchAdmin(const int &user_id) {
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
+		admin_id_ = res->getInt("admin_id");
 		std::cout << "found the admin: " << user_id << " from the database" << "\n";
 		return true;
 	} else {

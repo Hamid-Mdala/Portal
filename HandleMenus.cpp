@@ -4,9 +4,11 @@
 
 #include "UtililtyHandler.h"
 #include <utility>
-
+#include <iostream>
 #include "DatabaseManager.h"
 #include "HandlingValidationCheck.h"
+
+inline int admin_id_;
 
 Menu::Menu(const std::string& username, const std::string& category) {
 	username_ = username;
@@ -96,16 +98,19 @@ bool Menu::teacherMenu() {
 					std::cin >> teacher_id;
 					exists = ValidationCheck::validateId(teacher_id);
 				} while (!exists);
-				bool check = false;
 				do {
 					exists = dbManager.searchTeacher(teacher_id);
-					if (exists) {
+					if (exists && teacher_id == teacher_id_) {
 						std::cout << "Identification Number(ID) already exist" << "\n";
 						std::cout << "What is your Identification Number(ID): " << "\n";
 						std::cin >> teacher_id;
-						check = ValidationCheck::validateId(teacher_id);
+						exists = ValidationCheck::validateId(teacher_id);
+					} else if (!exists) {
+						std::cout << "What is your Identification Number(ID): " << "\n";
+						std::cin >> teacher_id;
+						exists = ValidationCheck::validateId(teacher_id);
 					}
-				} while (exists || !check);
+				} while (teacher_id == teacher_id_ || !exists);
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;
@@ -138,13 +143,18 @@ bool Menu::teacherMenu() {
 				} while (!exists);
 				do {
 					exists = dbManager.searchCourse(course_code);
-					if (!exists) {
+					if (!exists && course_code != course_code_) {
 						std::cout << "Course is not found" << "\n";
 						std::cout << "What is your course code you are learning?" << "\n";
 						std::cin >> course_code;
-						check = ValidationCheck::validateCourseId(course_code);
+						exists = ValidationCheck::validateCourseId(course_code);
+					} else if (!exists) {
+						std::cout << "Course is not found" << "\n";
+						std::cout << "What is your course code you are learning?" << "\n";
+						std::cin >> course_code;
+						exists = ValidationCheck::validateCourseId(course_code);
 					}
-				} while (!exists || !check);
+				} while (course_code != course_code_ || !exists);
 				{
 					std::string hire_date;
 					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
@@ -216,16 +226,19 @@ bool Menu::adminMenu() {
 					std::cin >> admin_id;
 					exists = ValidationCheck::validateId(admin_id);
 				} while (!exists);
-				bool check;
 				do {
 					exists = dbManager.searchAdmin(admin_id);
-					if (exists) {
+					if (exists && admin_id == admin_id_) {
 						std::cout << "Identification Number(ID) already exists" << "\n";
 						std::cout << "What is your Identification Number(ID): " << "\n";
 						std::cin >> admin_id;
-						check = ValidationCheck::validateId(admin_id);
+						exists = ValidationCheck::validateId(admin_id);
+					} else if (!exists) {
+						std::cout << "What is your Identification Number(ID): " << "\n";
+						std::cin >> admin_id;
+						exists = ValidationCheck::validateId(admin_id);
 					}
-				} while (exists || !check);
+				} while (admin_id == admin_id_ || !exists);
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;

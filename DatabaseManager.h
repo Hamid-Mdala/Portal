@@ -7,6 +7,7 @@ extern std::string category;        //IMPORTANT: global variable used to get the
 extern std::string course_code_;    //IMPORTANT: global variable used when we want to update the course name
 extern std::string department_;     //IMPORTANT: global variable used when we want to update the course department
 extern int teacher_id_;             //IMPORTANT: global variable used by teacher to get the teacher_id_
+extern int admin_id_;               //IMPORTANT: global variable used by the admin to get the admin_id and verify if exist or not
 extern int student_id_;             //IMPORTANT: global variable used by student in the utilityHandler to enroll into course
 extern std::string year_;           //IMPORTANT: global variable used by student in the utilityHandler to enroll into course
 extern std::string course_name_;    //IMPORTANT: global variable used by admin to get the course name so that the admin does not expect an SQLError when the syntax is the same
