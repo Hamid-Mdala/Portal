@@ -9,12 +9,12 @@
 #include "HandlingValidationCheck.h"
 
 
-inline std::string course_code_;  //IMPORTANT! value that compares with the course_name the admin enters
-inline std::string department_;   //IMPORTANT! value that compares with the department the admin enters
-inline int student_id_;           //IMPORTANT! value that is used by student who is already logged in to enroll into more courses
-inline int teacher_id_;           //IMPORTANT! value that is used by teacher when
-inline std::string year_;
-inline std::string course_name_;
+inline std::string course_code_;    //IMPORTANT! value that compares with the course_name the admin enters
+inline std::string department_;     //IMPORTANT! value that compares with the department the admin enters
+inline int student_id_;             //IMPORTANT! value that is used by student who is already logged in to enroll into more courses
+inline int teacher_id_;             //IMPORTANT! value that is used by teacher to get the course the teacher gets
+inline std::string year_;           //IMPORTANT! value that is used by the student who is already logged in to enroll into more courses
+inline std::string course_name_;    //IMPORTANT! value that is used by the admin because of the constraint unique of course_name in database, so this will prevent errors when the admin enters the same course_name
 
 Category::Category(const std::string &username) {this->username_ = username;}
 
@@ -235,9 +235,12 @@ bool CategoryTeacher::uploadGPA() {
                     std::cout << "Enter student ID: " << "\n";
                     std::cin >> student_id;
                     check = ValidationCheck::validateId(student_id);
+                    //NOTE: Once i enter the student ID, I Must get the students courses lists
                 }
             } while (!exists || !check);
             do {
+                //NOTE: I also have to validate the course code the teacher enters so that the teacher does not false clam
+                //NOTE: And validate here so that when i am updating the students table it does not give me SQL errors
                 std::cout << "What course code you teach and want to upload results? " << "\n";
                 std::cin >> code;
                 exists = ValidationCheck::validateCourseId(code);
@@ -309,7 +312,7 @@ bool CategoryAdmin::makeCourseInDB() {
             exists = ValidationCheck::validateCourseName(course_name);
         }
 
-    } while (!exists);
+    } while (course_name == course_name_ || !exists);
     do {
         std::cout << "Enter department: " << "\n";
         std::cin >> department;
