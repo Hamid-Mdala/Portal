@@ -113,12 +113,12 @@ bool DatabaseManager::displayUser() {
 		int index = 0;
 		while (res->next()) {
 			std::cout << ++index << ". Username: " << res->getString("username");
-			std::cout << ", User_ID: " << res->getInt("user_ID");
+			std::cout << ", User_ID: " << res->getInt("id");
 			std::cout << ", First Name: " << res->getString("first_name");
 			std::cout << ", Last Name: " << res->getString("last_name");
 			std::cout << ", Category: " << res->getString("category");
 			std::cout << ", birth_date: " << res->getString("birth_date");
-			std::cout << ", created_at: " << res->getString("created_at");
+			std::cout << ", created_at: " << res->getString("created_at") << "\n";
 		}
 		if (index > 0) {
 			std::cout << "Total number of users in database: " << index << "\n";
@@ -248,13 +248,14 @@ bool DatabaseManager::updateCourse(const std::string &code, const std::string &n
 		if (!conn_) return false;
 
 		std::unique_ptr<sql::PreparedStatement> stmt(
-			conn_->prepareStatement("UPDATE Course SET name = ?, department = ? WHERE code = ?"));
-		stmt->setString(1, new_name);
+			conn_->prepareStatement("UPDATE Course SET name = ?, department = ? WHERE course_code = ?"));
+		stmt->setString(1, new_name);  //other its only updating one side the course name
 		stmt->setString(2, new_department);
 		stmt->setString(3, code);
 
-		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-		if (res->next()) {
+		//std::unique_ptr<sql::ResultSet> res(stmt->executeUpdate()); this goes to the next line and checks its executing query not updates in the database
+		int affected_rows = stmt->executeUpdate();
+		if (affected_rows > 0) {
 			std::cout << "Successfully updated the user: " << code << " in the database" << "\n";
 			return true;
 		} else {
@@ -305,7 +306,7 @@ bool DatabaseManager::searchCourse(const std::string &code) {
 	if (res->next()) {
 		course_code_ = res->getString("course_code");
 		department_ = res->getString("department");
-		course_name_ = res->getString("course_name");
+		course_name_ = res->getString("name");
 		std::cout << "found the course: " << code << " from the database" << "\n";
 		return true;
 	} else {

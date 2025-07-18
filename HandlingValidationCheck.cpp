@@ -80,11 +80,11 @@ bool ValidationCheck::validateCourseId(const string& course_id) {
 	return false;
 }
 bool ValidationCheck::validateCourseName(const string& course_name) {
-		if(course_name.length() > 3 && course_name.length() <= 20) {
-			return true;
-		} else {
-			return false;
-		}
+	if(course_name.length() > 3 && course_name.length() <= 20) {
+		return true;
+	}
+	printf("Error: Invalid course name length\n");
+	return false;
 }
 
 bool ValidationCheck::validateAllString(const string& any_string) {

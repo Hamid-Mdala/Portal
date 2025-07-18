@@ -389,7 +389,7 @@ bool CategoryAdmin::updateCourseInDB() {
                         exists = ValidationCheck::validateCourseName(course_name);
                     } while (!exists);
                     do {
-                        if (exists && course_name == course_code_) {
+                        if (exists && course_name == course_name_) {
                             std::cout << "You  entered your old course name" << "\n";
                             std::cout << "Enter new course name: " << "\n";
                             std::cin >> course_name;
@@ -399,14 +399,14 @@ bool CategoryAdmin::updateCourseInDB() {
                             std::cin >> course_name;
                             exists = ValidationCheck::validateCourseName(course_name);
                         }
-                    } while (!exists && course_name == course_code_ );
-                    dbManager.updateCourse(course_code, course_code_, department_);
-                    course_name = course_code_;
+                    } while (!exists || exists && course_name == course_name_);
+                    dbManager.updateCourse(course_code, course_name_, department_);
+                    course_name = course_name_;
                 } else if (choice == 2) {
                     do {
                         std::cout << "Enter new department where the course will be taught: " << "\n";
                         std::cin >> department;
-                        exists = ValidationCheck::validateAllString(department);
+                        exists = ValidationCheck::validateCourseName(department);
                     } while (!exists);
 
                     do {
@@ -415,13 +415,14 @@ bool CategoryAdmin::updateCourseInDB() {
                             std::cout << "Enter new department where the course will be taught: " << "\n";
                             std::cin >> department;
                             exists = ValidationCheck::validateCourseName(department);
+                            //This was not correct so its exists
                         } else if (!exists) {
                             std::cout << "Enter new department where the course wil be taught: " << "\n";
                             std::cin >> department;
                             exists = ValidationCheck::validateCourseName(department);
                         }
-                    } while (!exists && department == department_ );
-                    dbManager.updateCourse(course_code, course_code_, department_);
+                    } while (!exists || exists && department == department_ );
+                    dbManager.updateCourse(course_code, course_name_, department_);
                     department = department_;
                 } else {
                     std::cout << "Invalid choice. Please enter valid between (1-2)" << "\n";

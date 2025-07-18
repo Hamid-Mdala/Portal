@@ -3,6 +3,7 @@
 #include "DatabaseManager.h"    //Database operations
 #include "HandleMenus.h"
 #include "HandlingValidationCheck.h"
+#include <iostream>
 
 inline std::string category;
 
@@ -23,7 +24,6 @@ int main() {
 		return 1; // Exit if connection fails
 	}
 	bool exists;
-	// struct DataTypes data;
 	char option;
 	do {
 		std::cout << "Welcome to Computer Clinic Management Portal" << "\n";
