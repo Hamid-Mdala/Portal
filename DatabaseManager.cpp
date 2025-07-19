@@ -228,8 +228,8 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 			conn_->prepareStatement("DELETE FROM Course WHERE course_code = ?"));
 		stmt->setString(1, code);
 
-		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
-		if (res->next()) {
+		int affected_rows = stmt->executeUpdate();
+		if (affected_rows > 0) {
 			std::cout << "Successfully removed the course: " << code << " from the database" << "\n";
 			return true;
 		} else {
@@ -243,7 +243,7 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 }
 
 bool DatabaseManager::updateCourse(const std::string &code, const std::string &new_name,
-	const std::string &new_department) {
+	const std::string& new_department) {
 	try {
 		if (!conn_) return false;
 
@@ -253,10 +253,8 @@ bool DatabaseManager::updateCourse(const std::string &code, const std::string &n
 		stmt->setString(2, new_department);
 		stmt->setString(3, code);
 
-		//std::unique_ptr<sql::ResultSet> res(stmt->executeUpdate()); this goes to the next line and checks its executing query not updates in the database
-		int affected_rows = stmt->executeUpdate();
-		if (affected_rows > 0) {
-			std::cout << "Successfully updated the user: " << code << " in the database" << "\n";
+		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {  //TODO: issue is in the if condition i hate it i can not figure it out
+			std::cout << "Successfully updated the course: " << code << " in the database" << "\n";
 			return true;
 		} else {
 			std::cout << "No courses found with code: " << code << "\n";

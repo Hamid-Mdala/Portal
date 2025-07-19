@@ -400,7 +400,7 @@ bool CategoryAdmin::updateCourseInDB() {
                             exists = ValidationCheck::validateCourseName(course_name);
                         }
                     } while (!exists || exists && course_name == course_name_);
-                    dbManager.updateCourse(course_code, course_name_, department_);
+                    dbManager.updateCourse(course_code, course_name, department_);
                     course_name = course_name_;
                 } else if (choice == 2) {
                     do {
@@ -422,7 +422,7 @@ bool CategoryAdmin::updateCourseInDB() {
                             exists = ValidationCheck::validateCourseName(department);
                         }
                     } while (!exists || exists && department == department_ );
-                    dbManager.updateCourse(course_code, course_name_, department_);
+                    dbManager.updateCourse(course_code, course_name_, department);
                     department = department_;
                 } else {
                     std::cout << "Invalid choice. Please enter valid between (1-2)" << "\n";
