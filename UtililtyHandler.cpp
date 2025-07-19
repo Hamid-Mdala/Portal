@@ -95,7 +95,6 @@ bool CategoryStudent::enrollCourse() {
                 exists = ValidationCheck::validateCourseId(course_code);
             } while (!exists);
             do {
-                dbManager.searchCourse(course_code);
                 if (exists && course_code == course_code_) {
                     std::cout << "you orderly enrolled into the course: " << course_code << "\n";
                     std::cout << "What course do you want to enroll? " << "\n";
@@ -106,7 +105,7 @@ bool CategoryStudent::enrollCourse() {
                     std::cin >> course_code;
                     exists = ValidationCheck::validateCourseId(course_code);
                 }
-            } while (!exists || exists && course_code_ == course_code_);
+            } while (!exists || exists && course_code == course_code_);
             {
                 std::cout << "Successfully enrolled into the course" << "\n";
                 dbManager.createStudent(student_id, year, user_id, course_code);
@@ -278,8 +277,7 @@ bool CategoryTeacher::uploadGPA() {
                 std::cout << "What course code you teach and want to upload results? " << "\n";
                 std::cin >> code;
                 exists = ValidationCheck::validateCourseId(code);
-                //NOTE: I also have to validate the course code the teacher enters so that the teacher does not false clam
-                //NOTE: And validate here so that when I am updating the students table it does not give me SQL errors
+                //NOTE WHEN Learn how one-to-many relationship goes: I also have to validate the course code the teacher enters so that the teacher does not false clam
             } while (!exists);
             do {
                 exists = dbManager.searchCourse(code);

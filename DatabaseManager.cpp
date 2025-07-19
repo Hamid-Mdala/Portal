@@ -324,6 +324,7 @@ bool DatabaseManager::searchStudent(const int &user_id) {
 	if (res->next()) {
 		student_id_ = res->getInt("student_id");
 		year_ = res->getString("class");
+		course_code_ = res->getString("course_code");
 		std::cout << "found the student: " << user_id << " from the database" << "\n";
 		return true;
 	} else {  //this is for a new user when he is creating a student account to make sure we check its not the same student id entered
@@ -447,7 +448,7 @@ bool DatabaseManager::searchTeacher(const int &user_id) {
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
 		teacher_id_ = res->getInt("teacher_id");
-		std::cout << "found the teacher with user_ID: " << user_id << " from the database" << "\n";
+		std::cout << "found the teacher: " << user_id << " from the database" << "\n";
 		course_code_ = res->getString("course_code");  //get the course code
 		//do not get this course would be a list course_code_ = res->getString("course_code");
 		//NOTE: We could use Vectors to store information or Lists to store that information and clean memory after

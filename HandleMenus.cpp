@@ -144,20 +144,20 @@ bool Menu::teacherMenu() {
 					std::cin >> course_code;
 					exists = ValidationCheck::validateCourseId(course_code);
 				} while (!exists);
+				bool check = dbManager.searchCourse(course_code);
 				do {
-					exists = dbManager.searchCourse(course_code);
-					if (!exists && course_code != course_code_) {
-						std::cout << "Course is not found" << "\n";
+					if (exists && course_code == course_code_) {
+						std::cout << "Course is already taught in the database" << "\n";
 						std::cout << "What is your course code you are learning?" << "\n";
 						std::cin >> course_code;
 						exists = ValidationCheck::validateCourseId(course_code);
-					} else if (!exists) {
-						std::cout << "Course is not found" << "\n";
+					} else if (!exists || !check) {
 						std::cout << "What is your course code you are learning?" << "\n";
 						std::cin >> course_code;
 						exists = ValidationCheck::validateCourseId(course_code);
+						check = dbManager.searchCourse(course_code);
 					}
-				} while (course_code != course_code_ || !exists);
+				} while (!exists || !check || exists && course_code == course_code_);
 				{
 					std::string hire_date;
 					hire_date = std::to_string(year) + "-" + std::to_string(month) + "-" + std::to_string(day);
