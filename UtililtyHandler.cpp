@@ -7,7 +7,7 @@
 #include "DatabaseManager.h"
 #include "ModifyPortalUsers.h"
 #include "HandlingValidationCheck.h"
-
+#include <string.h>
 
 inline std::string course_code_;    //IMPORTANT! value that compares with the course_name the admin enters
 inline std::string department_;     //IMPORTANT! value that compares with the department the admin enters
@@ -95,12 +95,22 @@ bool CategoryStudent::enrollCourse() {
                 exists = ValidationCheck::validateCourseId(course_code);
             } while (!exists);
             do {
-                exists = dbManager.searchCourse(course_code);
-                if (exists) {
-                    dbManager.createStudent(student_id, year, user_id, course_code);
-                    std::cout << "Successfully enrolled into the course" << "\n";
+                dbManager.searchCourse(course_code);
+                if (exists && course_code == course_code_) {
+                    std::cout << "you orderly enrolled into the course: " << course_code << "\n";
+                    std::cout << "What course do you want to enroll? " << "\n";
+                    std::cin >> course_code;
+                    exists = ValidationCheck::validateCourseId(course_code);
+                } else if (!exists) {
+                    std::cout << "What course do you want to enroll? " << "\n";
+                    std::cin >> course_code;
+                    exists = ValidationCheck::validateCourseId(course_code);
                 }
-            } while (!exists);
+            } while (!exists || exists && course_code_ == course_code_);
+            {
+                std::cout << "Successfully enrolled into the course" << "\n";
+                dbManager.createStudent(student_id, year, user_id, course_code);
+            }
         } else {
             do {
                 std::cout << "Enter your Identification Number(ID):" << "\n";
@@ -150,26 +160,37 @@ bool CategoryStudent::enrollCourse() {
 
 bool CategoryStudent::getResults() {
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
+    dbManager.connect();
     sql::Connection& conn_ = dbManager.getConnectionRef();
 
     std::unique_ptr<sql::PreparedStatement> stmt(
-        conn_.prepareStatement("SELECT * FROM Students WHERE student_id = ?"));
-    stmt->setInt(1, student_id);
+        conn_.prepareStatement("SELECT * FROM Users WHERE username = ?"));
+    stmt->setString(1, username_);
 
-    std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-    int index = 0;
-    while(res->next() && res->getString("gpa") != nullptr) {
-        std::cout << ++index << ". Student_ID: " << res->getInt("student_id");
-        std::cout << ", Class: " << res->getString("class");
-        std::cout << ", Course_code: " << res->getString("course_code");
-        std::cout << ", GPA: " << res->getFloat("gpa");
-    }
-    if (index > 0) {
-        std::cout << "Total number of courses with results: " << index << "\n";
-        return true;
+    if(std::unique_ptr<sql::ResultSet> res(stmt->executeQuery()); res->next()) {
+        user_id = res->getInt("id");
+        stmt.reset(conn_.prepareStatement("SELECT * FROM Students WHERE user_id = ?"));
+        stmt->setInt(1, user_id);
+
+        res.reset(stmt->executeQuery());
+        int index = 0;
+        while(res->next()) {
+            std::cout << ++index << ". Student_ID: " << res->getInt("student_id");
+            std::cout << ", Class: " << res->getString("class");
+            std::cout << ", Course_code: " << res->getString("course_code");
+            std::cout << ", GPA: " << res->getFloat("gpa") << "\n";
+        }
+        if (index > 0) {
+            std::cout << "Total number of courses with results: " << index << "\n";
+            return true;
+        } else {
+            std::cout << "Your grade score results is empty" << "\n";
+            return false;
+        }
     } else {
-        std::cout << "Your grade score results is empty" << "\n";
-        return false;
+        std::cout << "Couldn't find the users username" << "\n";
+        std::cout << "Please report to the software engineer teem to fix your issue" << "\n";
+        std::exit(EXIT_FAILURE);
     }
 }
 
@@ -226,34 +247,33 @@ bool CategoryTeacher::uploadGPA() {
             int student_id;
             std::string code;
             do {
-                exists = dbManager.numOfUsersThatLearnFromTeacher(course_code);
+                exists = dbManager.numOfUsersThatLearnFromTeacher(course_code_);
                 if (!exists) {
-                    std::cout << "So do not have the priviledge to upload results" << "\n";
+                    std::cout << "So do not have the privilege to upload results" << "\n";
                     return EXIT_FAILURE;
                 } else {
-                    std::cout << "Use the students ID below that learn from your course" << "\n";
+                    std::cout << "Use the students user ID below that learn from your course" << "\n";
                 }
             } while (!EXIT_FAILURE);
             do {
-                std::cout << "Enter the students ID to upload the results: " << "\n";
+                std::cout << "Enter the user ID to upload the results: " << "\n";
                 std::cin >> student_id;
                 exists = ValidationCheck::validateId(student_id);
             } while (!exists);
+            bool check = dbManager.searchStudent(student_id);
             do {
-                exists = dbManager.searchStudent(student_id);
-                if (!exists && student_id != student_id_) {
-                    std::cout << "Student is not found" << "\n";
-                    std::cout << "Enter student ID to upload the results: " << "\n";
+                if (!check) {
+                    std::cout << "Student user ID is not found" << "\n";
+                    std::cout << "Enter the user ID to upload the results: " << "\n";
                     std::cin >> student_id;
                     exists = ValidationCheck::validateId(student_id);
-
                 } else if (!exists) {
-                    std::cout << "Enter student ID to upload the results: " << "\n";
+                    std::cout << "Enter the user ID to upload the results: " << "\n";
                     std::cin >> student_id;
                     exists = ValidationCheck::validateId(student_id);
                 }
                 //NOTE: Once I enter the student ID, I must get the students courses lists
-            } while (student_id != student_id_ || !exists);
+            } while (!check || !exists);
             do {
                 std::cout << "What course code you teach and want to upload results? " << "\n";
                 std::cin >> code;
@@ -280,7 +300,7 @@ bool CategoryTeacher::uploadGPA() {
                 exists = ValidationCheck::validateGpa(gpa_);
             } while (!exists);
             {
-                dbManager.uploadResults(gpa_, student_id, code);
+                dbManager.uploadResults(gpa_, student_id_, code);
             }
         }
     } else {

@@ -299,7 +299,7 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 
 		std::unique_ptr<sql::PreparedStatement> stmt (
 			conn_->prepareStatement("INSERT INTO Students (student_id, class,"
-						   "user_id, course_code) VALUES(?, ?, ?, ?, ?)"));
+						   "user_id, course_code) VALUES(?, ?, ?, ?)"));
 		stmt->setInt(1, student_id);
 		stmt->setString(2, class_);
 		stmt->setInt(3, user_id);
@@ -314,7 +314,7 @@ bool DatabaseManager::createStudent(const int &student_id, const std::string &cl
 }
 
 bool DatabaseManager::searchStudent(const int &user_id) {
-	if (conn_) return false;
+	if (!conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt (
 		conn_->prepareStatement("SELECT * FROM Students where user_id = ?"));
@@ -323,10 +323,10 @@ bool DatabaseManager::searchStudent(const int &user_id) {
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 	if (res->next()) {
 		student_id_ = res->getInt("student_id");
-		year_ = res->getString("year");
+		year_ = res->getString("class");
 		std::cout << "found the student: " << user_id << " from the database" << "\n";
 		return true;
-	} else {
+	} else {  //this is for a new user when he is creating a student account to make sure we check its not the same student id entered
 		stmt.reset(conn_->prepareStatement("SELECT * FROM Students WHERE student_id = ?"));
 		stmt->setInt(1, user_id);
 
@@ -369,14 +369,14 @@ bool DatabaseManager::numOfUsersThatLearnFromTeacher(const std::string& course_c
 		std::unique_ptr<sql::PreparedStatement> stmt (
 			conn_->prepareStatement("SELECT * FROM Students WHERE course_code = ?"));
 		stmt->setString(1, course_code);
-
 		std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
 		int index = 0;
 		while (res->next()) {
-			std::cout << ++index << ". Username: " << res->getString("username");
-			std::cout << ", User_ID: " << res->getInt("user_ID");
-			std::cout << ", First Name: " << res->getString("first_name");
-			std::cout << ", Last Name: " << res->getString("last_name") << "\n";
+			std::cout << ++index << ". User_id: " << res->getInt("user_id");
+			std::cout <<  ", Student_id: " << res->getInt("student_id");
+			std::cout << ", Year: " << res->getString("class");
+			std::cout << ", Enrollment_data: " << res->getString("enrollment_date");
+			std::cout << ", Course_code: " << res->getString("course_code") << "\n";
 		}
 		if (index > 0) {
 			std::cout << "Total number of students: " << index << "\n";
@@ -448,6 +448,7 @@ bool DatabaseManager::searchTeacher(const int &user_id) {
 	if (res->next()) {
 		teacher_id_ = res->getInt("teacher_id");
 		std::cout << "found the teacher with user_ID: " << user_id << " from the database" << "\n";
+		course_code_ = res->getString("course_code");  //get the course code
 		//do not get this course would be a list course_code_ = res->getString("course_code");
 		//NOTE: We could use Vectors to store information or Lists to store that information and clean memory after
 		//if later we want to get the lists of the course the teacher is teaching so that we can use them for data integrity
