@@ -103,11 +103,23 @@ bool CategoryStudent::enrollCourse() {
             } while (!exists);
         } else {
             do {
-                std::cout << "Enter your student ID: " << "\n";
+                std::cout << "Enter your Identification Number(ID):" << "\n";
                 std::cin >> student_id;
                 exists = ValidationCheck::validateId(student_id);
-                system("clear");
-            } while (exists);
+            } while (!exists); system("clear");
+            do {
+                dbManager.searchStudent(student_id);
+                if (exists && student_id == student_id_) {
+                    std::cout << "Identification Number(ID) already exists" << "\n";
+                    std::cout << "Enter your Identification Number(ID): " << "\n";
+                    std::cin >> student_id;
+                    exists = ValidationCheck::validateId(student_id);
+                } else if (!exists) {
+                    std::cout << "Enter your Identification Number(ID): " << "\n";
+                    std::cin >> student_id;
+                    exists = ValidationCheck::validateId(student_id);
+                }
+            } while (!exists || exists && student_id == student_id_);
             do {
                 std::cout << "what is your class year\n" << "Are you either 'fresh-man,"
                                                             "sophomore, junior or senior'?" << "\n";
@@ -297,16 +309,19 @@ bool CategoryAdmin::makeCourseInDB() {
         std::cin >> course_code;
         exists = ValidationCheck::validateCourseId(course_code);
     } while (!exists);
-    bool check = false;
     do {
-        exists = dbManager.searchCourse(course_code);
-        if (exists) {
+        dbManager.searchCourse(course_code);
+        if (exists && course_code == course_code_) {
             std::cout << "Course code already exist" << "\n";
             std::cout << "Enter course code: " << "\n";
             std::cin >> course_code;
-            check = ValidationCheck::validateCourseId(course_code);
+            exists = ValidationCheck::validateCourseId(course_code);
+        } else if (!exists) {
+            std::cout << "Enter course code: " << "\n";
+            std::cin >> course_code;
+            exists = ValidationCheck::validateCourseId(course_code);
         }
-    } while (exists || !check);
+    } while (!exists || exists && course_code == course_code_);
     do {
         std::cout << "Enter course name: " << "\n";
         std::cin >> course_name;
@@ -323,8 +338,7 @@ bool CategoryAdmin::makeCourseInDB() {
             std::cin >> course_name;
             exists = ValidationCheck::validateCourseName(course_name);
         }
-
-    } while (course_name == course_name_ || !exists);
+    } while (!exists || exists && course_name == course_name_);
     do {
         std::cout << "Enter department: " << "\n";
         std::cin >> department;

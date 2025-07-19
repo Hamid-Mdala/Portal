@@ -256,7 +256,8 @@ bool DatabaseManager::displayCourse() {
 		while (res->next()) {
 			std::cout << ++index << ". Course Code: " << res->getString("course_code");
 			std::cout << ", Name: " << res->getString("name");
-			std::cout << ", Department: " << res->getString("department") << "\n";
+			std::cout << ", Department: " << res->getString("department");
+			std::cout << ", Semester: " << res->getString("semester") << "\n";
 		}
 		if (index > 0) {
 			std::cout << "Total number of courses in database: " << index << "\n";
@@ -326,7 +327,13 @@ bool DatabaseManager::searchStudent(const int &user_id) {
 		std::cout << "found the student: " << user_id << " from the database" << "\n";
 		return true;
 	} else {
-		std::cout << "No student found with student_id: " << user_id << "\n";
+		stmt.reset(conn_->prepareStatement("SELECT * FROM Students WHERE student_id = ?"));
+		stmt->setInt(1, user_id);
+
+		res.reset(stmt->executeQuery());
+		if (res->next()) {
+			student_id_ = res->getInt("student_id");
+		}
 		return false;
 	}
 }
@@ -452,7 +459,7 @@ bool DatabaseManager::searchTeacher(const int &user_id) {
 
 		res.reset(stmt->executeQuery());
 		if (res->next()) {
-			admin_id_ = res->getInt("teacher_id");
+			teacher_id_ = res->getInt("teacher_id");
 		}
 		return false;
 	}

@@ -90,7 +90,7 @@ int main() {
 				system("clear");
 			} while (!exists);
 			do {
-				std::cout << "Enter your Date Of Birth (DD MM YYYY)" << "\n";
+				std::cout << "Enter your Date Of Birth:" << "\n";
 				std::cout << "Day(DD): ";
 				std::cin >> data.day;
 				std::cout << "Month(MM): ";
