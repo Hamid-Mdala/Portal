@@ -99,7 +99,7 @@ bool Menu::teacherMenu() {
 					exists = ValidationCheck::validateId(teacher_id);
 				} while (!exists);
 				do {
-					exists = dbManager.searchTeacher(teacher_id);
+					dbManager.searchTeacher(teacher_id);
 					if (exists && teacher_id == teacher_id_) {
 						std::cout << "Identification Number(ID) already exist" << "\n";
 						std::cout << "What is your Identification Number(ID): " << "\n";
@@ -114,7 +114,7 @@ bool Menu::teacherMenu() {
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;
-					exists = ValidationCheck::validateAllString(office_number);
+					exists = ValidationCheck::validateAllString(office_number);//TODO:A validator for the office number
 				} while (!exists);
 				do {
 					std::cout << "Which department do you work-in this corporation: " << "\n";
@@ -125,7 +125,7 @@ bool Menu::teacherMenu() {
 					std::cout << "What was your hire date: " << "\n";
 					std::cout << "Day(DD): ";
 					std::cin >> day;
-					std::cout << "Month(MM): ";
+					std::cout << "Month(MM): ";  //TODO:input validator for the current time for month and day must not be in the future year works fine
 					std::cin >> month;
 					std::cout << "Year(YYYY): ";
 					std::cin >> year;
@@ -133,9 +133,12 @@ bool Menu::teacherMenu() {
 				} while (!exists);
 				do {
 					exists = dbManager.displayCourse();
-					//NOTE: If the course table does not exist the program ends
-					//NOTE: If the course table does exist the program continues
-				} while (!exists);
+					if (!exists) {
+						std::cout << "Sorry you can not create an account because the admin is not yet made a course table" << "\n";
+						std::cout << "Please report to the admin or software developer team to inform the admin" << "\n";
+						return EXIT_FAILURE;
+					}
+				} while (false);
 				do {
 					std::cout << "What course code are you teaching?" << "\n";
 					std::cin >> course_code;
@@ -227,7 +230,7 @@ bool Menu::adminMenu() {
 					exists = ValidationCheck::validateId(admin_id);
 				} while (!exists);
 				do {
-					exists = dbManager.searchAdmin(admin_id);
+					dbManager.searchAdmin(admin_id);
 					if (exists && admin_id == admin_id_) {
 						std::cout << "Identification Number(ID) already exists" << "\n";
 						std::cout << "What is your Identification Number(ID): " << "\n";
@@ -242,7 +245,7 @@ bool Menu::adminMenu() {
 				do {
 					std::cout << "What is your office (room number): " << "\n";
 					std::cin >> office_number;
-					exists = ValidationCheck::validateAllString(office_number);
+					exists = ValidationCheck::validateAllString(office_number);//TODO:A validator for the office number
 				} while (!exists);
 				do {
 					std::cout << "Which department do you work-in this corporation: " << "\n";

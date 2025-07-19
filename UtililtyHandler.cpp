@@ -344,20 +344,29 @@ bool CategoryAdmin::makeCourseInDB() {
 bool CategoryAdmin::removeCourseInDB() {
     std::cout << "Delete course menu " << "\n";
 
-    std::cout << "Enter the course code of the course you want to delete: " << "\n";
-    std::cin >> course_code;
-
     DatabaseManager dbManager("portal_user", "HVM1D1234", "portal_db");
     dbManager.connect();
-    if (bool exists = dbManager.searchCourse(course_code)) {
-        dbManager.deleteCourse(course_code);
-        std::exit(EXIT_SUCCESS);
-    } else {
-        std::cout << "The Course does no longer exist in the database" << "\n";
-        std::cout << "For any issues please report to the software developer to help"
-                     "you fix the issue or contact +256994500600" << "\n";
-        std::exit(EXIT_FAILURE);
-    }
+    bool exists;
+
+    do {
+        exists = dbManager.displayCourse();
+        if (!exists) return EXIT_FAILURE;
+        std::cout << "Enter the course code of the course you want to delete: " << "\n";
+        std::cin >> course_code;
+        exists = ValidationCheck::validateCourseId(course_code);
+    } while (!exists);
+    do {
+        dbManager.searchCourse(course_code);
+        if (exists && course_code == course_code_) {
+            dbManager.deleteCourse(course_code);
+            std::exit(EXIT_SUCCESS);
+        } else {
+            std::cout << "The Course does no longer exist in the database" << "\n";
+            std::cout << "For any issues please report to the software developer to help"
+                         "you fix the issue or contact +256994500600" << "\n";
+            std::exit(EXIT_FAILURE);
+        }
+    } while (EXIT_SUCCESS);
 }
 
 bool CategoryAdmin::updateCourseInDB() {
@@ -367,7 +376,8 @@ bool CategoryAdmin::updateCourseInDB() {
     dbManager.connect();
     bool exists;
     do {
-        dbManager.displayCourse();
+        exists = dbManager.displayCourse();
+        if (!exists) return EXIT_FAILURE;
         std::cout << "Enter the course code of the course you want to update: " << "\n";
         std::cin >> course_code;
         exists = ValidationCheck::validateCourseId(course_code);
@@ -406,7 +416,7 @@ bool CategoryAdmin::updateCourseInDB() {
                     do {
                         std::cout << "Enter new department where the course will be taught: " << "\n";
                         std::cin >> department;
-                        exists = ValidationCheck::validateCourseName(department);
+                        exists = ValidationCheck::validateAllString(department);
                     } while (!exists);
 
                     do {
@@ -414,12 +424,12 @@ bool CategoryAdmin::updateCourseInDB() {
                             std::cout << "You  entered your old department name" << "\n";
                             std::cout << "Enter new department where the course will be taught: " << "\n";
                             std::cin >> department;
-                            exists = ValidationCheck::validateCourseName(department);
+                            exists = ValidationCheck::validateAllString(department);
                             //This was not correct so its exists
                         } else if (!exists) {
                             std::cout << "Enter new department where the course wil be taught: " << "\n";
                             std::cin >> department;
-                            exists = ValidationCheck::validateCourseName(department);
+                            exists = ValidationCheck::validateAllString(department);
                         }
                     } while (!exists || exists && department == department_ );
                     dbManager.updateCourse(course_code, course_name_, department);

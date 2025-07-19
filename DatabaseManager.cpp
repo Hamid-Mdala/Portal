@@ -59,13 +59,8 @@ bool DatabaseManager::deleteUser(const std::string &username) {
 				conn_->prepareStatement("DELETE FROM Users WHERE username = ?"));
 		stmt->setString(1, username);
 
-		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {
-			std::cout << "removed the user: " << username << " from the database" << "\n";
-			return true;
-		} else {
-			std::cout << "Can not delete user because the user is not found: " << username << "\n";
-			return false;
-		}
+		std::cout << "The user is successfully deleted" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLDataException &e) {
 		std::cerr << "Error deleting user: " << e.what() << "\n";
 		return false;
@@ -88,14 +83,8 @@ bool DatabaseManager::updateUser(const std::string &username, const std::string 
 		stmt->setString(4, new_dob);
 		stmt->setString(5, username);
 
-		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
-		if (res->next()) {
-			std::cout << "Successfully updated the user: " << username << " in the database" << "\n";
-			return true;
-		} else  {
-			std::cout << "Can not update user because the user is not found: " << username << "\n";
-			return false;
-		}
+		std::cout << "The user is successfully updated" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error updating details: "  << e.what() << "\n";
 		return false;
@@ -228,14 +217,8 @@ bool DatabaseManager::deleteCourse(const std::string &code) {
 			conn_->prepareStatement("DELETE FROM Course WHERE course_code = ?"));
 		stmt->setString(1, code);
 
-		int affected_rows = stmt->executeUpdate();
-		if (affected_rows > 0) {
-			std::cout << "Successfully removed the course: " << code << " from the database" << "\n";
-			return true;
-		} else {
-			std::cout << "No courses found with code: " << code << "\n";
-			return false;
-		}
+		std::cout << "The course is successfully deleted" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error deleting course: " << e.what() << "\n";
 		return false;
@@ -253,13 +236,8 @@ bool DatabaseManager::updateCourse(const std::string &code, const std::string &n
 		stmt->setString(2, new_department);
 		stmt->setString(3, code);
 
-		if (int affected_rows = stmt->executeUpdate(); affected_rows > 0) {  //TODO: issue is in the if condition i hate it i can not figure it out
-			std::cout << "Successfully updated the course: " << code << " in the database" << "\n";
-			return true;
-		} else {
-			std::cout << "No courses found with code: " << code << "\n";
-			return false;
-		}
+		std::cout << "The course is successfully updated" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error updating details: "  << e.what() << "\n";
 		return false;
@@ -285,7 +263,7 @@ bool DatabaseManager::displayCourse() {
 			return true;
 		} else {
 			std::cout << "Course table is empty" << "\n";
-			return EXIT_FAILURE;
+			return false;
 		}
 	} catch (sql::SQLDataException& e) {
 		std::cerr << "Error displaying course: " << e.what() << "\n";
@@ -422,7 +400,7 @@ bool DatabaseManager::displayGPA() {
 			std::cout << ", GPA: " << res->getFloat("gpa");
 		}
 		if (index > 0) {
-			std::cout << "Total number of students: " << index << "\n";
+			std::cout << "Total number of students who have results: " << index << "\n";
 			return true;
 		} else {
 			std::cout << "Student table is empty" << "\n";
@@ -444,15 +422,8 @@ bool DatabaseManager::uploadResults(const float &gpa, const int& student_id, con
 		stmt->setInt(2, student_id);
 		stmt->setString(3, course_code);
 
-		std::unique_ptr<sql::ResultSet> res (stmt->executeQuery());
-		if (res->next()) {
-
-			std::cout << "Successfully uploaded the students(" << student_id  << ") grade in the database" << "\n";
-			return true;
-		} else  {
-			std::cout << "Can not update students grade because the student ID is not found: " << student_id << "\n";
-			return false;
-		}
+		std::cout << "The students results is successfully uploaded" << "\n";
+		return stmt->executeUpdate() > 0;
 	} catch (sql::SQLException& e) {
 		std::cerr << "Error uploading results: " << e.what() << "\n";
 		return false;
@@ -476,7 +447,13 @@ bool DatabaseManager::searchTeacher(const int &user_id) {
 		//teacher is not allowed to claim accounts that it's theirs
 		return true;
 	} else {
-		std::cout << "No teacher found with user_id: " << user_id << "\n";
+		stmt.reset(conn_->prepareStatement("SELECT * FROM Teachers WHERE teacher_id = ?"));
+		stmt->setInt(1, user_id);
+
+		res.reset(stmt->executeQuery());
+		if (res->next()) {
+			admin_id_ = res->getInt("teacher_id");
+		}
 		return false;
 	}
 }
@@ -504,11 +481,11 @@ bool DatabaseManager::createAdmin(const int &admin_id, const int &user_id, const
 	}
 }
 
-bool DatabaseManager::searchAdmin(const int &user_id) {
+bool DatabaseManager::searchAdmin(const int &user_id) { //search is used to either determine which user is logged in as admin or not
 	if (!conn_) return false;
 
 	std::unique_ptr<sql::PreparedStatement> stmt (
-		conn_->prepareStatement("SELECT * FROM Admin where user_id = ?"));
+		conn_->prepareStatement("SELECT * FROM Admin WHERE user_id = ?"));
 	stmt->setInt(1, user_id);
 
 	std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
@@ -516,8 +493,14 @@ bool DatabaseManager::searchAdmin(const int &user_id) {
 		admin_id_ = res->getInt("admin_id");
 		std::cout << "found the admin: " << user_id << " from the database" << "\n";
 		return true;
-	} else {
-		std::cout << "No admin found with admin_id: " << user_id << "\n";
+	} else { //here when the user is not found it may mean that his a new admin user so we have to check if the user_id is not the same in the database
+		stmt.reset(conn_->prepareStatement("SELECT * FROM Admin WHERE admin_id = ?"));
+		stmt->setInt(1, user_id);
+
+		res.reset(stmt->executeQuery());
+		if (res->next()) {
+			admin_id_ = res->getInt("admin_id");
+		}
 		return false;
 	}
 }
