@@ -4,10 +4,7 @@
 #include "HandleMenus.h"
 #include "HandlingValidationCheck.h"
 #include <iostream>
-
 inline std::string category;
-
-//int main() function will handle a case when the files are not yet made on a server: else take them to the logging page
 struct DataTypes {
 	std::string username;
 	std::string password;
@@ -123,9 +120,6 @@ int main() {
 				menu.teacherMenu();
 				menu.adminMenu();
 			}
-
 	} while (option != 'y' || option != 'Y' || option != 'n' || option != 'N');  //so that the user inputs either yes or no
-
-
 	return 0;
 }
